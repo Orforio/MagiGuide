@@ -4,14 +4,26 @@ addons:
   chrome: stable
 
 language: node_js
-node_js:
-  - "8"
+
+before_install:
+  - npm install -g @angular/cli
+  - npm install -g greenkeeper-lockfile
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+
+install:
+  - npm install
 
 before_script:
-  - npm install -g @angular/cli
+  - greenkeeper-lockfile-update
+  - ./cc-test-reporter before-build
 
 script:
   - ng lint
-  - ng test
+  - ng test --code-coverage
   - ng e2e
-  - ng build --prod --aot
+  - ng build --prod --build-optimizer
+
+after_script:
+  - greenkeeper-lockfile-upload
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
