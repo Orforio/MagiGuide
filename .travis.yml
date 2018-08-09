@@ -22,7 +22,7 @@ script:
   - ng lint
   - ng test --code-coverage
   - ng e2e
-  - ng build --prod --aot
+  - ng build --prod --build-optimizer
 
 after_script:
   - greenkeeper-lockfile-upload
