@@ -1,8 +1,8 @@
 export class Fastpass {
 	constructor(
-		readonly ride: string,
-		readonly startTime: Date,
-		readonly endTime: Date,
-		readonly unlockTime: Date) {
+		public readonly ride: string,
+		public readonly startTime: Date,
+		public readonly endTime: Date,
+		public readonly nextAvailableTime: Date) {
 	}
 }
