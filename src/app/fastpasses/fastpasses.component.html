@@ -1,3 +1,5 @@
-<p>
-  fastpasses works!
-</p>
+<div class="row">
+	<div *ngFor="let fastpass of fastpasses" class="col-4">
+		<mg-fastpass [fastpass]="fastpass"></mg-fastpass>
+	</div>
+</div>

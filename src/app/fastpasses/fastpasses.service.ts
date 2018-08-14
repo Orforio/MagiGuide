@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import { Fastpass } from './fastpass.model';
+import { Fastpass } from './fastpass/fastpass.model';
 
 @Injectable({
 	providedIn: 'root'

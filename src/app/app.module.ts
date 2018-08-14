@@ -7,11 +7,13 @@ import { environment } from '../environments/environment';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FastpassesComponent } from './fastpasses/fastpasses.component';
+import { FastpassComponent } from './fastpasses/fastpass/fastpass.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
-		FastpassesComponent
+		FastpassesComponent,
+		FastpassComponent
 	],
 	imports: [
 		BrowserModule,
