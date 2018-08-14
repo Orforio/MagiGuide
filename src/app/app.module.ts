@@ -6,10 +6,14 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FastpassesComponent } from './fastpasses/fastpasses.component';
+import { FastpassComponent } from './fastpasses/fastpass/fastpass.component';
 
 @NgModule({
 	declarations: [
-		AppComponent
+		AppComponent,
+		FastpassesComponent,
+		FastpassComponent
 	],
 	imports: [
 		BrowserModule,
