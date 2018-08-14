@@ -1,13 +1,17 @@
 import { TestBed, async } from '@angular/core/testing';
-import { AppComponent } from './app.component';
-
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { AppComponent } from './app.component';
+import { FastpassesComponent } from './fastpasses/fastpasses.component';
+import { FastpassComponent } from './fastpasses/fastpass/fastpass.component';
 
 describe('AppComponent', () => {
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
 			declarations: [
-				AppComponent
+				AppComponent,
+				FastpassComponent,
+				FastpassesComponent
 			],
 			imports: [
 				NgbModule.forRoot()
