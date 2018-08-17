@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -13,9 +14,8 @@ describe('AppComponent', () => {
 				FastpassComponent,
 				FastpassesComponent
 			],
-			imports: [
-				NgbModule.forRoot()
-			],
+			imports: [ NgbModule ],
+			schemas: [ NO_ERRORS_SCHEMA ]
 		}).compileComponents();
 	}));
 

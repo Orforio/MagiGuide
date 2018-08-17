@@ -4,7 +4,6 @@ import { Fastpass } from './fastpass/fastpass.model';
 import { FastpassesService } from './fastpasses.service';
 
 @Component({
-	selector: 'mg-fastpasses',
 	templateUrl: './fastpasses.component.html',
 	styleUrls: ['./fastpasses.component.scss']
 })

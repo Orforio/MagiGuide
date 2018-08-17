@@ -1,26 +1,29 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { AppRoutingModule } from './app-routing.module';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { environment } from '../environments/environment';
-
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FastpassesComponent } from './fastpasses/fastpasses.component';
 import { FastpassComponent } from './fastpasses/fastpass/fastpass.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
-		FastpassesComponent,
-		FastpassComponent
+		DashboardComponent,
+		FastpassComponent,
+		FastpassesComponent
 	],
 	imports: [
+		AppRoutingModule,
 		BrowserModule,
-		NgbModule.forRoot(),
+		NgbModule,
 		ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
 	],
 	providers: [],
-	bootstrap: [AppComponent]
+	bootstrap: [ AppComponent ]
 })
 export class AppModule { }
