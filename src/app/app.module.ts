@@ -9,13 +9,15 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { environment } from '../environments/environment';
 import { FastpassesComponent } from './fastpasses/fastpasses.component';
 import { FastpassComponent } from './fastpasses/fastpass/fastpass.component';
+import { AddFastpassComponent } from './fastpasses/add-fastpass/add-fastpass.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		DashboardComponent,
 		FastpassComponent,
-		FastpassesComponent
+		FastpassesComponent,
+		AddFastpassComponent
 	],
 	imports: [
 		AppRoutingModule,
