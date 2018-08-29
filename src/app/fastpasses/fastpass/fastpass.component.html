@@ -1,6 +1,11 @@
 <div class="card text-white bg-primary">
+	<div class="card-header">
+		<h5 class="card-title ride-name">{{fastpass.ride}}</h5>
+	</div>
 	<div class="card-body">
-		<h5 class="card-title">{{fastpass.ride}}</h5>
-		<p class="display-2">{{fastpass.startTime | date:'H:mm'}} - {{fastpass.endTime | date:'H:mm'}}</p>
+		<h6>Start</h6>
+		<p class="display-2 start-time">{{fastpass.startTime | date:'H:mm'}}</p>
+		<h6>End</h6>
+		<p class="display-2 end-time">{{fastpass.endTime | date:'H:mm'}}</p>
 	</div>
 </div>

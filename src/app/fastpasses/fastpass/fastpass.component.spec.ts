@@ -39,16 +39,16 @@ describe('FastpassComponent', () => {
 
 	it('should display the ride name', () => {
 		// Assert
-		expect(this.compiled.querySelector('h5').textContent).toContain('Hyperspace Mountain');
+		expect(this.compiled.querySelector('.ride-name').textContent).toContain('Hyperspace Mountain');
 	});
 
 	it('should display the start time in 24H format', () => {
 		// Assert
-		expect(this.compiled.querySelector('p').textContent).toContain('15:20');
+		expect(this.compiled.querySelector('.start-time').textContent).toContain('15:20');
 	});
 
 	it('should display the end time in 24H format', () => {
 		// Assert
-		expect(this.compiled.querySelector('p').textContent).toContain('15:50');
+		expect(this.compiled.querySelector('.end-time').textContent).toContain('15:50');
 	});
 });
