@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -22,6 +23,7 @@ import { AddFastpassComponent } from './fastpasses/add-fastpass/add-fastpass.com
 	imports: [
 		AppRoutingModule,
 		BrowserModule,
+		FormsModule,
 		NgbModule,
 		ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
 	],
