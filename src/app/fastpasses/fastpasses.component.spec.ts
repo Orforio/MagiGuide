@@ -1,20 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { Store, StoreModule } from '@ngrx/store';
 
 import { Fastpass } from './fastpass/fastpass.model';
 import { FastpassComponent } from './fastpass/fastpass.component';
 import { FastpassesComponent } from './fastpasses.component';
-import { FastpassesService } from './fastpasses.service';
+import { reducer } from './state/fastpass.reducer';
+import * as fastpassActions from './state/fastpass.actions';
+import * as fromFastpass from './state';
 
 describe('FastpassesComponent', () => {
 	let component: FastpassesComponent;
 	let fixture: ComponentFixture<FastpassesComponent>;
-	const fastpassesService = jasmine.createSpyObj('FastpassesService', ['get']);
+	let store: Store<any>;
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
 			declarations: [ FastpassComponent, FastpassesComponent ],
-			providers: [{ provide: FastpassesService, useValue: fastpassesService }]
+			imports: [ StoreModule.forRoot({
+				'fastpasses': reducer
+			}) ]
 		})
 		.compileComponents();
 	}));
@@ -23,7 +27,30 @@ describe('FastpassesComponent', () => {
 		// Arrange
 		fixture = TestBed.createComponent(FastpassesComponent);
 		component = fixture.componentInstance;
+		store = fixture.debugElement.injector.get(Store);
 
+		spyOn(store, 'dispatch').and.callThrough();
+
+		// Act
+		fixture.detectChanges();
+		this.compiled = fixture.debugElement.nativeElement;
+	});
+
+	it('should create', () => {
+		// Assert
+		expect(component).toBeTruthy();
+	});
+
+	it('should dispatch the LoadFastpasses action', () => {
+		// Arrange
+		const action = new fastpassActions.LoadFastpasses();
+
+		// Assert
+		expect(store.dispatch).toHaveBeenCalledWith(action);
+	});
+
+	it('should display all retrieved Fastpasses', () => {
+		// Arrange
 		const mockFastpasses = [
 			new Fastpass(
 				'Big Thunder Mountain',
@@ -38,19 +65,12 @@ describe('FastpassesComponent', () => {
 				new Date('May 27, 2018 12:40:00')
 			)
 		];
-		fastpassesService.get.and.returnValue(of(mockFastpasses));
+		const action = new fastpassActions.LoadFastpassesSuccess(mockFastpasses);
 
 		// Act
+		store.dispatch(action);
 		fixture.detectChanges();
-		this.compiled = fixture.debugElement.nativeElement;
-	});
 
-	it('should create', () => {
-		// Assert
-		expect(component).toBeTruthy();
-	});
-
-	it('should display all retrieved Fastpasses', () => {
 		// Assert
 		expect(this.compiled.querySelectorAll('mg-fastpass').length).toBe(2);
 	});

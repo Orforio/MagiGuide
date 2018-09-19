@@ -9,10 +9,10 @@
       "projectType": "application",
       "prefix": "mg",
       "schematics": {
-				"@schematics/angular:component": {
-					"styleext": "scss"
-				}
-			},
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
