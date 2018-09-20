@@ -1,5 +1,5 @@
 import { FastpassActions, FastpassActionTypes } from './fastpass.actions';
-import { Fastpass } from '../fastpass/fastpass.model';
+import { Fastpass } from '../fastpass.model';
 
 export interface FastpassState {
 	error: string;

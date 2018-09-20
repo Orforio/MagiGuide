@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Fastpass } from './fastpass/fastpass.model';
+import { Fastpass } from './fastpass.model';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class FastpassesService {
+export class FastpassService {
 	constructor() { }
 
 	public get(): Observable<Fastpass[]> {

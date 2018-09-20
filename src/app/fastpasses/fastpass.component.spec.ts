@@ -1,21 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Store, StoreModule } from '@ngrx/store';
 
-import { Fastpass } from './fastpass/fastpass.model';
-import { FastpassComponent } from './fastpass/fastpass.component';
-import { FastpassesComponent } from './fastpasses.component';
+import { Fastpass } from './fastpass.model';
+import { FastpassComponent } from './fastpass.component';
+import { ViewFastpassComponent } from './view-fastpass/view-fastpass.component';
 import { reducer } from './state/fastpass.reducer';
 import * as fastpassActions from './state/fastpass.actions';
-import * as fromFastpass from './state';
 
 describe('FastpassesComponent', () => {
-	let component: FastpassesComponent;
-	let fixture: ComponentFixture<FastpassesComponent>;
+	let component: FastpassComponent;
+	let fixture: ComponentFixture<FastpassComponent>;
 	let store: Store<any>;
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			declarations: [ FastpassComponent, FastpassesComponent ],
+			declarations: [ FastpassComponent, ViewFastpassComponent ],
 			imports: [ StoreModule.forRoot({
 				'fastpasses': reducer
 			}) ]
@@ -25,7 +24,7 @@ describe('FastpassesComponent', () => {
 
 	beforeEach(() => {
 		// Arrange
-		fixture = TestBed.createComponent(FastpassesComponent);
+		fixture = TestBed.createComponent(FastpassComponent);
 		component = fixture.componentInstance;
 		store = fixture.debugElement.injector.get(Store);
 
@@ -72,6 +71,6 @@ describe('FastpassesComponent', () => {
 		fixture.detectChanges();
 
 		// Assert
-		expect(this.compiled.querySelectorAll('mg-fastpass').length).toBe(2);
+		expect(this.compiled.querySelectorAll('mg-view-fastpass').length).toBe(2);
 	});
 });

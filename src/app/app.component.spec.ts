@@ -3,8 +3,8 @@ import { TestBed, async } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
-import { FastpassesComponent } from './fastpasses/fastpasses.component';
-import { FastpassComponent } from './fastpasses/fastpass/fastpass.component';
+import { FastpassComponent } from './fastpasses/fastpass.component';
+import { ViewFastpassComponent } from './fastpasses/view-fastpass/view-fastpass.component';
 
 describe('AppComponent', () => {
 	beforeEach(async(() => {
@@ -12,7 +12,7 @@ describe('AppComponent', () => {
 			declarations: [
 				AppComponent,
 				FastpassComponent,
-				FastpassesComponent
+				ViewFastpassComponent
 			],
 			imports: [ NgbModule ],
 			schemas: [ NO_ERRORS_SCHEMA ]

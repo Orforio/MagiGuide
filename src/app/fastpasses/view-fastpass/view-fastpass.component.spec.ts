@@ -1,22 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Fastpass } from './fastpass.model';
-import { FastpassComponent } from './fastpass.component';
+import { Fastpass } from '../fastpass.model';
+import { ViewFastpassComponent } from './view-fastpass.component';
 
 describe('FastpassComponent', () => {
-	let component: FastpassComponent;
-	let fixture: ComponentFixture<FastpassComponent>;
+	let component: ViewFastpassComponent;
+	let fixture: ComponentFixture<ViewFastpassComponent>;
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			declarations: [ FastpassComponent ]
+			declarations: [ ViewFastpassComponent ]
 		})
 		.compileComponents();
 	}));
 
 	beforeEach(() => {
 		// Arrange
-		fixture = TestBed.createComponent(FastpassComponent);
+		fixture = TestBed.createComponent(ViewFastpassComponent);
 		component = fixture.componentInstance;
 
 		const inputFastpass = new Fastpass(

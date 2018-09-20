@@ -1,11 +1,11 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { of, ReplaySubject, Subject } from 'rxjs';
 
-import { FastpassesService } from '../fastpasses.service';
+import { FastpassService } from '../fastpass.service';
 import { FastpassEffects } from './fastpass.effects';
 import * as fastpassActions from './fastpass.actions';
-import { Fastpass } from '../fastpass/fastpass.model';
+import { Fastpass } from '../fastpass.model';
 
 describe('FastpassEffects', () => {
 	let actions: Subject<any>;
@@ -18,14 +18,14 @@ describe('FastpassEffects', () => {
 				FastpassEffects,
 				provideMockActions(() => actions),
 				{
-					provide: FastpassesService,
+					provide: FastpassService,
 					useValue: jasmine.createSpyObj('FastpassService', ['get'])
 				}
 			]
 		});
 
 		effects = TestBed.get(FastpassEffects);
-		mockFastpassService = TestBed.get(FastpassesService);
+		mockFastpassService = TestBed.get(FastpassService);
 
 		// Arrange
 		mockFastpassService.get.and.returnValue(of([]));

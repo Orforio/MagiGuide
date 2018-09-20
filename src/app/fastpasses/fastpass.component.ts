@@ -2,16 +2,16 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { Fastpass } from './fastpass/fastpass.model';
+import { Fastpass } from './fastpass.model';
 import { LoadFastpasses } from './state/fastpass.actions';
 import * as fromFastpass from './state';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	templateUrl: './fastpasses.component.html',
-	styleUrls: ['./fastpasses.component.scss']
+	templateUrl: './fastpass.component.html',
+	styleUrls: ['./fastpass.component.scss']
 })
-export class FastpassesComponent implements OnInit {
+export class FastpassComponent implements OnInit {
 	public error: Observable<string>;
 	public fastpasses: Observable<Fastpass[]>;
 

@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import { Fastpass } from '../fastpass/fastpass.model';
+import { Fastpass } from '../fastpass.model';
 
 export enum FastpassActionTypes {
 	LoadFastpasses = '[Fastpass] Load Fastpasses',

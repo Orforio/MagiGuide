@@ -4,14 +4,14 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 
-import { FastpassesService } from '../fastpasses.service';
+import { FastpassService } from '../fastpass.service';
 import { FastpassActionTypes, LoadFastpassesSuccess, LoadFastpassesFail } from './fastpass.actions';
 
 @Injectable()
 export class FastpassEffects {
 	constructor(
 		private actions: Actions,
-		private fastpassService: FastpassesService) { }
+		private fastpassService: FastpassService) { }
 
 	@Effect()
 	public loadFastpasses: Observable<Action> = this.actions.pipe(
