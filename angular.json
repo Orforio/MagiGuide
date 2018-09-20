@@ -8,7 +8,11 @@
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "mg",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -21,8 +25,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-			  "src/manifest.json",
-			  "src/_redirects"
+              "src/manifest.json",
+              "src/_redirects"
             ],
             "styles": [
               "src/styles.scss"

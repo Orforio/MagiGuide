@@ -1,22 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 import { Fastpass } from './fastpass/fastpass.model';
-import { FastpassesService } from './fastpasses.service';
+import { LoadFastpasses } from './state/fastpass.actions';
+import * as fromFastpass from './state';
 
 @Component({
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	templateUrl: './fastpasses.component.html',
 	styleUrls: ['./fastpasses.component.scss']
 })
 export class FastpassesComponent implements OnInit {
-	public fastpasses: Fastpass[];
+	public error: Observable<string>;
+	public fastpasses: Observable<Fastpass[]>;
 
-	constructor(private fastpassesService: FastpassesService) { }
+	constructor(private store: Store<fromFastpass.State>) { }
 
-	ngOnInit() {
-		this.fastpassesService.get()
-			.subscribe((fastpasses) => {
-				this.fastpasses = fastpasses;
-			});
+	ngOnInit(): void {
+		this.store.dispatch(new LoadFastpasses());
+		this.error = this.store.pipe(select(fromFastpass.getError));
+		this.fastpasses = this.store.pipe(select(fromFastpass.getFastpasses));
 	}
-
 }
