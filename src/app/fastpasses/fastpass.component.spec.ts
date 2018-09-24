@@ -1,23 +1,34 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Store, StoreModule } from '@ngrx/store';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { Fastpass } from './fastpass.model';
+import { AddFastpassComponent } from './add-fastpass/add-fastpass.component';
 import { FastpassComponent } from './fastpass.component';
 import { ViewFastpassComponent } from './view-fastpass/view-fastpass.component';
 import { reducer } from './state/fastpass.reducer';
 import * as fastpassActions from './state/fastpass.actions';
 
-describe('FastpassesComponent', () => {
+describe('FastpassComponent', () => {
 	let component: FastpassComponent;
 	let fixture: ComponentFixture<FastpassComponent>;
 	let store: Store<any>;
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			declarations: [ FastpassComponent, ViewFastpassComponent ],
-			imports: [ StoreModule.forRoot({
-				'fastpasses': reducer
-			}) ]
+			declarations: [
+				AddFastpassComponent,
+				FastpassComponent,
+				ViewFastpassComponent
+			],
+			imports: [
+				NgbModule,
+				ReactiveFormsModule,
+				StoreModule.forRoot({
+					'fastpasses': reducer
+				})
+			]
 		})
 		.compileComponents();
 	}));

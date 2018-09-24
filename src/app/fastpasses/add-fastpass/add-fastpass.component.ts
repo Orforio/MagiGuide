@@ -1,26 +1,25 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-	templateUrl: './add-fastpass.component.html',
-	styleUrls: ['./add-fastpass.component.scss']
+	selector: 'mg-add-fastpass',
+	styleUrls: ['./add-fastpass.component.scss'],
+	templateUrl: './add-fastpass.component.html'
 })
 export class AddFastpassComponent implements OnInit {
-	public startTime = {
-		hour: 13,
-		minute: 20
-	};
-	public endTime = {
-		hour: 13,
-		minute: 50
-	};
-	public nextAvailableTime = {
-		hour: 15,
-		minute: 20
-	};
+	public addFastpassForm = this.formBuilder.group({
+		ride: ['', Validators.required],
+		startTime: ['', Validators.required],
+		endTime: ['', Validators.required],
+		nextAvailableTime: ['', Validators.required]
+	});
 
-	constructor() { }
+	constructor(private formBuilder: FormBuilder) { }
 
-	ngOnInit() {
+	public ngOnInit(): void {
 	}
 
+	public onSubmit(): void {
+		console.warn(this.addFastpassForm.value);
+	}
 }
