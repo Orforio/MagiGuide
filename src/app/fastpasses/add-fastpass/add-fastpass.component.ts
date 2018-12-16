@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+
+import { Fastpass } from '../fastpass.model';
 
 @Component({
 	selector: 'mg-add-fastpass',
@@ -13,13 +15,16 @@ export class AddFastpassComponent implements OnInit {
 		endTime: ['', Validators.required],
 		nextAvailableTime: ['', Validators.required]
 	});
+	@Output() public addFastpass = new EventEmitter<Fastpass>();
 
 	constructor(private formBuilder: FormBuilder) { }
 
 	public ngOnInit(): void {
 	}
 
-	public onSubmit(): void {
-		console.warn(this.addFastpassForm.value);
+	public submitAddFastpass(): void {
+		if (this.addFastpassForm.valid && this.addFastpassForm.dirty) {
+			// TODO
+		}
 	}
 }
