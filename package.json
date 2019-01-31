@@ -49,5 +49,25 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "@angular/compiler-cli",
+      "@angular/language-service",
+      "@angular-devkit/build-angular",
+      "@types/jasmine",
+      "@types/jasminewd2",
+      "@types/node",
+      "jasmine-core",
+      "jasmine-spec-reporter",
+      "karma",
+      "karma-coverage-istanbul-reporter",
+      "karma-jasmine",
+      "karma-jasmine-html-reporter",
+      "protractor",
+      "ts-node",
+      "tslint",
+      "typescript"
+    ]
   }
 }
