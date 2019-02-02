@@ -1,6 +1,6 @@
 import { Fastpass } from './fastpass.model';
 
-fdescribe('Fastpass', () => {
+describe('Fastpass', () => {
 	describe('constructor()', () => {
 		it('should set passed in values to internal properties', () => {
 			// Arrange

@@ -27,6 +27,18 @@ export function reducer(state = initialState, action: FastpassActions): Fastpass
 				error: action.payload,
 				fastpasses: []
 			};
+		case FastpassActionTypes.SaveFastpassSuccess:
+			return {
+				...state,
+				error: '',
+				fastpasses: [...state.fastpasses, action.payload]
+			};
+		case FastpassActionTypes.SaveFastpassFail:
+			return {
+				...state,
+				error: action.payload,
+				fastpasses: []
+			};
 		default:
 			return state;
 	}
