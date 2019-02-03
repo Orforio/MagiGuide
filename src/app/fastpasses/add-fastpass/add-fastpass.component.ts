@@ -25,6 +25,7 @@ export class AddFastpassComponent implements OnInit {
 	public submitAddFastpass(): void {
 		if (this.addFastpassForm.valid && this.addFastpassForm.dirty) {
 			// TODO
+			console.log(this.addFastpassForm);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { of, ReplaySubject, Subject } from 'rxjs';
+import { of as observableOf, ReplaySubject, Subject, throwError } from 'rxjs';
 
 import { FastpassService } from '../fastpass.service';
 import { FastpassEffects } from './fastpass.effects';
@@ -19,7 +19,7 @@ describe('FastpassEffects', () => {
 				provideMockActions(() => actions),
 				{
 					provide: FastpassService,
-					useValue: jasmine.createSpyObj('FastpassService', ['get'])
+					useValue: jasmine.createSpyObj('FastpassService', ['get', 'save'])
 				}
 			]
 		});
@@ -28,14 +28,15 @@ describe('FastpassEffects', () => {
 		mockFastpassService = TestBed.get(FastpassService);
 
 		// Arrange
-		mockFastpassService.get.and.returnValue(of([]));
+		mockFastpassService.get.and.returnValue(observableOf([]));
+		mockFastpassService.save.and.returnValue(observableOf({}));
 	});
 
 	it('should be created', () => {
 		expect(effects).toBeTruthy();
 	});
 
-	describe('loadFastpasses', () => {
+	describe('loadFastpasses()', () => {
 		it('should dispatch LoadFastpassesSuccess with Fastpass data on success', () => {
 			// Arrange
 			const mockFastpasses = [
@@ -52,7 +53,7 @@ describe('FastpassEffects', () => {
 					new Date('May 27, 2018 12:40:00')
 				)
 			];
-			mockFastpassService.get.and.returnValue(of(mockFastpasses));
+			mockFastpassService.get.and.returnValue(observableOf(mockFastpasses));
 			const action = new fastpassActions.LoadFastpasses();
 			const expectedAction = new fastpassActions.LoadFastpassesSuccess(mockFastpasses);
 
@@ -62,6 +63,68 @@ describe('FastpassEffects', () => {
 
 			// Assert
 			effects.loadFastpasses.subscribe(result => {
+				expect(result).toEqual(expectedAction);
+			});
+		});
+
+		it('should dispatch LoadFastpassesFail with an error message on failure', () => {
+			// Arrange
+			mockFastpassService.get.and.returnValue(throwError('Something went wrong'));
+			const action = new fastpassActions.LoadFastpasses();
+			const expectedAction = new fastpassActions.LoadFastpassesFail('Something went wrong');
+
+			// Act
+			actions = new ReplaySubject(1);
+			actions.next(action);
+
+			// Assert
+			effects.loadFastpasses.subscribe(result => {
+				expect(result).toEqual(expectedAction);
+			});
+		});
+	});
+
+	describe('saveFastpass()', () => {
+		it('should dispatch SaveFastpassSuccess with Fastpass data on success', () => {
+			// Arrange
+			const mockNewFastpass = new Fastpass(
+				'Big Thunder Mountain',
+				new Date('May 27, 2018 10:40:00'),
+				new Date('May 27, 2018 11:10:00'),
+				new Date('May 27, 2018 10:40:00')
+			);
+			mockFastpassService.save.and.returnValue(observableOf(mockNewFastpass));
+			const action = new fastpassActions.SaveFastpass(mockNewFastpass);
+			const expectedAction = new fastpassActions.SaveFastpassSuccess(mockNewFastpass);
+
+			// Act
+			actions = new ReplaySubject(1);
+			actions.next(action);
+
+			// Assert
+			effects.saveFastpass.subscribe(result => {
+				expect(result).toEqual(expectedAction);
+			});
+		});
+
+		it('should dispatch LoadFastpassesFail with an error message on failure', () => {
+			// Arrange
+			const mockNewFastpass = new Fastpass(
+				'Big Thunder Mountain',
+				new Date('May 27, 2018 10:40:00'),
+				new Date('May 27, 2018 11:10:00'),
+				new Date('May 27, 2018 10:40:00')
+			);
+			mockFastpassService.save.and.returnValue(throwError('Something went wrong'));
+			const action = new fastpassActions.SaveFastpass(mockNewFastpass);
+			const expectedAction = new fastpassActions.SaveFastpassFail('Something went wrong');
+
+			// Act
+			actions = new ReplaySubject(1);
+			actions.next(action);
+
+			// Assert
+			effects.saveFastpass.subscribe(result => {
 				expect(result).toEqual(expectedAction);
 			});
 		});
