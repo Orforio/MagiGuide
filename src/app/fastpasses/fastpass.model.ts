@@ -1,4 +1,5 @@
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 
 export class Fastpass {
 	public readonly endTime: Date;
@@ -15,14 +16,20 @@ export class Fastpass {
 
 			if (startTime instanceof Date) {
 				this.startTime = startTime;
+			} else {
+				this.startTime = moment(startTime).toDate();
 			}
 
 			if (endTime instanceof Date) {
 				this.endTime = endTime;
+			} else {
+				this.endTime = moment(endTime).toDate();
 			}
 
 			if (nextAvailableTime instanceof Date) {
 				this.nextAvailableTime = nextAvailableTime;
+			} else {
+				this.nextAvailableTime = moment(nextAvailableTime).toDate();
 			}
 	}
 }
