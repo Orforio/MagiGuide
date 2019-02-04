@@ -5,7 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddFastpassComponent } from './add-fastpass.component';
 import { Fastpass } from '../fastpass.model';
 
-xdescribe('AddFastpassComponent', () => {
+describe('AddFastpassComponent', () => {
 	let component: AddFastpassComponent;
 	let fixture: ComponentFixture<AddFastpassComponent>;
 
@@ -32,27 +32,36 @@ xdescribe('AddFastpassComponent', () => {
 
 	describe('submitAddFastpass()',  () => {
 		beforeEach(() => {
-			spyOn(component, 'addFastpass');
+			spyOn(component.addFastpass, 'emit');
 		});
 
 		it('should output addFastpass if form is valid and dirty', () => {
 			// Arrange
+			jasmine.clock().install();
+			jasmine.clock().mockDate(new Date('2018-05-27'));
+
 			const newFastpass = new Fastpass(
 				'Big Thunder Mountain',
-				new Date(null, null, null, 12, 0, 0, 0),
-				new Date(null, null, null, 12, 30, 0, 0),
-				new Date(null, null, null, 13, 0, 0)
+				new Date('2018-05-27T12:00:00'),
+				new Date('2018-05-27T12:30:00'),
+				new Date('2018-05-27T14:00:00')
 			);
 			component.addFastpassForm.controls['ride'].setValue('Big Thunder Mountain');
+			component.addFastpassForm.controls['ride'].markAsDirty();
 			component.addFastpassForm.controls['startTime'].setValue({ hour: 12, minute: 0, second: 0 });
+			component.addFastpassForm.controls['startTime'].markAsDirty();
 			component.addFastpassForm.controls['endTime'].setValue({ hour: 12, minute: 30, second: 0 });
+			component.addFastpassForm.controls['endTime'].markAsDirty();
 			component.addFastpassForm.controls['nextAvailableTime'].setValue({ hour: 14, minute: 0, second: 0 });
+			component.addFastpassForm.controls['nextAvailableTime'].markAsDirty();
 
 			// Act
 			component.submitAddFastpass();
 
 			// Assert
-			expect(component.addFastpass).toHaveBeenCalledWith(newFastpass);
+			expect(component.addFastpass.emit).toHaveBeenCalledWith(newFastpass);
+
+			jasmine.clock().uninstall();
 		});
 
 		it('should not output addFastpass if form is invalid', () => {
@@ -62,7 +71,7 @@ xdescribe('AddFastpassComponent', () => {
 			component.submitAddFastpass();
 
 			// Assert
-			expect(component.addFastpass).not.toHaveBeenCalled();
+			expect(component.addFastpass.emit).not.toHaveBeenCalled();
 		});
 	});
 });

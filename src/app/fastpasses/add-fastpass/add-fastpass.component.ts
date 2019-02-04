@@ -24,8 +24,12 @@ export class AddFastpassComponent implements OnInit {
 
 	public submitAddFastpass(): void {
 		if (this.addFastpassForm.valid && this.addFastpassForm.dirty) {
-			// TODO
-			console.log(this.addFastpassForm);
+			this.addFastpass.emit(new Fastpass(
+				this.addFastpassForm.value.ride,
+				this.addFastpassForm.value.startTime,
+				this.addFastpassForm.value.endTime,
+				this.addFastpassForm.value.nextAvailableTime
+			));
 		}
 	}
 }
