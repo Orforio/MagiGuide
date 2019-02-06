@@ -11,6 +11,7 @@ import { reducer } from './state/fastpass.reducer';
 import * as fastpassActions from './state/fastpass.actions';
 
 describe('FastpassComponent', () => {
+	let compiled: any;
 	let component: FastpassComponent;
 	let fixture: ComponentFixture<FastpassComponent>;
 	let store: Store<any>;
@@ -43,7 +44,7 @@ describe('FastpassComponent', () => {
 
 		// Act
 		fixture.detectChanges();
-		this.compiled = fixture.debugElement.nativeElement;
+		compiled = fixture.debugElement.nativeElement;
 	});
 
 	it('should create', () => {
@@ -82,6 +83,25 @@ describe('FastpassComponent', () => {
 		fixture.detectChanges();
 
 		// Assert
-		expect(this.compiled.querySelectorAll('mg-view-fastpass').length).toBe(2);
+		expect(compiled.querySelectorAll('mg-view-fastpass').length).toBe(2);
+	});
+
+	describe('saveFastpass()', () => {
+		it('should dispatch the SaveFastpass action with the payload', () => {
+			// Arrange
+			const mockFastpass = new Fastpass(
+				'Big Thunder Mountain',
+				new Date('May 27, 2018 10:40:00'),
+				new Date('May 27, 2018 11:10:00'),
+				new Date('May 27, 2018 10:40:00')
+			);
+			const action = new fastpassActions.SaveFastpass(mockFastpass);
+
+			// Act
+			component.saveFastpass(mockFastpass);
+
+			// Assert
+			expect(store.dispatch).toHaveBeenCalledWith(action);
+		});
 	});
 });
