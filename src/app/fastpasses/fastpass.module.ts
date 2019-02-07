@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -21,6 +22,7 @@ import { reducer } from './state/fastpass.reducer';
 	imports: [
 		CommonModule,
 		EffectsModule.forFeature([ FastpassEffects ]),
+		FontAwesomeModule,
 		NgbModule,
 		ReactiveFormsModule,
 		StoreModule.forFeature('fastpasses', reducer),

@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -22,6 +25,7 @@ import { metaReducers, reducers } from './state';
 		AppRoutingModule,
 		BrowserModule,
 		EffectsModule.forRoot([]),
+		FontAwesomeModule,
 		NgbModule,
 		ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
 		StoreModule.forRoot(reducers, { metaReducers }),
@@ -31,4 +35,8 @@ import { metaReducers, reducers } from './state';
 	],
 	providers: []
 })
-export class AppModule { }
+export class AppModule {
+	constructor() {
+		library.add(faTrashAlt);
+	}
+}
