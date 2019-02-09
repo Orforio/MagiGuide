@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { Fastpass } from '../fastpass.model';
 
@@ -7,11 +7,13 @@ import { Fastpass } from '../fastpass.model';
 	templateUrl: './view-fastpass.component.html',
 	styleUrls: ['./view-fastpass.component.scss']
 })
-export class ViewFastpassComponent implements OnInit {
+export class ViewFastpassComponent {
 	@Input() public fastpass: Fastpass;
+	@Output() public remove = new EventEmitter<Fastpass>();
 
-	constructor() { }
+	constructor() {}
 
-	ngOnInit() {
+	public removeFastpass(): void {
+		this.remove.emit(this.fastpass);
 	}
 }

@@ -1,5 +1,8 @@
 <div class="card text-white bg-primary">
 	<div class="card-header">
+		<button (click)="removeFastpass()" class="btn btn-danger float-right remove-fastpass" type="button" aria-label="Remove">
+			<fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
+		</button>
 		<h5 class="card-title ride-name">{{fastpass.ride}}</h5>
 	</div>
 	<div class="card-body">
