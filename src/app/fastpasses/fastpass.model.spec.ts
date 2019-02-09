@@ -52,4 +52,42 @@ describe('Fastpass', () => {
 			jasmine.clock().uninstall();
 		});
 	});
+
+	describe('id', () => {
+		let model: Fastpass;
+
+		beforeEach(() => {
+			const ride = 'Hyperspace Mountain';
+			const startTime = new Date('2019-05-27T12:00:00');
+			const endTime = new Date('2019-05-27T12:30:00');
+			const nextAvailableTime = new Date('2019-05-27T14:00:00');
+			model = new Fastpass(
+				ride,
+				startTime,
+				endTime,
+				nextAvailableTime
+			);
+		});
+
+		it('should set the id property if it is null', () => {
+			// Arrange
+
+			// Act
+			model.id = 42;
+
+			// Assert
+			expect(model.id).toEqual(42);
+		});
+
+		it('should not set the id property if it already set', () => {
+			// Arrange
+			model.id = 99;
+
+			// Act
+			model.id = 42;
+
+			// Assert
+			expect(model.id).not.toEqual(42);
+		});
+	});
 });
