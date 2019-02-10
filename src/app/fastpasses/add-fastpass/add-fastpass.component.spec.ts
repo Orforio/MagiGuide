@@ -30,9 +30,9 @@ describe('AddFastpassComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
-	describe('submitAddFastpass()',  () => {
+	describe('addFastpass()',  () => {
 		beforeEach(() => {
-			spyOn(component.addFastpass, 'emit');
+			spyOn(component.add, 'emit');
 		});
 
 		it('should output addFastpass if form is valid and dirty', () => {
@@ -56,10 +56,10 @@ describe('AddFastpassComponent', () => {
 			component.addFastpassForm.controls['nextAvailableTime'].markAsDirty();
 
 			// Act
-			component.submitAddFastpass();
+			component.addFastpass();
 
 			// Assert
-			expect(component.addFastpass.emit).toHaveBeenCalledWith(newFastpass);
+			expect(component.add.emit).toHaveBeenCalledWith(newFastpass);
 
 			jasmine.clock().uninstall();
 		});
@@ -68,10 +68,10 @@ describe('AddFastpassComponent', () => {
 			// Arrange
 
 			// Act
-			component.submitAddFastpass();
+			component.addFastpass();
 
 			// Assert
-			expect(component.addFastpass.emit).not.toHaveBeenCalled();
+			expect(component.add.emit).not.toHaveBeenCalled();
 		});
 	});
 });

@@ -19,7 +19,7 @@ describe('FastpassEffects', () => {
 				provideMockActions(() => actions),
 				{
 					provide: FastpassService,
-					useValue: jasmine.createSpyObj('FastpassService', ['get', 'save'])
+					useValue: jasmine.createSpyObj('FastpassService', ['delete', 'get', 'save'])
 				}
 			]
 		});
@@ -28,12 +28,47 @@ describe('FastpassEffects', () => {
 		mockFastpassService = TestBed.get(FastpassService);
 
 		// Arrange
+		mockFastpassService.delete.and.returnValue(observableOf(0));
 		mockFastpassService.get.and.returnValue(observableOf([]));
 		mockFastpassService.save.and.returnValue(observableOf({}));
 	});
 
 	it('should be created', () => {
 		expect(effects).toBeTruthy();
+	});
+
+	describe('deleteFastpass()', () => {
+		it('should dispatch DeleteFastpassSuccess with the deleted ID on success', () => {
+			// Arrange
+			mockFastpassService.delete.and.returnValue(observableOf(2));
+			const action = new fastpassActions.DeleteFastpass(2);
+			const expectedAction = new fastpassActions.DeleteFastpassSuccess(2);
+
+			// Act
+			actions = new ReplaySubject(1);
+			actions.next(action);
+
+			// Assert
+			effects.deleteFastpass.subscribe(result => {
+				expect(result).toEqual(expectedAction);
+			});
+		});
+
+		it('should dispatch DeleteFastpassFail with an error message on failure', () => {
+			// Arrange
+			mockFastpassService.delete.and.returnValue(throwError('Something went wrong'));
+			const action = new fastpassActions.DeleteFastpass(42);
+			const expectedAction = new fastpassActions.DeleteFastpassFail('Something went wrong');
+
+			// Act
+			actions = new ReplaySubject(1);
+			actions.next(action);
+
+			// Assert
+			effects.deleteFastpass.subscribe(result => {
+				expect(result).toEqual(expectedAction);
+			});
+		});
 	});
 
 	describe('loadFastpasses()', () => {

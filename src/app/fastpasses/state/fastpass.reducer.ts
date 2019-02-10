@@ -15,6 +15,17 @@ export const initialState: FastpassState = {
 
 export function reducer(state = initialState, action: FastpassActions): FastpassState {
 	switch (action.type) {
+		case FastpassActionTypes.DeleteFastpassSuccess:
+			return {
+				...state,
+				error: '',
+				fastpasses: [...state.fastpasses.filter(fastpass => fastpass.id !== action.payload)]
+			};
+		case FastpassActionTypes.DeleteFastpassFail:
+			return {
+				...state,
+				error: action.payload
+			};
 		case FastpassActionTypes.LoadFastpassesSuccess:
 			return {
 				...state,

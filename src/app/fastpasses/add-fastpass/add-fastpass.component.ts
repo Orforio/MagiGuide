@@ -15,16 +15,16 @@ export class AddFastpassComponent implements OnInit {
 		endTime: ['', Validators.required],
 		nextAvailableTime: ['', Validators.required]
 	});
-	@Output() public addFastpass = new EventEmitter<Fastpass>();
+	@Output() public add = new EventEmitter<Fastpass>();
 
-	constructor(private formBuilder: FormBuilder) { }
+	constructor(private formBuilder: FormBuilder) {}
 
 	public ngOnInit(): void {
 	}
 
-	public submitAddFastpass(): void {
+	public addFastpass(): void {
 		if (this.addFastpassForm.valid && this.addFastpassForm.dirty) {
-			this.addFastpass.emit(new Fastpass(
+			this.add.emit(new Fastpass(
 				this.addFastpassForm.value.ride,
 				this.addFastpassForm.value.startTime,
 				this.addFastpassForm.value.endTime,

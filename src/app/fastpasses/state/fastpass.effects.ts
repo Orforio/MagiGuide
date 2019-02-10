@@ -6,6 +6,9 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import { FastpassService } from '../fastpass.service';
 import {
+	DeleteFastpass,
+	DeleteFastpassSuccess,
+	DeleteFastpassFail,
 	FastpassActionTypes,
 	LoadFastpassesSuccess,
 	LoadFastpassesFail,
@@ -19,13 +22,23 @@ import { Fastpass } from '../fastpass.model';
 export class FastpassEffects {
 	constructor(
 		private actions: Actions,
-		private fastpassService: FastpassService) { }
+		private fastpassService: FastpassService) {}
+
+	@Effect()
+	public deleteFastpass: Observable<Action> = this.actions.pipe(
+		ofType(FastpassActionTypes.DeleteFastpass),
+		map((action: DeleteFastpass) => action.payload),
+		mergeMap((id: number) => this.fastpassService.delete(id).pipe(
+			map(deletedId => new DeleteFastpassSuccess(deletedId)),
+			catchError(error => observableOf(new DeleteFastpassFail(error)))
+		))
+	);
 
 	@Effect()
 	public loadFastpasses: Observable<Action> = this.actions.pipe(
 		ofType(FastpassActionTypes.LoadFastpasses),
 		mergeMap(() => this.fastpassService.get().pipe(
-			map(fastpasses => (new LoadFastpassesSuccess(fastpasses))),
+			map(fastpasses => new LoadFastpassesSuccess(fastpasses)),
 			catchError(error => observableOf(new LoadFastpassesFail(error)))
 		))
 	);
@@ -35,7 +48,7 @@ export class FastpassEffects {
 		ofType(FastpassActionTypes.SaveFastpass),
 		map((action: SaveFastpass) => action.payload),
 		mergeMap((fastpass: Fastpass) => this.fastpassService.save(fastpass).pipe(
-			map(newFastpass => (new SaveFastpassSuccess(newFastpass))),
+			map(newFastpass => new SaveFastpassSuccess(newFastpass)),
 			catchError(error => observableOf(new SaveFastpassFail(error)))
 		))
 	);
