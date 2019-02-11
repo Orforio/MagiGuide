@@ -1,0 +1,52 @@
+<form [formGroup]="addFastpassForm" (ngSubmit)="addFastpass()">
+	<div class="card bg-light">
+		<div class="card-header">
+			<div class="form-group">
+				<label for="ride">Attraction</label>
+				<select formControlName="ride" id="ride" class="form-control" required>
+					<option>Big Thunder Mountain</option>
+					<option>Buzz Lightyear Laser Blast</option>
+					<option>Indiana Jones and the Temple of Peril</option>
+					<option>Peter Pan's Flight</option>
+					<option>Star Tours</option>
+					<option>Star Wars: Hyperspace Mountain</option>
+					<option>Ratatouille: The Adventure</option>
+					<option>Rock'n'Roller Coaster starring Aerosmith</option>
+					<option>The Twilight Zone Tower of Terror</option>
+				</select>
+			</div>
+		</div>
+		<div class="card-body">
+			<div class="form-group form-row">
+				<label for="startTime" class="col-3 col-form-label col-form-label-lg">
+					Start <span class="sr-only">time</span>
+				</label>
+				<div class="col-auto">
+					<ngb-timepicker id="startTime" name="startTime"
+					formControlName="startTime" [minuteStep]="5" size="large" required></ngb-timepicker>
+				</div>
+			</div>
+			<div class="form-group form-row">
+				<label for="endTime" class="col-3 col-form-label col-form-label-lg">
+					End <span class="sr-only">time hours</span>
+				</label>
+				<div class="col-auto">
+					<ngb-timepicker id="endTime" name="endTime"
+					formControlName="endTime" [minuteStep]="5" size="large" required></ngb-timepicker>
+				</div>
+			</div>
+			<div class="form-group form-row">
+				<label for="nextAvailableTime" class="col-5 col-form-label">
+					Next available <span class="sr-only">time</span>
+				</label>
+				<div class="col-auto">
+					<ngb-timepicker id="nextAvailableTime" name="nextAvailableTime"
+					formControlName="nextAvailableTime" size="small" required></ngb-timepicker>
+				</div>
+			</div>
+		</div>
+		<div class="card-footer">
+			<button [disabled]="!addFastpassForm.valid" type="submit" class="btn btn-primary">Add FastPass</button>
+		</div>
+	</div>
+</form>
