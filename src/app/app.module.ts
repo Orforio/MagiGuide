@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { NgForageConfig, NgForageModule } from 'ngforage';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +28,7 @@ import { metaReducers, reducers } from './state';
 		EffectsModule.forRoot([]),
 		FontAwesomeModule,
 		NgbModule,
+		NgForageModule,
 		ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
 		StoreModule.forRoot(reducers, { metaReducers }),
 		!environment.production ? StoreDevtoolsModule.instrument({
@@ -36,7 +38,11 @@ import { metaReducers, reducers } from './state';
 	providers: []
 })
 export class AppModule {
-	constructor() {
+	constructor(ngfConfig: NgForageConfig) {
 		library.add(faTrashAlt);
+		ngfConfig.configure({
+			name: 'MagiGuide',
+			storeName: 'settings'
+		});
 	}
 }
