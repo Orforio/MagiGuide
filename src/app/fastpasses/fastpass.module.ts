@@ -5,7 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { NgForageConfig, NgForageModule } from 'ngforage';
+import { NgForageConfig } from 'ngforage';
 
 import { FastpassRoutingModule } from './fastpass-routing.module';
 import { AddFastpassComponent } from './add-fastpass/add-fastpass.component';
@@ -26,7 +26,6 @@ import { reducer } from './state/fastpass.reducer';
 		FastpassRoutingModule,
 		FontAwesomeModule,
 		NgbModule,
-		NgForageModule,
 		ReactiveFormsModule,
 		StoreModule.forFeature('fastpasses', reducer),
 	]
