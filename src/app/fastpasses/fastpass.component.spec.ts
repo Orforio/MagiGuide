@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule } from '@ngrx/store';
 
 import { Fastpass } from './fastpass.model';
@@ -31,6 +32,7 @@ describe('FastpassComponent', () => {
 				ViewFastpassStubComponent
 			],
 			imports: [
+				NgbModule,
 				StoreModule.forRoot({
 					'fastpasses': reducer
 				})
