@@ -3,7 +3,7 @@ import { Guid } from 'guid-typescript';
 
 import { Fastpass } from './fastpass.model';
 
-fdescribe('Fastpass', () => {
+describe('Fastpass', () => {
 	describe('constructor()', () => {
 		beforeEach(() => {
 			spyOn(Guid, 'create').and.returnValue(<Guid><unknown>'ABCD-1234');
@@ -64,7 +64,7 @@ fdescribe('Fastpass', () => {
 			const model = new Fastpass(null, null, null, null);
 
 			// Assert
-			expect(model.id).toEqual(<Guid><unknown>'ABCD-1234');
+			expect(model.id).toEqual('ABCD-1234');
 		});
 	});
 });

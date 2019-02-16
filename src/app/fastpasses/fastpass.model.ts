@@ -4,7 +4,7 @@ import * as moment from 'moment';
 
 export class Fastpass {
 	public readonly endTime: Date;
-	public readonly id: Guid;
+	public readonly id: string;
 	public readonly nextAvailableTime: Date;
 	public readonly ride: string;
 	public readonly startTime: Date;
@@ -14,7 +14,7 @@ export class Fastpass {
 		startTime: Date | NgbTimeStruct,
 		endTime: Date | NgbTimeStruct,
 		nextAvailableTime: Date | NgbTimeStruct) {
-			this.id = Guid.create();
+			this.id = Guid.create().toString();
 			this.ride = ride;
 
 			if (startTime instanceof Date) {
