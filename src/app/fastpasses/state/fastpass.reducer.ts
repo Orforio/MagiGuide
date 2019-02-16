@@ -1,56 +1,35 @@
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+
 import { FastpassActions, FastpassActionTypes } from './fastpass.actions';
 import { Fastpass } from '../fastpass.model';
 
-export interface FastpassState {
-	error: string;
-	fastpasses: Fastpass[];
-	nextAvailableTime: Date;
-}
+export interface FastpassState extends EntityState<Fastpass> {}
 
-export const initialState: FastpassState = {
-	error: '',
-	fastpasses: [],
-	nextAvailableTime: new Date()
-};
+export const fastpassAdapter: EntityAdapter<Fastpass> = createEntityAdapter<Fastpass>();
+
+export const initialState: FastpassState = fastpassAdapter.getInitialState({});
 
 export function reducer(state = initialState, action: FastpassActions): FastpassState {
 	switch (action.type) {
-		case FastpassActionTypes.DeleteFastpassSuccess:
-			return {
-				...state,
-				error: '',
-				fastpasses: [...state.fastpasses.filter(fastpass => fastpass.id !== action.payload)]
-			};
-		case FastpassActionTypes.DeleteFastpassFail:
-			return {
-				...state,
-				error: action.payload
-			};
-		case FastpassActionTypes.LoadFastpassesSuccess:
-			return {
-				...state,
-				error: '',
-				fastpasses: action.payload
-			};
-		case FastpassActionTypes.LoadFastpassesFail:
-			return {
-				...state,
-				error: action.payload,
-				fastpasses: []
-			};
-		case FastpassActionTypes.SaveFastpassSuccess:
-			return {
-				...state,
-				error: '',
-				fastpasses: [...state.fastpasses, action.payload]
-			};
-		case FastpassActionTypes.SaveFastpassFail:
-			return {
-				...state,
-				error: action.payload,
-				fastpasses: []
-			};
+		case FastpassActionTypes.AddFastpass:
+			return fastpassAdapter.addOne(action.payload.fastpass, state);
+		case FastpassActionTypes.ClearFastpasses:
+			return fastpassAdapter.removeAll(state);
+		case FastpassActionTypes.DeleteFastpass:
+			return fastpassAdapter.removeOne(action.payload.id, state);
+		case FastpassActionTypes.LoadFastpasses:
+			return fastpassAdapter.addAll(action.payload.fastpasses, state);
+		// TODO: Update Fastpass
+		// case FastpassActionTypes.UpdateFastpass:
+		// 	return fastpassAdapter.updateOne(action.payload.fastpass, state);
 		default:
 			return state;
 	}
 }
+
+export const {
+	selectIds,
+	selectEntities,
+	selectAll,
+	selectTotal,
+} = fastpassAdapter.getSelectors();

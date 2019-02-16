@@ -3,8 +3,82 @@ import * as fastpassActions from './fastpass.actions';
 import { Fastpass } from '../fastpass.model';
 
 describe('Fastpass Reducer', () => {
-	describe('DeleteFastpassSuccess', () => {
-		it('should set error to an empty string and set the updated fastpasses to the payload', () => {
+	describe('AddFastpass', () => {
+		it('should add the new Fastpass to the state', () => {
+			// Arrange
+			const mockFastpass = new Fastpass(
+				'Big Thunder Mountain',
+				new Date('May 27, 2018 10:40:00'),
+				new Date('May 27, 2018 11:10:00'),
+				new Date('May 27, 2018 10:40:00')
+			);
+			const mockNewFastpass = new Fastpass(
+				'Star Tours',
+				new Date('May 27, 2018 17:05:00'),
+				new Date('May 27, 2018 17:35:00'),
+				new Date('May 27, 2018 19:05:00')
+			);
+			const previousState = {
+				...initialState,
+				ids: [mockFastpass.id],
+				entities: {
+					[mockFastpass.id]: mockFastpass
+				}
+			};
+			const expectedResult: FastpassState = {
+				...initialState,
+				ids: [
+					...previousState.ids,
+					mockNewFastpass.id
+				],
+				entities: {
+					...previousState.entities,
+					[mockNewFastpass.id]: mockNewFastpass
+				}
+			};
+			const action = new fastpassActions.AddFastpass({ fastpass: mockNewFastpass });
+
+			// Act
+			const result = reducer(previousState, action);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
+		});
+	});
+
+	describe('ClearFastpasses', () => {
+		it('should remove all Fastpasses from the state', () => {
+			// Arrange
+			const mockFastpass = new Fastpass(
+				'Big Thunder Mountain',
+				new Date('May 27, 2018 10:40:00'),
+				new Date('May 27, 2018 11:10:00'),
+				new Date('May 27, 2018 10:40:00')
+			);
+			const previousState = {
+				...initialState,
+				ids: [mockFastpass.id],
+				entities: {
+					[mockFastpass.id]: mockFastpass
+				}
+			};
+			const expectedResult: FastpassState = {
+				...initialState,
+				ids: [],
+				entities: {}
+			};
+			const action = new fastpassActions.ClearFastpasses();
+
+			// Act
+			const result = reducer(previousState, action);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
+		});
+	});
+
+	describe('DeleteFastpass', () => {
+		it('should remove the given Fastpass from the state', () => {
 			// Arrange
 			const fastpassToKeep = new Fastpass(
 				'Star Tours',
@@ -12,21 +86,27 @@ describe('Fastpass Reducer', () => {
 				new Date('May 27, 2018 17:35:00'),
 				new Date('May 27, 2018 19:05:00')
 			);
-			fastpassToKeep.id = 1;
 			const fastpassToDelete = new Fastpass(
 				'Big Thunder Mountain',
 				new Date('May 27, 2018 10:40:00'),
 				new Date('May 27, 2018 11:10:00'),
 				new Date('May 27, 2018 10:40:00')
 			);
-			fastpassToDelete.id = 2;
-			const previousState = {...initialState, fastpasses: [fastpassToKeep, fastpassToDelete]};
+			const previousState: FastpassState = {
+				...initialState,
+				ids: [fastpassToDelete.id, fastpassToKeep.id],
+				entities: {
+					[fastpassToDelete.id]: fastpassToDelete,
+					[fastpassToKeep.id]: fastpassToKeep
+				}};
 			const expectedResult: FastpassState = {
 				...initialState,
-				error: '',
-				fastpasses: [fastpassToKeep]
+				ids: [fastpassToKeep.id],
+				entities: {
+					[fastpassToKeep.id]: fastpassToKeep
+				}
 			};
-			const action = new fastpassActions.DeleteFastpassSuccess(2);
+			const action = new fastpassActions.DeleteFastpass({ id: fastpassToDelete.id });
 
 			// Act
 			const result = reducer(previousState, action);
@@ -36,124 +116,30 @@ describe('Fastpass Reducer', () => {
 		});
 	});
 
-	describe('DeleteFastpassFail', () => {
-		it('should set error to the payload', () => {
+	describe('LoadFastpasses', () => {
+		it('should add all fastpasses to the state', () => {
 			// Arrange
-			const mockError = 'No such ID';
-			const expectedResult: FastpassState = {
-				...initialState,
-				error: mockError
-			};
-			const action = new fastpassActions.DeleteFastpassFail(mockError);
-
-			// Act
-			const result = reducer(initialState, action);
-
-			// Assert
-			expect(result).toEqual(expectedResult);
-		});
-	});
-
-	describe('LoadFastpassesSuccess', () => {
-		it('should set error to an empty string and set fastpasses to the payload', () => {
-			// Arrange
-			const mockFastpasses = [
-				new Fastpass(
-					'Big Thunder Mountain',
-					new Date('May 27, 2018 10:40:00'),
-					new Date('May 27, 2018 11:10:00'),
-					new Date('May 27, 2018 10:40:00')
-				),
-				new Fastpass(
-					'Hyperspace Mountain',
-					new Date('May 27, 2018 15:20:00'),
-					new Date('May 27, 2018 15:50:00'),
-					new Date('May 27, 2018 12:40:00')
-				)
-			];
-			const expectedResult: FastpassState = {
-				...initialState,
-				error: '',
-				fastpasses: mockFastpasses
-			};
-			const action = new fastpassActions.LoadFastpassesSuccess(mockFastpasses);
-
-			// Act
-			const result = reducer(initialState, action);
-
-			// Assert
-			expect(result).toEqual(expectedResult);
-		});
-	});
-
-	describe('LoadFastpassesFail', () => {
-		it('should set error to the payload and set fastpasses to an empty array', () => {
-			// Arrange
-			const mockError = 'Could not load Fastpasses';
-			const expectedResult: FastpassState = {
-				...initialState,
-				error: mockError,
-				fastpasses: []
-			};
-			const action = new fastpassActions.LoadFastpassesFail(mockError);
-
-			// Act
-			const result = reducer(initialState, action);
-
-			// Assert
-			expect(result).toEqual(expectedResult);
-		});
-	});
-
-	describe('SaveFastpassSuccess', () => {
-		it('should set error to an empty string and set the updated fastpasses to the payload', () => {
-			// Arrange
-			const mockFastpasses = [
-				new Fastpass(
-					'Big Thunder Mountain',
-					new Date('May 27, 2018 10:40:00'),
-					new Date('May 27, 2018 11:10:00'),
-					new Date('May 27, 2018 10:40:00')
-				),
-				new Fastpass(
-					'Hyperspace Mountain',
-					new Date('May 27, 2018 15:20:00'),
-					new Date('May 27, 2018 15:50:00'),
-					new Date('May 27, 2018 12:40:00')
-				)
-			];
-			const mockNewFastpass = new Fastpass(
-				'Star Tours',
-				new Date('May 27, 2018 17:05:00'),
-				new Date('May 27, 2018 17:35:00'),
-				new Date('May 27, 2018 19:05:00')
+			const mockFastpass1 = new Fastpass(
+				'Big Thunder Mountain',
+				new Date('May 27, 2018 10:40:00'),
+				new Date('May 27, 2018 11:10:00'),
+				new Date('May 27, 2018 10:40:00')
 			);
-			const previousState = {...initialState, fastpasses: mockFastpasses};
+			const mockFastpass2 = new Fastpass(
+				'Hyperspace Mountain',
+				new Date('May 27, 2018 15:20:00'),
+				new Date('May 27, 2018 15:50:00'),
+				new Date('May 27, 2018 12:40:00')
+			);
 			const expectedResult: FastpassState = {
 				...initialState,
-				error: '',
-				fastpasses: [...mockFastpasses, mockNewFastpass]
+				ids: [mockFastpass1.id, mockFastpass2.id],
+				entities: {
+					[mockFastpass1.id]: mockFastpass1,
+					[mockFastpass2.id]: mockFastpass2
+				}
 			};
-			const action = new fastpassActions.SaveFastpassSuccess(mockNewFastpass);
-
-			// Act
-			const result = reducer(previousState, action);
-
-			// Assert
-			expect(result).toEqual(expectedResult);
-		});
-	});
-
-	describe('SaveFastpassFail', () => {
-		it('should set error to the payload and set fastpasses to an empty array', () => {
-			// Arrange
-			const mockError = 'Could not save Fastpass';
-			const expectedResult: FastpassState = {
-				...initialState,
-				error: mockError,
-				fastpasses: []
-			};
-			const action = new fastpassActions.SaveFastpassFail(mockError);
+			const action = new fastpassActions.LoadFastpasses({ fastpasses: [mockFastpass1, mockFastpass2] });
 
 			// Act
 			const result = reducer(initialState, action);

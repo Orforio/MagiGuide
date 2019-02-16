@@ -1,77 +1,47 @@
 import { Action } from '@ngrx/store';
+import { Update } from '@ngrx/entity';
 
 import { Fastpass } from '../fastpass.model';
 
 export enum FastpassActionTypes {
-	LoadFastpasses = '[Fastpass] Load Fastpasses',
-	LoadFastpassesSuccess = '[Fastpass] Load Fastpasses Success',
-	LoadFastpassesFail = '[Fastpass] Load Fastpasses Fail',
-	SaveFastpass = '[Fastpass] Save Fastpass',
-	SaveFastpassSuccess = '[Fastpass] Save Fastpass Success',
-	SaveFastpassFail = '[Fastpass] Save Fastpass Fail',
-	DeleteFastpass = '[Fastpass] Delete Fastpass',
-	DeleteFastpassSuccess = '[Fastpass] Delete Fastpass Success',
-	DeleteFastpassFail = '[Fastpass] Delete Fastpass Fail'
+	AddFastpass = '[Fastpass] Add One Fastpass',
+	ClearFastpasses = '[Fastpass] Delete All Fastpasses',
+	DeleteFastpass = '[Fastpass] Delete One Fastpass',
+	LoadFastpasses = '[Fastpass] Load All Fastpasses',
+	UpdateFastpass = '[Fastpass] Update One Fastpass'
 }
 
-export class LoadFastpasses implements Action {
-	readonly type = FastpassActionTypes.LoadFastpasses;
+export class AddFastpass implements Action {
+	readonly type = FastpassActionTypes.AddFastpass;
+
+	constructor(public payload: { fastpass: Fastpass }) {}
 }
 
-export class LoadFastpassesSuccess implements Action {
-	readonly type = FastpassActionTypes.LoadFastpassesSuccess;
-
-	constructor(public payload: Fastpass[]) {}
-}
-
-export class LoadFastpassesFail implements Action {
-	readonly type = FastpassActionTypes.LoadFastpassesFail;
-
-	constructor(public payload: string) {}
-}
-
-export class SaveFastpass implements Action {
-	readonly type = FastpassActionTypes.SaveFastpass;
-
-	constructor(public payload: Fastpass) {}
-}
-
-export class SaveFastpassSuccess implements Action {
-	readonly type = FastpassActionTypes.SaveFastpassSuccess;
-
-	constructor(public payload: Fastpass) {}
-}
-
-export class SaveFastpassFail implements Action {
-	readonly type = FastpassActionTypes.SaveFastpassFail;
-
-	constructor(public payload: string) {}
+export class ClearFastpasses implements Action {
+	readonly type = FastpassActionTypes.ClearFastpasses;
 }
 
 export class DeleteFastpass implements Action {
 	readonly type = FastpassActionTypes.DeleteFastpass;
 
-	constructor(public payload: number) {}
+	constructor(public payload: { id: string }) {}
 }
 
-export class DeleteFastpassSuccess implements Action {
-	readonly type = FastpassActionTypes.DeleteFastpassSuccess;
+export class LoadFastpasses implements Action {
+	readonly type = FastpassActionTypes.LoadFastpasses;
 
-	constructor(public payload: number) {}
+	constructor(public payload: { fastpasses: Fastpass[] }) {}
 }
 
-export class DeleteFastpassFail implements Action {
-	readonly type = FastpassActionTypes.DeleteFastpassFail;
+export class UpdateFastpass implements Action {
+	readonly type = FastpassActionTypes.UpdateFastpass;
 
-	constructor(public payload: string) {}
+	constructor(public payload: { fastpass: Update<Fastpass> }) {}
 }
 
-export type FastpassActions = LoadFastpasses
-	| LoadFastpassesSuccess
-	| LoadFastpassesFail
-	| SaveFastpass
-	| SaveFastpassSuccess
-	| SaveFastpassFail
+export type FastpassActions =
+	AddFastpass
+	| ClearFastpasses
 	| DeleteFastpass
-	| DeleteFastpassSuccess
-	| DeleteFastpassFail;
+	| LoadFastpasses
+	| UpdateFastpass;
