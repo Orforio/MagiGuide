@@ -32,6 +32,7 @@
     "@ngrx/store-devtools": "^7.2.0",
     "bootstrap": "^4.3.0",
     "core-js": "^2.5.4",
+    "guid-typescript": "^1.0.9",
     "localforage": "^1.7.3",
     "moment": "^2.24.0",
     "ngforage": "^4.0.2",
