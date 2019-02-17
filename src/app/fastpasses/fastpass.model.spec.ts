@@ -1,9 +1,14 @@
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Guid } from 'guid-typescript';
 
 import { Fastpass } from './fastpass.model';
 
 describe('Fastpass', () => {
 	describe('constructor()', () => {
+		beforeEach(() => {
+			spyOn(Guid, 'create').and.returnValue(<Guid><unknown>'ABCD-1234');
+		});
+
 		it('should set passed in values to internal properties', () => {
 			// Arrange
 			const ride = 'Big Thunder Mountain';
@@ -51,43 +56,15 @@ describe('Fastpass', () => {
 
 			jasmine.clock().uninstall();
 		});
-	});
 
-	describe('id', () => {
-		let model: Fastpass;
-
-		beforeEach(() => {
-			const ride = 'Hyperspace Mountain';
-			const startTime = new Date('2019-05-27T12:00:00');
-			const endTime = new Date('2019-05-27T12:30:00');
-			const nextAvailableTime = new Date('2019-05-27T14:00:00');
-			model = new Fastpass(
-				ride,
-				startTime,
-				endTime,
-				nextAvailableTime
-			);
-		});
-
-		it('should set the id property if it is null', () => {
+		it('should set the id property to a new GUID', () => {
 			// Arrange
 
 			// Act
-			model.id = 42;
+			const model = new Fastpass(null, null, null, null);
 
 			// Assert
-			expect(model.id).toEqual(42);
-		});
-
-		it('should not set the id property if it already set', () => {
-			// Arrange
-			model.id = 99;
-
-			// Act
-			model.id = 42;
-
-			// Assert
-			expect(model.id).not.toEqual(42);
+			expect(model.id).toEqual('ABCD-1234');
 		});
 	});
 });

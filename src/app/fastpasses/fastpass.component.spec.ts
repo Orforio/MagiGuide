@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule } from '@ngrx/store';
 
 import { Fastpass } from './fastpass.model';
@@ -31,6 +32,7 @@ describe('FastpassComponent', () => {
 				ViewFastpassStubComponent
 			],
 			imports: [
+				NgbModule,
 				StoreModule.forRoot({
 					'fastpasses': reducer
 				})
@@ -57,14 +59,6 @@ describe('FastpassComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
-	it('should dispatch the LoadFastpasses action', () => {
-		// Arrange
-		const action = new fastpassActions.LoadFastpasses();
-
-		// Assert
-		expect(store.dispatch).toHaveBeenCalledWith(action);
-	});
-
 	it('should display all retrieved Fastpasses', () => {
 		// Arrange
 		const mockFastpasses = [
@@ -81,7 +75,7 @@ describe('FastpassComponent', () => {
 				new Date('May 27, 2018 12:40:00')
 			)
 		];
-		const action = new fastpassActions.LoadFastpassesSuccess(mockFastpasses);
+		const action = new fastpassActions.LoadFastpasses({ fastpasses: mockFastpasses });
 
 		// Act
 		store.dispatch(action);
@@ -92,7 +86,7 @@ describe('FastpassComponent', () => {
 	});
 
 	describe('addFastpass()', () => {
-		it('should dispatch the SaveFastpass action with the payload', () => {
+		it('should dispatch the AddFastpass action with the payload', () => {
 			// Arrange
 			const mockFastpass = new Fastpass(
 				'Big Thunder Mountain',
@@ -100,7 +94,7 @@ describe('FastpassComponent', () => {
 				new Date('May 27, 2018 11:10:00'),
 				new Date('May 27, 2018 10:40:00')
 			);
-			const action = new fastpassActions.SaveFastpass(mockFastpass);
+			const action = new fastpassActions.AddFastpass({ fastpass: mockFastpass });
 
 			// Act
 			component.addFastpass(mockFastpass);
@@ -113,14 +107,8 @@ describe('FastpassComponent', () => {
 	describe('removeFastpass()', () => {
 		it('should dispatch the DeleteFastpass action with the Fastpass.id', () => {
 			// Arrange
-			const mockFastpass = new Fastpass(
-				'Big Thunder Mountain',
-				new Date('May 27, 2018 10:40:00'),
-				new Date('May 27, 2018 11:10:00'),
-				new Date('May 27, 2018 10:40:00')
-			);
-			mockFastpass.id = 42;
-			const action = new fastpassActions.DeleteFastpass(42);
+			const mockFastpass = new Fastpass(null, null, null, null);
+			const action = new fastpassActions.DeleteFastpass({ id: mockFastpass.id });
 
 			// Act
 			component.removeFastpass(mockFastpass);

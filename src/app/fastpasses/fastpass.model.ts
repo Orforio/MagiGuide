@@ -1,19 +1,20 @@
 import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Guid } from 'guid-typescript';
 import * as moment from 'moment';
 
 export class Fastpass {
 	public readonly endTime: Date;
+	public readonly id: string;
 	public readonly nextAvailableTime: Date;
 	public readonly ride: string;
 	public readonly startTime: Date;
-	private internalId: number | null;
 
 	constructor(
 		ride: string,
 		startTime: Date | NgbTimeStruct,
 		endTime: Date | NgbTimeStruct,
 		nextAvailableTime: Date | NgbTimeStruct) {
-			this.internalId = null;
+			this.id = Guid.create().toString();
 			this.ride = ride;
 
 			if (startTime instanceof Date) {
@@ -33,15 +34,5 @@ export class Fastpass {
 			} else {
 				this.nextAvailableTime = moment(nextAvailableTime).toDate();
 			}
-	}
-
-	get id(): number {
-		return this.internalId;
-	}
-
-	set id(id: number) {
-		if (this.internalId === null) {
-			this.internalId = id;
-		}
 	}
 }

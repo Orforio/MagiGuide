@@ -59,7 +59,12 @@ describe('AddFastpassComponent', () => {
 			component.addFastpass();
 
 			// Assert
-			expect(component.add.emit).toHaveBeenCalledWith(newFastpass);
+			expect(component.add.emit).toHaveBeenCalledWith(jasmine.objectContaining({
+				ride: newFastpass.ride,
+				startTime: newFastpass.startTime,
+				endTime: newFastpass.endTime,
+				nextAvailableTime: newFastpass.nextAvailableTime
+			}));
 
 			jasmine.clock().uninstall();
 		});
