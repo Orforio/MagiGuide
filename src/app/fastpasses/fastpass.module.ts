@@ -4,7 +4,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
-import { NgForageConfig } from 'ngforage';
 
 import { FastpassRoutingModule } from './fastpass-routing.module';
 import { AddFastpassComponent } from './add-fastpass/add-fastpass.component';
@@ -28,9 +27,5 @@ import { reducer } from './state/fastpass.reducer';
 	]
 })
 export class FastpassModule {
-	constructor(ngfConfig: NgForageConfig) {
-		ngfConfig.configure({
-			storeName: 'fastpasses'
-		});
-	}
+	constructor() {}
 }
