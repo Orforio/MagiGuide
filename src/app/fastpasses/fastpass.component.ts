@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { Fastpass } from './fastpass.model';
-import { DeleteFastpass, LoadFastpasses, SaveFastpass } from './state/fastpass.actions';
+import { DeleteFastpass, AddFastpass } from './state/fastpass.actions';
 import * as fromFastpass from './state';
 
 @Component({
@@ -12,22 +12,19 @@ import * as fromFastpass from './state';
 	styleUrls: ['./fastpass.component.scss']
 })
 export class FastpassComponent implements OnInit {
-	public error: Observable<string>;
 	public fastpasses: Observable<Fastpass[]>;
 
 	constructor(private store: Store<fromFastpass.State>) {}
 
 	public ngOnInit(): void {
-		this.store.dispatch(new LoadFastpasses());
-		this.error = this.store.pipe(select(fromFastpass.getError));
 		this.fastpasses = this.store.pipe(select(fromFastpass.getFastpasses));
 	}
 
 	public addFastpass(fastpass: Fastpass): void {
-		this.store.dispatch(new SaveFastpass(fastpass));
+		this.store.dispatch(new AddFastpass({ fastpass }));
 	}
 
 	public removeFastpass(fastpass: Fastpass): void {
-		this.store.dispatch(new DeleteFastpass(fastpass.id));
+		this.store.dispatch(new DeleteFastpass({ id: fastpass.id }));
 	}
 }

@@ -19,8 +19,7 @@ export class AddFastpassComponent implements OnInit {
 
 	constructor(private formBuilder: FormBuilder) {}
 
-	public ngOnInit(): void {
-	}
+	public ngOnInit(): void {}
 
 	public addFastpass(): void {
 		if (this.addFastpassForm.valid && this.addFastpassForm.dirty) {
