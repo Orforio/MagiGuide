@@ -5,9 +5,15 @@ import { Fastpass } from '../fastpass.model';
 
 export interface FastpassState extends EntityState<Fastpass> {}
 
-export const fastpassAdapter: EntityAdapter<Fastpass> = createEntityAdapter<Fastpass>();
+export const fastpassAdapter: EntityAdapter<Fastpass> = createEntityAdapter<Fastpass>({
+	sortComparer: sortByStartTime
+});
 
 export const initialState: FastpassState = fastpassAdapter.getInitialState({});
+
+function sortByStartTime(fastpass1: Fastpass, fastpass2: Fastpass): number {
+	return fastpass1.startTime.getTime() - fastpass2.startTime.getTime();
+}
 
 export function reducer(state = initialState, action: FastpassActions): FastpassState {
 	switch (action.type) {

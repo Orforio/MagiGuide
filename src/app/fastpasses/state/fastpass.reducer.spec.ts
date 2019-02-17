@@ -117,7 +117,7 @@ describe('Fastpass Reducer', () => {
 	});
 
 	describe('LoadFastpasses', () => {
-		it('should add all fastpasses to the state', () => {
+		it('should add all fastpasses to the state in chronological order', () => {
 			// Arrange
 			const mockFastpass1 = new Fastpass(
 				'Big Thunder Mountain',
@@ -131,15 +131,22 @@ describe('Fastpass Reducer', () => {
 				new Date('May 27, 2018 15:50:00'),
 				new Date('May 27, 2018 12:40:00')
 			);
+			const mockFastpass3 = new Fastpass(
+				'Star Tours',
+				new Date('May 27, 2018 13:05:00'),
+				new Date('May 27, 2018 13:35:00'),
+				new Date('May 27, 2018 15:05:00')
+			);
 			const expectedResult: FastpassState = {
 				...initialState,
-				ids: [mockFastpass1.id, mockFastpass2.id],
+				ids: [mockFastpass1.id, mockFastpass3.id, mockFastpass2.id],
 				entities: {
 					[mockFastpass1.id]: mockFastpass1,
-					[mockFastpass2.id]: mockFastpass2
+					[mockFastpass2.id]: mockFastpass2,
+					[mockFastpass3.id]: mockFastpass3
 				}
 			};
-			const action = new fastpassActions.LoadFastpasses({ fastpasses: [mockFastpass1, mockFastpass2] });
+			const action = new fastpassActions.LoadFastpasses({ fastpasses: [mockFastpass1, mockFastpass2, mockFastpass3] });
 
 			// Act
 			const result = reducer(initialState, action);
