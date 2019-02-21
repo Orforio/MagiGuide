@@ -1,40 +1,48 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TestBed, async } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faClock, faTicketAlt, faUserCog } from '@fortawesome/free-solid-svg-icons';
+import { faFortAwesome } from '@fortawesome/free-brands-svg-icons';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
-import { FastpassComponent } from './fastpasses/fastpass.component';
-import { ViewFastpassComponent } from './fastpasses/view-fastpass/view-fastpass.component';
 
 describe('AppComponent', () => {
+	let compiled: any;
+	let component: AppComponent;
+	let fixture: ComponentFixture<AppComponent>;
+
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			declarations: [
-				AppComponent,
-				FastpassComponent,
-				ViewFastpassComponent
-			],
-			imports: [ NgbModule ],
-			schemas: [ NO_ERRORS_SCHEMA ]
+			declarations: [AppComponent],
+			imports: [
+				FontAwesomeModule,
+				NgbModule,
+				RouterTestingModule
+			]
 		}).compileComponents();
+
+		library.add(faClock, faFortAwesome, faTicketAlt, faUserCog);
 	}));
 
-	it('should create the app', async(() => {
-		const fixture = TestBed.createComponent(AppComponent);
-		const app = fixture.debugElement.componentInstance;
-		expect(app).toBeTruthy();
-	}));
+	beforeEach(() => {
+		// Arrange
+		fixture = TestBed.createComponent(AppComponent);
+		compiled = fixture.debugElement.nativeElement;
+		component = fixture.debugElement.componentInstance;
+	});
 
-	it(`should have as title 'app'`, async(() => {
-		const fixture = TestBed.createComponent(AppComponent);
-		const app = fixture.debugElement.componentInstance;
-		expect(app.title).toEqual('MagiGuide');
-	}));
+	it('should create the app', () => {
+		// Assert
+		expect(component).toBeTruthy();
+	});
 
-	it('should render title in a h1 tag', async(() => {
-		const fixture = TestBed.createComponent(AppComponent);
+	it('should display the navbar', () => {
+		// Act
 		fixture.detectChanges();
-		const compiled = fixture.debugElement.nativeElement;
-		expect(compiled.querySelector('h1').textContent).toContain('Welcome to MagiGuide!');
-	}));
+
+		// Assert
+		expect(compiled.querySelectorAll('nav').length).toEqual(1);
+	});
 });

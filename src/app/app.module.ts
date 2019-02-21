@@ -3,7 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faFortAwesome } from '@fortawesome/free-brands-svg-icons';
+import { faClock, faTicketAlt, faTrashAlt, faUserCog } from '@fortawesome/free-solid-svg-icons';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -37,6 +38,6 @@ import { metaReducers, reducers } from './state';
 })
 export class AppModule {
 	constructor() {
-		library.add(faTrashAlt);
+		library.add(faClock, faFortAwesome, faTicketAlt, faTrashAlt, faUserCog);
 	}
 }
