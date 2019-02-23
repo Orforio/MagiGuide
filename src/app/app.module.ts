@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SettingsComponent } from './settings/settings.component';
+import { GlobalObjectService } from './common/global-object.service';
 import { environment } from '../environments/environment';
 import { metaReducers, reducers } from './state';
 
@@ -38,7 +39,7 @@ import { metaReducers, reducers } from './state';
 			name: 'MagiGuide'
 		}) : []
 	],
-	providers: []
+	providers: [GlobalObjectService]
 })
 export class AppModule {
 	constructor() {
