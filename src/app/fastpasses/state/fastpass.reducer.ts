@@ -9,13 +9,13 @@ export const fastpassAdapter: EntityAdapter<Fastpass> = createEntityAdapter<Fast
 	sortComparer: sortByStartTime
 });
 
-export const initialState: FastpassState = fastpassAdapter.getInitialState({});
+export const initialFastpassState: FastpassState = fastpassAdapter.getInitialState({});
 
 function sortByStartTime(fastpass1: Fastpass, fastpass2: Fastpass): number {
 	return fastpass1.startTime.getTime() - fastpass2.startTime.getTime();
 }
 
-export function reducer(state = initialState, action: FastpassActions): FastpassState {
+export function fastpassReducer(state = initialFastpassState, action: FastpassActions): FastpassState {
 	switch (action.type) {
 		case FastpassActionTypes.AddFastpass:
 			return fastpassAdapter.addOne(action.payload.fastpass, state);

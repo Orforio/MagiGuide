@@ -9,7 +9,7 @@ import { FastpassRoutingModule } from './fastpass-routing.module';
 import { AddFastpassComponent } from './add-fastpass/add-fastpass.component';
 import { FastpassComponent } from './fastpass.component';
 import { ViewFastpassComponent } from './view-fastpass/view-fastpass.component';
-import { reducer } from './state/fastpass.reducer';
+import { fastpassReducer } from './state/fastpass.reducer';
 
 @NgModule({
 	declarations: [
@@ -23,7 +23,7 @@ import { reducer } from './state/fastpass.reducer';
 		FontAwesomeModule,
 		NgbModule,
 		ReactiveFormsModule,
-		StoreModule.forFeature('fastpasses', reducer),
+		StoreModule.forFeature('fastpasses', fastpassReducer),
 	]
 })
 export class FastpassModule {

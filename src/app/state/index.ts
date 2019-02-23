@@ -2,20 +2,20 @@ import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { storeFreeze } from 'ngrx-store-freeze';
 import { localStorageSync } from 'ngrx-store-localstorage';
 
-
+import { settingsReducer, SettingsState } from '../settings/state/settings.reducer';
 import { environment } from '../../environments/environment';
 
 export interface State {
-	temp: number;
+	settings: SettingsState;
 }
 
 export const reducers: ActionReducerMap<State> = {
-	temp: null
+	settings: settingsReducer
 };
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
 	return localStorageSync({
-		keys: ['fastpasses'],
+		keys: ['fastpasses', 'settings'],
 		rehydrate: true
 	})(reducer);
 }

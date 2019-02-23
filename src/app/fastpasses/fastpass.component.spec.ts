@@ -5,7 +5,7 @@ import { Store, StoreModule } from '@ngrx/store';
 
 import { Fastpass } from './fastpass.model';
 import { FastpassComponent } from './fastpass.component';
-import { reducer } from './state/fastpass.reducer';
+import { fastpassReducer } from './state/fastpass.reducer';
 import * as fastpassActions from './state/fastpass.actions';
 
 describe('FastpassComponent', () => {
@@ -34,7 +34,7 @@ describe('FastpassComponent', () => {
 			imports: [
 				NgbModule,
 				StoreModule.forRoot({
-					'fastpasses': reducer
+					'fastpasses': fastpassReducer
 				})
 			]
 		})

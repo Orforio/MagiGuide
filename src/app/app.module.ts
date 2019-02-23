@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -13,6 +14,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SettingsComponent } from './settings/settings.component';
 import { environment } from '../environments/environment';
 import { metaReducers, reducers } from './state';
 
@@ -20,7 +22,8 @@ import { metaReducers, reducers } from './state';
 	bootstrap: [ AppComponent ],
 	declarations: [
 		AppComponent,
-		DashboardComponent
+		DashboardComponent,
+		SettingsComponent
 	],
 	imports: [
 		AppRoutingModule,
@@ -28,6 +31,7 @@ import { metaReducers, reducers } from './state';
 		EffectsModule.forRoot([]),
 		FontAwesomeModule,
 		NgbModule,
+		ReactiveFormsModule,
 		ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
 		StoreModule.forRoot(reducers, { metaReducers }),
 		!environment.production ? StoreDevtoolsModule.instrument({
