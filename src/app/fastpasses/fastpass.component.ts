@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 
 import { Fastpass } from './fastpass.model';
 import { DeleteFastpass, AddFastpass } from './state/fastpass.actions';
-import * as fromFastpass from './state';
+import * as fromFastpass from './state/fastpass.reducer';
+import * as fastpassSelectors from './state/fastpass.selectors';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,7 +18,7 @@ export class FastpassComponent implements OnInit {
 	constructor(private store: Store<fromFastpass.State>) {}
 
 	public ngOnInit(): void {
-		this.fastpasses = this.store.pipe(select(fromFastpass.getFastpasses));
+		this.fastpasses = this.store.pipe(select(fastpassSelectors.getFastpasses));
 	}
 
 	public addFastpass(fastpass: Fastpass): void {

@@ -9,7 +9,7 @@ import { SetDebug, ResetApp } from './state/settings.actions';
 import { LoadFastpasses } from '../fastpasses/state/fastpass.actions';
 import { Fastpass } from '../fastpasses/fastpass.model';
 import * as fromRoot from '../state';
-import * as fromSettings from './state';
+import * as settingsSelectors from './state/settings.selectors';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,7 +32,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
 	public ngOnInit(): void {
 		this.store.pipe(
-			select(fromSettings.getEnableDebug),
+			select(settingsSelectors.getEnableDebug),
 			takeUntil(this.unsubscribe))
 			.subscribe((enableDebugValue) => {
 				this.settingsForm.controls.enableDebug.setValue(enableDebugValue);

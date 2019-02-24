@@ -2,10 +2,15 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 import { FastpassActions, FastpassActionTypes } from './fastpass.actions';
 import { Fastpass } from '../fastpass.model';
+import * as fromRoot from '../../state';
+
+export interface State extends fromRoot.State {
+	fastpasses: FastpassState;
+}
 
 export interface FastpassState extends EntityState<Fastpass> {}
 
-export const fastpassAdapter: EntityAdapter<Fastpass> = createEntityAdapter<Fastpass>({
+const fastpassAdapter: EntityAdapter<Fastpass> = createEntityAdapter<Fastpass>({
 	sortComparer: sortByStartTime
 });
 
@@ -37,5 +42,5 @@ export const {
 	selectIds,
 	selectEntities,
 	selectAll,
-	selectTotal,
+	selectTotal
 } = fastpassAdapter.getSelectors();
