@@ -1,4 +1,4 @@
-import { FastpassState, initialState, reducer } from './fastpass.reducer';
+import { FastpassState, initialFastpassState, fastpassReducer } from './fastpass.reducer';
 import * as fastpassActions from './fastpass.actions';
 import { Fastpass } from '../fastpass.model';
 
@@ -19,14 +19,14 @@ describe('Fastpass Reducer', () => {
 				new Date('May 27, 2018 19:05:00')
 			);
 			const previousState = {
-				...initialState,
+				...initialFastpassState,
 				ids: [mockFastpass.id],
 				entities: {
 					[mockFastpass.id]: mockFastpass
 				}
 			};
 			const expectedResult: FastpassState = {
-				...initialState,
+				...initialFastpassState,
 				ids: [
 					...previousState.ids,
 					mockNewFastpass.id
@@ -39,7 +39,7 @@ describe('Fastpass Reducer', () => {
 			const action = new fastpassActions.AddFastpass({ fastpass: mockNewFastpass });
 
 			// Act
-			const result = reducer(previousState, action);
+			const result = fastpassReducer(previousState, action);
 
 			// Assert
 			expect(result).toEqual(expectedResult);
@@ -56,21 +56,21 @@ describe('Fastpass Reducer', () => {
 				new Date('May 27, 2018 10:40:00')
 			);
 			const previousState = {
-				...initialState,
+				...initialFastpassState,
 				ids: [mockFastpass.id],
 				entities: {
 					[mockFastpass.id]: mockFastpass
 				}
 			};
 			const expectedResult: FastpassState = {
-				...initialState,
+				...initialFastpassState,
 				ids: [],
 				entities: {}
 			};
 			const action = new fastpassActions.ClearFastpasses();
 
 			// Act
-			const result = reducer(previousState, action);
+			const result = fastpassReducer(previousState, action);
 
 			// Assert
 			expect(result).toEqual(expectedResult);
@@ -93,14 +93,14 @@ describe('Fastpass Reducer', () => {
 				new Date('May 27, 2018 10:40:00')
 			);
 			const previousState: FastpassState = {
-				...initialState,
+				...initialFastpassState,
 				ids: [fastpassToDelete.id, fastpassToKeep.id],
 				entities: {
 					[fastpassToDelete.id]: fastpassToDelete,
 					[fastpassToKeep.id]: fastpassToKeep
 				}};
 			const expectedResult: FastpassState = {
-				...initialState,
+				...initialFastpassState,
 				ids: [fastpassToKeep.id],
 				entities: {
 					[fastpassToKeep.id]: fastpassToKeep
@@ -109,7 +109,7 @@ describe('Fastpass Reducer', () => {
 			const action = new fastpassActions.DeleteFastpass({ id: fastpassToDelete.id });
 
 			// Act
-			const result = reducer(previousState, action);
+			const result = fastpassReducer(previousState, action);
 
 			// Assert
 			expect(result).toEqual(expectedResult);
@@ -138,7 +138,7 @@ describe('Fastpass Reducer', () => {
 				new Date('May 27, 2018 15:05:00')
 			);
 			const expectedResult: FastpassState = {
-				...initialState,
+				...initialFastpassState,
 				ids: [mockFastpass1.id, mockFastpass3.id, mockFastpass2.id],
 				entities: {
 					[mockFastpass1.id]: mockFastpass1,
@@ -149,7 +149,7 @@ describe('Fastpass Reducer', () => {
 			const action = new fastpassActions.LoadFastpasses({ fastpasses: [mockFastpass1, mockFastpass2, mockFastpass3] });
 
 			// Act
-			const result = reducer(initialState, action);
+			const result = fastpassReducer(initialFastpassState, action);
 
 			// Assert
 			expect(result).toEqual(expectedResult);
@@ -162,10 +162,10 @@ describe('Fastpass Reducer', () => {
 			const action = {} as any;
 
 			// Act
-			const result = reducer(initialState, action);
+			const result = fastpassReducer(initialFastpassState, action);
 
 			// Assert
-			expect(result).toBe(initialState);
+			expect(result).toEqual(initialFastpassState);
 		});
 	});
 });

@@ -1,0 +1,23 @@
+<div class="container-fluid">
+	<h1>Settings</h1>
+	<form [formGroup]="settingsForm">
+		<div class="card border-danger">
+			<h2 class="card-header h5">Debug settings</h2>
+			<div class="card-body">
+				<p class="card-text text-danger">Please only enable these settings if you know what you're doing!</p>
+				<div class="form-group form-check">
+					<input type="checkbox" class="form-check-input" id="enableDebug" formControlName="enableDebug" (change)="setDebug()">
+					<label class="form-check-label" for="enableDebug">Enable debug settings</label>
+				</div>
+				<ul class="list-unstyled" id="debugSettings" [ngbCollapse]="!settingsForm.value.enableDebug">
+					<li class="mb-1">
+						<button type="button" class="btn btn-warning" (click)="setFastpassFixtures()">Populate Fastpass with sample data</button>
+					</li>
+					<li>
+						<button type="button" class="btn btn-danger" id="resetApp" (click)="resetApp()">Reset app data &amp; state</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>

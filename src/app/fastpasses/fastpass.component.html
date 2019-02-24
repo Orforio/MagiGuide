@@ -1,6 +1,9 @@
-<div class="row">
-	<div *ngFor="let fastpass of fastpasses | async" class="col-xs-12 col-sm-6 mb-4">
-		<mg-view-fastpass [fastpass]="fastpass" (remove)="removeFastpass($event)" class="card-deck"></mg-view-fastpass>
+<div class="container-fluid">
+	<h1>Fastpass</h1>
+	<div class="row">
+		<div *ngFor="let fastpass of fastpasses | async" class="col-xs-12 col-sm-6 mb-4">
+			<mg-view-fastpass [fastpass]="fastpass" (remove)="removeFastpass($event)" class="card-deck"></mg-view-fastpass>
+		</div>
+		<mg-add-fastpass (add)="addFastpass($event)" class="col-xs-12 col-sm-6"></mg-add-fastpass>
 	</div>
-	<mg-add-fastpass (add)="addFastpass($event)" class="col-xs-12 col-sm-6"></mg-add-fastpass>
 </div>

@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faFortAwesome } from '@fortawesome/free-brands-svg-icons';
+import { faClock, faTicketAlt, faTrashAlt, faUserCog } from '@fortawesome/free-solid-svg-icons';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -12,6 +14,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { SettingsComponent } from './settings/settings.component';
+import { GlobalObjectService } from './common/global-object.service';
 import { environment } from '../environments/environment';
 import { metaReducers, reducers } from './state';
 
@@ -19,7 +23,8 @@ import { metaReducers, reducers } from './state';
 	bootstrap: [ AppComponent ],
 	declarations: [
 		AppComponent,
-		DashboardComponent
+		DashboardComponent,
+		SettingsComponent
 	],
 	imports: [
 		AppRoutingModule,
@@ -27,16 +32,17 @@ import { metaReducers, reducers } from './state';
 		EffectsModule.forRoot([]),
 		FontAwesomeModule,
 		NgbModule,
+		ReactiveFormsModule,
 		ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
 		StoreModule.forRoot(reducers, { metaReducers }),
 		!environment.production ? StoreDevtoolsModule.instrument({
 			name: 'MagiGuide'
 		}) : []
 	],
-	providers: []
+	providers: [GlobalObjectService]
 })
 export class AppModule {
 	constructor() {
-		library.add(faTrashAlt);
+		library.add(faClock, faFortAwesome, faTicketAlt, faTrashAlt, faUserCog);
 	}
 }

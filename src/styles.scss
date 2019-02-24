@@ -1,1 +1,6 @@
+$enable-responsive-font-sizes: true;
 @import "~bootstrap/scss/bootstrap.scss";
+
+body {
+	padding-bottom: 80px;
+}
