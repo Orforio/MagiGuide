@@ -46,14 +46,14 @@ describe('AddFastpassComponent', () => {
 				new Date('2018-05-27T12:30:00'),
 				new Date('2018-05-27T14:00:00')
 			);
-			component.addFastpassForm.controls['ride'].setValue('Big Thunder Mountain');
-			component.addFastpassForm.controls['ride'].markAsDirty();
-			component.addFastpassForm.controls['startTime'].setValue({ hour: 12, minute: 0, second: 0 });
-			component.addFastpassForm.controls['startTime'].markAsDirty();
-			component.addFastpassForm.controls['endTime'].setValue({ hour: 12, minute: 30, second: 0 });
-			component.addFastpassForm.controls['endTime'].markAsDirty();
-			component.addFastpassForm.controls['nextAvailableTime'].setValue({ hour: 14, minute: 0, second: 0 });
-			component.addFastpassForm.controls['nextAvailableTime'].markAsDirty();
+			component.addFastpassForm.controls.ride.setValue('Big Thunder Mountain');
+			component.addFastpassForm.controls.ride.markAsDirty();
+			component.addFastpassForm.controls.startTime.setValue({ hour: 12, minute: 0, second: 0 });
+			component.addFastpassForm.controls.startTime.markAsDirty();
+			component.addFastpassForm.controls.endTime.setValue({ hour: 12, minute: 30, second: 0 });
+			component.addFastpassForm.controls.endTime.markAsDirty();
+			component.addFastpassForm.controls.nextAvailableTime.setValue({ hour: 14, minute: 0, second: 0 });
+			component.addFastpassForm.controls.nextAvailableTime.markAsDirty();
 
 			// Act
 			component.addFastpass();

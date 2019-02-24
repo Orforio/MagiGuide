@@ -9,10 +9,14 @@
 					<input type="checkbox" class="form-check-input" id="enableDebug" formControlName="enableDebug" (change)="setDebug()">
 					<label class="form-check-label" for="enableDebug">Enable debug settings</label>
 				</div>
-				<div id="debugSettings" [ngbCollapse]="!settingsForm.value.enableDebug">
-					<button type="button" class="btn btn-warning">Populate Fastpass with sample data</button>&nbsp;
-					<button type="button" class="btn btn-danger">Reset app data &amp; state</button>
-				</div>
+				<ul class="list-unstyled" id="debugSettings" [ngbCollapse]="!settingsForm.value.enableDebug">
+					<li class="mb-1">
+						<button type="button" class="btn btn-warning" (click)="setFastpassFixtures()">Populate Fastpass with sample data</button>
+					</li>
+					<li>
+						<button type="button" class="btn btn-danger" id="resetApp" (click)="resetApp()">Reset app data &amp; state</button>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</form>

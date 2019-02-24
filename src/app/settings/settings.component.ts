@@ -4,7 +4,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { SetDebug } from './state/settings.actions';
+import { GlobalObjectService } from '../common/global-object.service';
+import { SetDebug, ResetApp } from './state/settings.actions';
+import { LoadFastpasses } from '../fastpasses/state/fastpass.actions';
+import { Fastpass } from '../fastpasses/fastpass.model';
 import * as fromRoot from '../state';
 import * as fromSettings from './state';
 
@@ -18,10 +21,14 @@ export class SettingsComponent implements OnInit, OnDestroy {
 		enableDebug: [false]
 	});
 	private unsubscribe = new Subject<void>();
+	private window: Window;
 
 	constructor(
 		private formBuilder: FormBuilder,
-		private store: Store<fromRoot.State>) {}
+		private globalObjectService: GlobalObjectService,
+		private store: Store<fromRoot.State>) {
+			this.window = this.globalObjectService.getWindow();
+		}
 
 	public ngOnInit(): void {
 		this.store.pipe(
@@ -37,7 +44,39 @@ export class SettingsComponent implements OnInit, OnDestroy {
 		this.unsubscribe.complete();
 	}
 
+	public resetApp(): void {
+		if (this.window.confirm('Are you sure you want to reset all app data?')) {
+			this.store.dispatch(new ResetApp());
+		}
+	}
+
 	public setDebug(): void {
 		this.store.dispatch(new SetDebug({ enableDebug: this.settingsForm.value.enableDebug }));
+	}
+
+	// Temporary function for development only.
+	// Requires Fastpass tab to have been loaded beforehand.
+	public setFastpassFixtures(): void {
+		const fastpasses = [
+			new Fastpass(
+				'Star Tours',
+				new Date('2018-05-27T11:25:00'),
+				new Date('2018-05-27T11:55:00'),
+				new Date('2018-05-27T13:25:00')
+			),
+			new Fastpass(
+				'Big Thunder Mountain',
+				new Date('2018-05-27T20:20:00'),
+				new Date('2018-05-27T20:50:00'),
+				new Date('2018-05-27T15:30:00')
+			),
+			new Fastpass(
+				'Hyperspace Mountain',
+				new Date('2018-05-27T16:05:00'),
+				new Date('2018-05-27T16:35:00'),
+				new Date('2018-05-27T18:05:00')
+			)
+		];
+		this.store.dispatch(new LoadFastpasses({ fastpasses: fastpasses }));
 	}
 }

@@ -13,8 +13,8 @@ describe('ViewFastpassComponent', () => {
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			declarations: [ ViewFastpassComponent ],
-			imports: [ FontAwesomeModule ]
+			declarations: [ViewFastpassComponent],
+			imports: [FontAwesomeModule]
 		})
 		.compileComponents();
 
