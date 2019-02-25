@@ -8,3 +8,10 @@ export const getFastpasses = createSelector(
 	getFastpassFeatureState,
 	fromFastpass.selectAll
 );
+
+export const getNextAvailableTime = createSelector(
+	getFastpasses,
+	fastpasses => fastpasses.map(
+		fastpass => fastpass.nextAvailableTime).reduce(
+			(accumulator, currentValue) => accumulator.getTime() > currentValue.getTime() ? accumulator : currentValue)
+);

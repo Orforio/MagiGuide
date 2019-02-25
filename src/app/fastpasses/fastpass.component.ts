@@ -14,11 +14,13 @@ import * as fastpassSelectors from './state/fastpass.selectors';
 })
 export class FastpassComponent implements OnInit {
 	public fastpasses: Observable<Fastpass[]>;
+	public nextAvailableTime: Observable<Date>;
 
 	constructor(private store: Store<fromFastpass.State>) {}
 
 	public ngOnInit(): void {
 		this.fastpasses = this.store.pipe(select(fastpassSelectors.getFastpasses));
+		this.nextAvailableTime = this.store.pipe(select(fastpassSelectors.getNextAvailableTime));
 	}
 
 	public addFastpass(fastpass: Fastpass): void {
