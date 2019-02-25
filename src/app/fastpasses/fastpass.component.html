@@ -1,8 +1,13 @@
 <div class="container-fluid">
 	<h1>Fastpass</h1>
-	<ngb-alert type="info" [dismissible]="false">
-		<strong>Next available Fastpass</strong>: {{nextAvailableTime | async | date:'shortTime'}}
+	<ngb-alert *ngIf="nextAvailableTime | async as nextFastpassTime; else noNextAvailableTime" [dismissible]="false" type="info">
+		<strong>Next available Fastpass</strong>: {{nextFastpassTime | date:'shortTime'}}
 	</ngb-alert>
+	<ng-template #noNextAvailableTime>
+		<ngb-alert [dismissible]="false" type="success">
+			<strong>New Fastpass available now!</strong>
+		</ngb-alert>
+	</ng-template>
 	<div class="row">
 		<div *ngFor="let fastpass of fastpasses | async" class="col-xs-12 col-sm-6 mb-4">
 			<mg-view-fastpass [fastpass]="fastpass" (remove)="removeFastpass($event)" class="card-deck"></mg-view-fastpass>

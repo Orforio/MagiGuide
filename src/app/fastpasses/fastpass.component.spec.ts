@@ -9,7 +9,7 @@ import { fastpassReducer } from './state/fastpass.reducer';
 import * as fastpassActions from './state/fastpass.actions';
 
 describe('FastpassComponent', () => {
-	let compiled: any;
+	let compiled: HTMLElement;
 	let component: FastpassComponent;
 	let fixture: ComponentFixture<FastpassComponent>;
 	let store: Store<any>;
@@ -57,6 +57,38 @@ describe('FastpassComponent', () => {
 	it('should create', () => {
 		// Assert
 		expect(component).toBeTruthy();
+	});
+
+	it('should display next available Fastpass if Fastpasses are set', () => {
+		// Arrange
+		const mockFastpasses = [
+			new Fastpass(
+				'Big Thunder Mountain',
+				new Date('May 27, 2018 10:40:00'),
+				new Date('May 27, 2018 11:10:00'),
+				new Date('May 27, 2018 10:40:00')
+			)
+		];
+		const action = new fastpassActions.LoadFastpasses({ fastpasses: mockFastpasses });
+
+		// Act
+		store.dispatch(action);
+		fixture.detectChanges();
+
+		// Assert
+		expect(compiled.querySelector('ngb-alert').textContent).toContain('10:40 AM');
+	});
+
+	it('should display "available now" message if Fastpasses are not set', () => {
+		// Arrange
+		const action = new fastpassActions.LoadFastpasses({ fastpasses: [] });
+
+		// Act
+		store.dispatch(action);
+		fixture.detectChanges();
+
+		// Assert
+		expect(compiled.querySelector('ngb-alert').textContent).toContain('available now');
 	});
 
 	it('should display all retrieved Fastpasses', () => {

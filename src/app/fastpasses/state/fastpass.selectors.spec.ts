@@ -73,5 +73,15 @@ describe('Fastpass Selectors', () => {
 			// Assert
 			expect(result).toEqual(new Date('2018-05-27T19:48:00'));
 		});
+
+		it('should return null if there are no Fastpasses', () => {
+			// Arrange
+
+			// Act
+			const result = fastpassSelectors.getNextAvailableTime.projector([]);
+
+			// Assert
+			expect(result).toBeNull();
+		});
 	});
 });

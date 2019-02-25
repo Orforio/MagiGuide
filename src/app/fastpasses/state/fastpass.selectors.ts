@@ -13,5 +13,6 @@ export const getNextAvailableTime = createSelector(
 	getFastpasses,
 	fastpasses => fastpasses.map(
 		fastpass => fastpass.nextAvailableTime).reduce(
-			(accumulator, currentValue) => accumulator.getTime() > currentValue.getTime() ? accumulator : currentValue)
+			(accumulator, currentValue) => accumulator && accumulator.getTime() > currentValue.getTime() ? accumulator : currentValue,
+			null)
 );
