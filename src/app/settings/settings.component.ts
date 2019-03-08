@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { FormBuilder, Validators } from '@angular/forms';
+import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { DateTimeService } from '../common/date-time.service';
 import { GlobalObjectService } from '../common/global-object.service';
 import { SetDebug, ResetApp } from './state/settings.actions';
-import { LoadFastpasses } from '../fastpasses/state/fastpass.actions';
+import { LoadFastpasses, PruneFastpasses } from '../fastpasses/state/fastpass.actions';
 import { Fastpass } from '../fastpasses/fastpass.model';
 import * as fromRoot from '../state';
 import * as settingsSelectors from './state/settings.selectors';
@@ -24,6 +26,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 	private window: Window;
 
 	constructor(
+		private dateTimeService: DateTimeService,
 		private formBuilder: FormBuilder,
 		private globalObjectService: GlobalObjectService,
 		private store: Store<fromRoot.State>) {
@@ -44,6 +47,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
 		this.unsubscribe.complete();
 	}
 
+	public pruneFastpasses(): void {
+		if (this.window.confirm(`Are you sure you want to remove old Fastpasses?`)) {
+			this.store.dispatch(new PruneFastpasses({ todayCutoff: this.dateTimeService.getTodayCutoff() }));
+		}
+	}
+
 	public resetApp(): void {
 		if (this.window.confirm('Are you sure you want to reset all app data?')) {
 			this.store.dispatch(new ResetApp());
@@ -60,21 +69,21 @@ export class SettingsComponent implements OnInit, OnDestroy {
 		const fastpasses = [
 			new Fastpass(
 				'Star Tours',
-				new Date('2018-05-27T11:25:00'),
-				new Date('2018-05-27T11:55:00'),
-				new Date('2018-05-27T13:25:00')
+				moment().hours(11).minutes(25).seconds(0).toDate(),
+				moment().hours(11).minutes(55).seconds(0).toDate(),
+				moment().hours(13).minutes(25).seconds(0).toDate()
 			),
 			new Fastpass(
 				'Big Thunder Mountain',
-				new Date('2018-05-27T20:20:00'),
-				new Date('2018-05-27T20:50:00'),
-				new Date('2018-05-27T15:30:00')
+				moment().hours(20).minutes(20).seconds(0).toDate(),
+				moment().hours(20).minutes(50).seconds(0).toDate(),
+				moment().hours(15).minutes(30).seconds(0).toDate()
 			),
 			new Fastpass(
 				'Hyperspace Mountain',
-				new Date('2018-05-27T16:05:00'),
-				new Date('2018-05-27T16:35:00'),
-				new Date('2018-05-27T18:05:00')
+				moment().hours(16).minutes(5).seconds(0).toDate(),
+				moment().hours(16).minutes(35).seconds(0).toDate(),
+				moment().hours(18).minutes(5).seconds(0).toDate()
 			)
 		];
 		this.store.dispatch(new LoadFastpasses({ fastpasses: fastpasses }));
