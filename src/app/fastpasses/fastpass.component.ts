@@ -2,8 +2,9 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
+import { DateTimeService } from '../common/date-time.service';
 import { Fastpass } from './fastpass.model';
-import { DeleteFastpass, AddFastpass } from './state/fastpass.actions';
+import { AddFastpass, DeleteFastpass, PruneFastpasses } from './state/fastpass.actions';
 import * as fromFastpass from './state/fastpass.reducer';
 import * as fastpassSelectors from './state/fastpass.selectors';
 
@@ -16,11 +17,15 @@ export class FastpassComponent implements OnInit {
 	public fastpasses: Observable<Fastpass[]>;
 	public nextAvailableTime: Observable<Date>;
 
-	constructor(private store: Store<fromFastpass.State>) {}
+	constructor(
+		private dateTimeService: DateTimeService,
+		private store: Store<fromFastpass.State>
+		) {}
 
 	public ngOnInit(): void {
 		this.fastpasses = this.store.pipe(select(fastpassSelectors.getFastpasses));
 		this.nextAvailableTime = this.store.pipe(select(fastpassSelectors.getNextAvailableTime));
+		this.store.dispatch(new PruneFastpasses({ todayCutoff: this.dateTimeService.getTodayCutoff() }));
 	}
 
 	public addFastpass(fastpass: Fastpass): void {

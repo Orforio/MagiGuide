@@ -30,6 +30,12 @@ export function fastpassReducer(state = initialFastpassState, action: FastpassAc
 			return fastpassAdapter.removeOne(action.payload.id, state);
 		case FastpassActionTypes.LoadFastpasses:
 			return fastpassAdapter.addAll(action.payload.fastpasses, state);
+		case FastpassActionTypes.PruneFastpasses:
+			return fastpassAdapter.removeMany(
+				(fastpass) => {
+					return fastpass.startTime.getTime() < action.payload.todayCutoff.getTime(); },
+				state
+			);
 		// TODO: Update Fastpass
 		// case FastpassActionTypes.UpdateFastpass:
 		// 	return fastpassAdapter.updateOne(action.payload.fastpass, state);

@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule } from '@ngrx/store';
 
+import { DateTimeService } from '../common/date-time.service';
 import { Fastpass } from './fastpass.model';
 import { FastpassComponent } from './fastpass.component';
 import { fastpassReducer } from './state/fastpass.reducer';
@@ -13,6 +14,7 @@ describe('FastpassComponent', () => {
 	let component: FastpassComponent;
 	let fixture: ComponentFixture<FastpassComponent>;
 	let store: Store<any>;
+	const dateTimeServiceMock = jasmine.createSpyObj('DateTimeMock', ['getTodayCutoff']);
 
 	beforeEach(async(() => {
 		@Component({selector: 'mg-add-fastpass', template: ''})
@@ -36,6 +38,9 @@ describe('FastpassComponent', () => {
 				StoreModule.forRoot({
 					'fastpasses': fastpassReducer
 				})
+			],
+			providers: [
+				{ provide: DateTimeService, useValue: dateTimeServiceMock }
 			]
 		})
 		.compileComponents();
@@ -48,6 +53,7 @@ describe('FastpassComponent', () => {
 		store = fixture.debugElement.injector.get(Store);
 
 		spyOn(store, 'dispatch').and.callThrough();
+		dateTimeServiceMock.getTodayCutoff.and.returnValue(new Date('2018-05-27T02:00:00'));
 
 		// Act
 		fixture.detectChanges();
@@ -57,6 +63,16 @@ describe('FastpassComponent', () => {
 	it('should create', () => {
 		// Assert
 		expect(component).toBeTruthy();
+	});
+
+	it('should dispatch the PruneFastpasses action with todayCutoff', () => {
+		// Arrange
+		const mockAction = new fastpassActions.PruneFastpasses({ todayCutoff: new Date('2018-05-27T02:00:00') });
+
+		// Act
+
+		// Assert
+		expect(store.dispatch).toHaveBeenCalledWith(mockAction);
 	});
 
 	it('should display next available Fastpass if Fastpasses are set', () => {
