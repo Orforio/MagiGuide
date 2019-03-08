@@ -8,7 +8,7 @@ describe('GlobalObjectService', () => {
 		service = new GlobalObjectService();
 	});
 
-	it('should create', () => {
+	it('should be created', () => {
 		// Assert
 		expect(service).toBeTruthy();
 	});

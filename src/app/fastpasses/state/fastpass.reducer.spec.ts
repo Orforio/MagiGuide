@@ -156,6 +156,54 @@ describe('Fastpass Reducer', () => {
 		});
 	});
 
+	describe('PruneFastpasses', () => {
+		it('should delete all Fastpasses earlier than the supplied todayCutoff', () => {
+			// Arrange
+			const fastpassToKeep1 = new Fastpass(
+				'Hyperspace Mountain',
+				new Date('May 27, 2018 08:05:00'),
+				new Date('May 27, 2018 08:35:00'),
+				new Date('May 27, 2018 10:05:00')
+			);
+			const fastpassToKeep2 = new Fastpass(
+				'Star Tours',
+				new Date('May 27, 2018 17:05:00'),
+				new Date('May 27, 2018 17:35:00'),
+				new Date('May 27, 2018 19:05:00')
+			);
+			const fastpassToDelete = new Fastpass(
+				'Big Thunder Mountain',
+				new Date('May 26, 2018 21:40:00'),
+				new Date('May 26, 2018 22:10:00'),
+				new Date('May 26, 2018 23:40:00')
+			);
+			const previousState: FastpassState = {
+				...initialFastpassState,
+				ids: [fastpassToDelete.id, fastpassToKeep1.id, fastpassToKeep2.id],
+				entities: {
+					[fastpassToDelete.id]: fastpassToDelete,
+					[fastpassToKeep1.id]: fastpassToKeep1,
+					[fastpassToKeep2.id]: fastpassToKeep2
+				}};
+			const expectedResult: FastpassState = {
+				...initialFastpassState,
+				ids: [fastpassToKeep1.id, fastpassToKeep2.id],
+				entities: {
+					[fastpassToKeep1.id]: fastpassToKeep1,
+					[fastpassToKeep2.id]: fastpassToKeep2
+				}
+			};
+			const mockTodayCutoff = new Date('May 27, 2018 02:00:00');
+			const action = new fastpassActions.PruneFastpasses({ todayCutoff: mockTodayCutoff });
+
+			// Act
+			const result = fastpassReducer(previousState, action);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
+		});
+	});
+
 	describe('default', () => {
 		it('should return the initial state', () => {
 			// Arrange

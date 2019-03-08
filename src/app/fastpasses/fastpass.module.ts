@@ -9,6 +9,7 @@ import { FastpassRoutingModule } from './fastpass-routing.module';
 import { AddFastpassComponent } from './add-fastpass/add-fastpass.component';
 import { FastpassComponent } from './fastpass.component';
 import { ViewFastpassComponent } from './view-fastpass/view-fastpass.component';
+import { DateTimeService } from '../common/date-time.service';
 import { fastpassReducer } from './state/fastpass.reducer';
 
 @NgModule({
@@ -24,7 +25,8 @@ import { fastpassReducer } from './state/fastpass.reducer';
 		NgbModule,
 		ReactiveFormsModule,
 		StoreModule.forFeature('fastpasses', fastpassReducer),
-	]
+	],
+	providers: [DateTimeService]
 })
 export class FastpassModule {
 	constructor() {}

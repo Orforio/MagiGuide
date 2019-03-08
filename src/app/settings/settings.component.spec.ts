@@ -4,8 +4,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule } from '@ngrx/store';
 
 import { SettingsComponent } from './settings.component';
+import { DateTimeService } from '../common/date-time.service';
 import { GlobalObjectService } from '../common/global-object.service';
 import { settingsReducer } from './state/settings.reducer';
+import * as fastpassActions from '../fastpasses/state/fastpass.actions';
 import * as settingsActions from './state/settings.actions';
 
 describe('SettingsComponent', () => {
@@ -14,10 +16,12 @@ describe('SettingsComponent', () => {
 	let component: SettingsComponent;
 	let fixture: ComponentFixture<SettingsComponent>;
 	let store: Store<any>;
+	const dateTimeServiceMock = jasmine.createSpyObj<DateTimeService>('DateTimeService', ['getTodayCutoff']);
 	const globalObjectServiceMock = jasmine.createSpyObj<GlobalObjectService>('GlobalObjectService', ['getWindow']);
 
 	beforeEach(async(() => {
 		confirmMock = jasmine.createSpy('confirm');
+		dateTimeServiceMock.getTodayCutoff.and.returnValue(new Date());
 		globalObjectServiceMock.getWindow.and.returnValue({ confirm: confirmMock });
 
 		TestBed.configureTestingModule({
@@ -29,7 +33,9 @@ describe('SettingsComponent', () => {
 					'settings': settingsReducer
 				})
 			],
-			providers: [{ provide: GlobalObjectService, useValue: globalObjectServiceMock }]
+			providers: [
+				{ provide: DateTimeService, useValue: dateTimeServiceMock },
+				{ provide: GlobalObjectService, useValue: globalObjectServiceMock }]
 		})
 		.compileComponents();
 	}));
@@ -50,6 +56,17 @@ describe('SettingsComponent', () => {
 	it('should create', () => {
 		// Assert
 		expect(component).toBeTruthy();
+	});
+
+	it('should call pruneFastpasses() when the Remove old Fastpasses button is clicked', () => {
+		// Arrange
+		spyOn(component, 'pruneFastpasses');
+
+		// Act
+		compiled.querySelector('#pruneFastpasses').click();
+
+		// Assert
+		expect(component.pruneFastpasses).toHaveBeenCalled();
 	});
 
 	it('should set the enableDebug checkbox to the state value', () => {
@@ -84,6 +101,36 @@ describe('SettingsComponent', () => {
 
 		// Assert
 		expect(component.resetApp).toHaveBeenCalled();
+	});
+
+	describe('pruneFastpasses()', () => {
+		it('should dispatch the PruneFastpasses action if the user confirms the warning', () => {
+			// Arrange
+			const mockDate = new Date('2018-05-27T02:00:00');
+			const action = new fastpassActions.PruneFastpasses({ todayCutoff: mockDate });
+			confirmMock.and.returnValue(true);
+			dateTimeServiceMock.getTodayCutoff.and.returnValue(mockDate);
+
+			// Act
+			component.pruneFastpasses();
+
+			// Assert
+			expect(store.dispatch).toHaveBeenCalledWith(action);
+		});
+
+		it('should not dispatch the PruneFastpasses action if the user does not confirm the warning', () => {
+			// Arrange
+			const mockDate = new Date('2019-05-27T02:00:00');
+			const action = new fastpassActions.PruneFastpasses({ todayCutoff: mockDate });
+			confirmMock.and.returnValue(false);
+			dateTimeServiceMock.getTodayCutoff.and.returnValue(mockDate);
+
+			// Act
+			component.pruneFastpasses();
+
+			// Assert
+			expect(store.dispatch).not.toHaveBeenCalledWith(action);
+		});
 	});
 
 	describe('resetApp()', () => {

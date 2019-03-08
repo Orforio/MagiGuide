@@ -8,6 +8,7 @@ export enum FastpassActionTypes {
 	ClearFastpasses = '[Fastpass] Delete All Fastpasses',
 	DeleteFastpass = '[Fastpass] Delete One Fastpass',
 	LoadFastpasses = '[Fastpass] Load All Fastpasses',
+	PruneFastpasses = '[Fastpass] Prune Outdated Fastpasses',
 	UpdateFastpass = '[Fastpass] Update One Fastpass'
 }
 
@@ -33,6 +34,12 @@ export class LoadFastpasses implements Action {
 	constructor(public payload: { fastpasses: Fastpass[] }) {}
 }
 
+export class PruneFastpasses implements Action {
+	readonly type = FastpassActionTypes.PruneFastpasses;
+
+	constructor(public payload: { todayCutoff: Date }) {}
+}
+
 export class UpdateFastpass implements Action {
 	readonly type = FastpassActionTypes.UpdateFastpass;
 
@@ -44,4 +51,5 @@ export type FastpassActions =
 	| ClearFastpasses
 	| DeleteFastpass
 	| LoadFastpasses
+	| PruneFastpasses
 	| UpdateFastpass;

@@ -2,10 +2,15 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 import { FastpassActions, FastpassActionTypes } from './fastpass.actions';
 import { Fastpass } from '../fastpass.model';
+import * as fromRoot from '../../state';
+
+export interface State extends fromRoot.State {
+	fastpasses: FastpassState;
+}
 
 export interface FastpassState extends EntityState<Fastpass> {}
 
-export const fastpassAdapter: EntityAdapter<Fastpass> = createEntityAdapter<Fastpass>({
+const fastpassAdapter: EntityAdapter<Fastpass> = createEntityAdapter<Fastpass>({
 	sortComparer: sortByStartTime
 });
 
@@ -25,6 +30,12 @@ export function fastpassReducer(state = initialFastpassState, action: FastpassAc
 			return fastpassAdapter.removeOne(action.payload.id, state);
 		case FastpassActionTypes.LoadFastpasses:
 			return fastpassAdapter.addAll(action.payload.fastpasses, state);
+		case FastpassActionTypes.PruneFastpasses:
+			return fastpassAdapter.removeMany(
+				(fastpass) => {
+					return fastpass.startTime.getTime() < action.payload.todayCutoff.getTime(); },
+				state
+			);
 		// TODO: Update Fastpass
 		// case FastpassActionTypes.UpdateFastpass:
 		// 	return fastpassAdapter.updateOne(action.payload.fastpass, state);
@@ -37,5 +48,5 @@ export const {
 	selectIds,
 	selectEntities,
 	selectAll,
-	selectTotal,
+	selectTotal
 } = fastpassAdapter.getSelectors();

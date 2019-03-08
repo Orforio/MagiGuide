@@ -1,6 +1,12 @@
 <div class="container-fluid">
 	<h1>Settings</h1>
 	<form [formGroup]="settingsForm">
+		<div class="card mb-2">
+			<h2 class="card-header h5">Fastpass settings</h2>
+			<div class="card-body">
+				<button type="button" class="btn btn-warning" id="pruneFastpasses" (click)="pruneFastpasses()">Remove old Fastpasses</button>
+			</div>
+		</div>
 		<div class="card border-danger">
 			<h2 class="card-header h5">Debug settings</h2>
 			<div class="card-body">
