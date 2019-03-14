@@ -80,7 +80,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 				moment().hours(15).minutes(30).seconds(0).toDate()
 			),
 			new Fastpass(
-				'Hyperspace Mountain',
+				'Star Wars: Hyperspace Mountain',
 				moment().hours(16).minutes(5).seconds(0).toDate(),
 				moment().hours(16).minutes(35).seconds(0).toDate(),
 				moment().hours(18).minutes(5).seconds(0).toDate()

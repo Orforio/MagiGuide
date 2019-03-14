@@ -17,20 +17,21 @@ describe('FastpassComponent', () => {
 	const dateTimeServiceMock = jasmine.createSpyObj('DateTimeMock', ['getTodayCutoff']);
 
 	beforeEach(async(() => {
-		@Component({selector: 'mg-add-fastpass', template: ''})
-		class AddFastpassStubComponent {
-			@Output() public addFastpass = new EventEmitter<any>();
-		}
-
 		@Component({selector: 'mg-view-fastpass', template: ''})
 		class ViewFastpassStubComponent {
 			@Input() public fastpass: any;
 		}
 
+		@Component({selector: 'mg-upsert-fastpass', template: ''})
+		class UpsertFastpassStubComponent {
+			@Input() public fastpass: any;
+			@Output() public upsertFastpass = new EventEmitter<any>();
+		}
+
 		TestBed.configureTestingModule({
 			declarations: [
-				AddFastpassStubComponent,
 				FastpassComponent,
+				UpsertFastpassStubComponent,
 				ViewFastpassStubComponent
 			],
 			imports: [
@@ -133,7 +134,21 @@ describe('FastpassComponent', () => {
 		expect(compiled.querySelectorAll('mg-view-fastpass').length).toBe(2);
 	});
 
-	describe('addFastpass()', () => {
+	describe('removeFastpass()', () => {
+		it('should dispatch the DeleteFastpass action with the Fastpass.id', () => {
+			// Arrange
+			const mockFastpass = new Fastpass(null, null, null, null);
+			const action = new fastpassActions.DeleteFastpass({ id: mockFastpass.id });
+
+			// Act
+			component.removeFastpass(mockFastpass);
+
+			// Assert
+			expect(store.dispatch).toHaveBeenCalledWith(action);
+		});
+	});
+
+	describe('upsertFastpass()', () => {
 		it('should dispatch the AddFastpass action with the payload', () => {
 			// Arrange
 			const mockFastpass = new Fastpass(
@@ -145,21 +160,7 @@ describe('FastpassComponent', () => {
 			const action = new fastpassActions.AddFastpass({ fastpass: mockFastpass });
 
 			// Act
-			component.addFastpass(mockFastpass);
-
-			// Assert
-			expect(store.dispatch).toHaveBeenCalledWith(action);
-		});
-	});
-
-	describe('removeFastpass()', () => {
-		it('should dispatch the DeleteFastpass action with the Fastpass.id', () => {
-			// Arrange
-			const mockFastpass = new Fastpass(null, null, null, null);
-			const action = new fastpassActions.DeleteFastpass({ id: mockFastpass.id });
-
-			// Act
-			component.removeFastpass(mockFastpass);
+			component.upsertFastpass(mockFastpass);
 
 			// Assert
 			expect(store.dispatch).toHaveBeenCalledWith(action);

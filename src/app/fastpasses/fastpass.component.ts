@@ -28,11 +28,11 @@ export class FastpassComponent implements OnInit {
 		this.store.dispatch(new PruneFastpasses({ todayCutoff: this.dateTimeService.getTodayCutoff() }));
 	}
 
-	public addFastpass(fastpass: Fastpass): void {
-		this.store.dispatch(new AddFastpass({ fastpass }));
-	}
-
 	public removeFastpass(fastpass: Fastpass): void {
 		this.store.dispatch(new DeleteFastpass({ id: fastpass.id }));
+	}
+
+	public upsertFastpass(fastpass: Fastpass): void {
+		this.store.dispatch(new AddFastpass({ fastpass }));
 	}
 }
