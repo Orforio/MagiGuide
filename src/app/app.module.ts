@@ -6,7 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFortAwesome } from '@fortawesome/free-brands-svg-icons';
 import { faClock, faTicketAlt, faTrashAlt, faUserCog } from '@fortawesome/free-solid-svg-icons';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbTimeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -17,6 +17,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SettingsComponent } from './settings/settings.component';
 import { DateTimeService } from './common/date-time.service';
 import { GlobalObjectService } from './common/global-object.service';
+import { NgbTimeDateAdapter } from './common/ngb-time-date.adapter';
 import { environment } from '../environments/environment';
 import { metaReducers, reducers } from './state';
 
@@ -42,7 +43,8 @@ import { metaReducers, reducers } from './state';
 	],
 	providers: [
 		DateTimeService,
-		GlobalObjectService
+		GlobalObjectService,
+		{ provide: NgbTimeAdapter, useClass: NgbTimeDateAdapter }
 	]
 })
 export class AppModule {
