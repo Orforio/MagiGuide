@@ -1,13 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { Fastpass } from '../fastpass.model';
 import { ViewFastpassComponent } from './view-fastpass.component';
 
 describe('ViewFastpassComponent', () => {
-	let compiled: any;
+	let compiled: HTMLElement;
 	let component: ViewFastpassComponent;
 	let fixture: ComponentFixture<ViewFastpassComponent>;
 
@@ -18,7 +18,7 @@ describe('ViewFastpassComponent', () => {
 		})
 		.compileComponents();
 
-		library.add(faTrashAlt);
+		library.add(faEdit, faTrashAlt);
 	}));
 
 	beforeEach(() => {
@@ -59,15 +59,39 @@ describe('ViewFastpassComponent', () => {
 		expect(compiled.querySelector('.end-time').textContent).toContain('15:50');
 	});
 
+	it('should call editFastpass() when the Edit button is clicked', () => {
+		// Arrange
+		spyOn(component, 'editFastpass');
+
+		// Act
+		compiled.querySelector<HTMLButtonElement>('#editFastpass').click();
+
+		// Assert
+		expect(component.editFastpass).toHaveBeenCalled();
+	});
+
 	it('should call removeFastpass() when the Remove button is clicked', () => {
 		// Arrange
 		spyOn(component, 'removeFastpass');
 
 		// Act
-		compiled.querySelector('.remove-fastpass').click();
+		compiled.querySelector<HTMLButtonElement>('#removeFastpass').click();
 
 		// Assert
 		expect(component.removeFastpass).toHaveBeenCalled();
+	});
+
+	describe('editFastpass()', () => {
+		it('should emit edit with the fastpass id', () => {
+			// Arrange
+			spyOn(component.edit, 'emit');
+
+			// Act
+			component.editFastpass();
+
+			// Assert
+			expect(component.edit.emit).toHaveBeenCalledWith(component.fastpass.id);
+		});
 	});
 
 	describe('removeFastpass()', () => {
