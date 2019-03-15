@@ -116,6 +116,24 @@ describe('Fastpass Reducer', () => {
 		});
 	});
 
+	describe('EditFastpass', () => {
+		it('should set editFastpass to the state', () => {
+			// Arrange
+			const mockId = 'ABCD-1234';
+			const expectedResult: FastpassState = {
+				...initialFastpassState,
+				editFastpass: mockId
+			};
+			const action = new fastpassActions.EditFastpass({ id: mockId });
+
+			// Act
+			const result = fastpassReducer(initialFastpassState, action);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
+		});
+	});
+
 	describe('LoadFastpasses', () => {
 		it('should add all fastpasses to the state in chronological order', () => {
 			// Arrange
@@ -280,6 +298,21 @@ describe('Fastpass Reducer', () => {
 
 			// Assert
 			expect(result).toEqual(expectedResult);
+		});
+
+		it('should reset editFastpass to null', () => {
+			// Arrange
+			const previousState = {
+				...initialFastpassState,
+				editFastpass: 'ABCD-1234'
+			};
+			const action = new fastpassActions.UpsertFastpass({ fastpass: new Fastpass(null, null, null, null) });
+
+			// Act
+			const result = fastpassReducer(previousState, action);
+
+			// Assert
+			expect(result.editFastpass).toBeNull();
 		});
 	});
 

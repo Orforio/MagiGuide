@@ -8,13 +8,17 @@ export interface State extends fromRoot.State {
 	fastpasses: FastpassState;
 }
 
-export interface FastpassState extends EntityState<Fastpass> {}
+export interface FastpassState extends EntityState<Fastpass> {
+	editFastpass: string | null;
+}
 
 const fastpassAdapter: EntityAdapter<Fastpass> = createEntityAdapter<Fastpass>({
 	sortComparer: sortByStartTime
 });
 
-export const initialFastpassState: FastpassState = fastpassAdapter.getInitialState({});
+export const initialFastpassState: FastpassState = fastpassAdapter.getInitialState({
+	editFastpass: null
+});
 
 function sortByStartTime(fastpass1: Fastpass, fastpass2: Fastpass): number {
 	return fastpass1.startTime.getTime() - fastpass2.startTime.getTime();
@@ -28,6 +32,11 @@ export function fastpassReducer(state = initialFastpassState, action: FastpassAc
 			return fastpassAdapter.removeAll(state);
 		case FastpassActionTypes.DeleteFastpass:
 			return fastpassAdapter.removeOne(action.payload.id, state);
+		case FastpassActionTypes.EditFastpass:
+			return {
+				...state,
+				editFastpass: action.payload.id
+			};
 		case FastpassActionTypes.LoadFastpasses:
 			return fastpassAdapter.addAll(action.payload.fastpasses, state);
 		case FastpassActionTypes.PruneFastpasses:
@@ -37,7 +46,10 @@ export function fastpassReducer(state = initialFastpassState, action: FastpassAc
 				state
 			);
 		case FastpassActionTypes.UpsertFastpass:
-			return fastpassAdapter.upsertOne(action.payload.fastpass, state);
+			return fastpassAdapter.upsertOne(action.payload.fastpass, {
+				...state,
+				editFastpass: null
+			});
 		default:
 			return state;
 	}
