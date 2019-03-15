@@ -16,6 +16,7 @@ export class UpsertFastpassComponent implements OnInit {
 		nextAvailableTime: ['', Validators.required]
 	});
 	@Input() public fastpass: Fastpass;
+	@Output() public cancelEdit = new EventEmitter<null>();
 	@Output() public upsert = new EventEmitter<Fastpass>();
 
 	constructor(private formBuilder: FormBuilder) {}
@@ -24,6 +25,10 @@ export class UpsertFastpassComponent implements OnInit {
 		if (this.fastpass) {
 			this.upsertFastpassForm.patchValue(this.fastpass);
 		}
+	}
+
+	public cancelEditFastpass(): void {
+		this.cancelEdit.emit(null);
 	}
 
 	public upsertFastpass(): void {

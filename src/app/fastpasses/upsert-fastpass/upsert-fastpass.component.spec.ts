@@ -98,6 +98,35 @@ describe('UpsertFastpassComponent', () => {
 		expect(compiled.querySelector('#submitUpsertFastpass').textContent).toEqual('Update FastPass');
 	});
 
+	it('should not show the cancel button if there is no Input Fastpass', () => {
+		// Arrange
+
+		// Act
+		fixture.detectChanges();
+
+		// Assert
+		expect(compiled.querySelectorAll('#cancelEditFastpass').length).toEqual(0);
+	});
+
+	it('should call cancelEditFastpass() when the cancel button is clicked', () => {
+		// Arrange
+		const inputFastpass = new Fastpass(
+			'Star Tours',
+			new Date('2018-05-27T11:25:00'),
+			new Date('2018-05-27T11:55:00'),
+			new Date('2018-05-27T13:10:00')
+		);
+		component.fastpass = inputFastpass;
+		spyOn(component, 'cancelEditFastpass');
+		fixture.detectChanges();
+
+		// Act
+		compiled.querySelector<HTMLButtonElement>('#cancelEditFastpass').click();
+
+		// Assert
+		expect(component.cancelEditFastpass).toHaveBeenCalled();
+	});
+
 	it('should call upsertFastpass() when the submit button is clicked and form is valid', () => {
 		// Arrange
 		fixture.detectChanges();
@@ -125,6 +154,20 @@ describe('UpsertFastpassComponent', () => {
 
 		// Assert
 		expect(component.upsertFastpass).not.toHaveBeenCalled();
+	});
+
+	describe('cancelEditFastpass()', () => {
+		it('should output cancelEdit with null', () => {
+			// Arrange
+			fixture.detectChanges();
+			spyOn(component.cancelEdit, 'emit');
+
+			// Act
+			component.cancelEditFastpass();
+
+			// Assert
+			expect(component.cancelEdit.emit).toHaveBeenCalledWith(null);
+		});
 	});
 
 	describe('upsertFastpass()',  () => {

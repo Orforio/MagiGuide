@@ -46,6 +46,7 @@
 			</div>
 		</div>
 		<div class="card-footer">
+			<button *ngIf="fastpass" type="button" id="cancelEditFastpass" class="btn btn-outline-secondary float-right" (click)="cancelEditFastpass()">Cancel Update</button>
 			<button *ngIf="fastpass" [disabled]="!upsertFastpassForm.valid" type="submit" id="submitUpsertFastpass" class="btn btn-primary">Update FastPass</button>
 			<button *ngIf="!fastpass" [disabled]="!upsertFastpassForm.valid" type="submit" id="submitUpsertFastpass" class="btn btn-primary">Add FastPass</button>
 		</div>
