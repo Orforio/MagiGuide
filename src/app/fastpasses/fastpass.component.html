@@ -10,7 +10,14 @@
 	</ng-template>
 	<div class="row">
 		<div *ngFor="let fastpass of fastpasses | async" class="col-xs-12 col-sm-6 mb-4">
-			<mg-view-fastpass [fastpass]="fastpass" (remove)="removeFastpass($event)" class="card-deck"></mg-view-fastpass>
+			<mg-view-fastpass *ngIf="fastpass.id !== (editFastpassId | async)" class="card-deck"
+				[fastpass]="fastpass"
+				(edit)="editFastpass($event)"
+				(remove)="removeFastpass($event)"></mg-view-fastpass>
+			<mg-upsert-fastpass *ngIf="fastpass.id === (editFastpassId | async)"
+				(cancelEdit)="editFastpass($event)"
+				(upsert)="upsertFastpass($event)"
+				[fastpass]="fastpass"></mg-upsert-fastpass>
 		</div>
 		<mg-upsert-fastpass (upsert)="upsertFastpass($event)" class="col-xs-12 col-sm-6"></mg-upsert-fastpass>
 	</div>

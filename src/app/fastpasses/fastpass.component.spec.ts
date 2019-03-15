@@ -20,12 +20,15 @@ describe('FastpassComponent', () => {
 		@Component({selector: 'mg-view-fastpass', template: ''})
 		class ViewFastpassStubComponent {
 			@Input() public fastpass: any;
+			@Output() public edit = new EventEmitter<any>();
+			@Output() public remove = new EventEmitter<any>();
 		}
 
 		@Component({selector: 'mg-upsert-fastpass', template: ''})
 		class UpsertFastpassStubComponent {
 			@Input() public fastpass: any;
-			@Output() public upsertFastpass = new EventEmitter<any>();
+			@Output() public cancelEdit = new EventEmitter<any>();
+			@Output() public upsert = new EventEmitter<any>();
 		}
 
 		TestBed.configureTestingModule({
@@ -131,7 +134,50 @@ describe('FastpassComponent', () => {
 		fixture.detectChanges();
 
 		// Assert
-		expect(compiled.querySelectorAll('mg-view-fastpass').length).toBe(2);
+		expect(compiled.querySelectorAll('mg-view-fastpass').length).toEqual(2);
+	});
+
+	it('should display currently editing Fastpasses', () => {
+		// Arrange
+		const mockFastpasses = [
+			new Fastpass(
+				'Big Thunder Mountain',
+				new Date('May 27, 2018 10:40:00'),
+				new Date('May 27, 2018 11:10:00'),
+				new Date('May 27, 2018 10:40:00')
+			),
+			new Fastpass(
+				'Hyperspace Mountain',
+				new Date('May 27, 2018 15:20:00'),
+				new Date('May 27, 2018 15:50:00'),
+				new Date('May 27, 2018 12:40:00')
+			)
+		];
+		const loadAction = new fastpassActions.LoadFastpasses({ fastpasses: mockFastpasses });
+		const editAction = new fastpassActions.EditFastpass({ id: mockFastpasses[0].id });
+
+		// Act
+		store.dispatch(loadAction);
+		store.dispatch(editAction);
+		fixture.detectChanges();
+
+		// Assert
+		expect(compiled.querySelectorAll('mg-view-fastpass').length).toEqual(1);
+		expect(compiled.querySelectorAll('mg-upsert-fastpass').length).toEqual(2);
+	});
+
+	describe('editFastpass()', () => {
+		it('should dispatch the EditFastpass action with the payload', () => {
+			// Arrange
+			const mockId = 'ABCD-1234';
+			const action = new fastpassActions.EditFastpass({ id: mockId });
+
+			// Act
+			component.editFastpass(mockId);
+
+			// Assert
+			expect(store.dispatch).toHaveBeenCalledWith(action);
+		});
 	});
 
 	describe('removeFastpass()', () => {
