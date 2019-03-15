@@ -149,7 +149,7 @@ describe('FastpassComponent', () => {
 	});
 
 	describe('upsertFastpass()', () => {
-		it('should dispatch the AddFastpass action with the payload', () => {
+		it('should dispatch the UpsertFastpass action with the payload', () => {
 			// Arrange
 			const mockFastpass = new Fastpass(
 				'Big Thunder Mountain',
@@ -157,7 +157,7 @@ describe('FastpassComponent', () => {
 				new Date('May 27, 2018 11:10:00'),
 				new Date('May 27, 2018 10:40:00')
 			);
-			const action = new fastpassActions.AddFastpass({ fastpass: mockFastpass });
+			const action = new fastpassActions.UpsertFastpass({ fastpass: mockFastpass });
 
 			// Act
 			component.upsertFastpass(mockFastpass);

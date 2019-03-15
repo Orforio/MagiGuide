@@ -32,7 +32,8 @@ export class UpsertFastpassComponent implements OnInit {
 				this.upsertFastpassForm.value.ride,
 				this.upsertFastpassForm.value.startTime,
 				this.upsertFastpassForm.value.endTime,
-				this.upsertFastpassForm.value.nextAvailableTime
+				this.upsertFastpassForm.value.nextAvailableTime,
+				this.fastpass && this.fastpass.id
 			));
 		}
 	}

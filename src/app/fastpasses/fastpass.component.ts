@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { DateTimeService } from '../common/date-time.service';
 import { Fastpass } from './fastpass.model';
-import { AddFastpass, DeleteFastpass, PruneFastpasses } from './state/fastpass.actions';
+import { DeleteFastpass, PruneFastpasses, UpsertFastpass } from './state/fastpass.actions';
 import * as fromFastpass from './state/fastpass.reducer';
 import * as fastpassSelectors from './state/fastpass.selectors';
 
@@ -33,6 +33,6 @@ export class FastpassComponent implements OnInit {
 	}
 
 	public upsertFastpass(fastpass: Fastpass): void {
-		this.store.dispatch(new AddFastpass({ fastpass }));
+		this.store.dispatch(new UpsertFastpass({ fastpass }));
 	}
 }
