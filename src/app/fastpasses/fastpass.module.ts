@@ -6,16 +6,16 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 
 import { FastpassRoutingModule } from './fastpass-routing.module';
-import { AddFastpassComponent } from './add-fastpass/add-fastpass.component';
 import { FastpassComponent } from './fastpass.component';
+import { UpsertFastpassComponent } from './upsert-fastpass/upsert-fastpass.component';
 import { ViewFastpassComponent } from './view-fastpass/view-fastpass.component';
 import { DateTimeService } from '../common/date-time.service';
 import { fastpassReducer } from './state/fastpass.reducer';
 
 @NgModule({
 	declarations: [
-		AddFastpassComponent,
 		FastpassComponent,
+		UpsertFastpassComponent,
 		ViewFastpassComponent
 	],
 	imports: [

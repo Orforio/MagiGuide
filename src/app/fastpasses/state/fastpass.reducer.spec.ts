@@ -116,6 +116,24 @@ describe('Fastpass Reducer', () => {
 		});
 	});
 
+	describe('EditFastpass', () => {
+		it('should set editFastpass to the state', () => {
+			// Arrange
+			const mockId = 'ABCD-1234';
+			const expectedResult: FastpassState = {
+				...initialFastpassState,
+				editFastpass: mockId
+			};
+			const action = new fastpassActions.EditFastpass({ id: mockId });
+
+			// Act
+			const result = fastpassReducer(initialFastpassState, action);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
+		});
+	});
+
 	describe('LoadFastpasses', () => {
 		it('should add all fastpasses to the state in chronological order', () => {
 			// Arrange
@@ -201,6 +219,100 @@ describe('Fastpass Reducer', () => {
 
 			// Assert
 			expect(result).toEqual(expectedResult);
+		});
+	});
+
+	describe('UpsertFastpass', () => {
+		it('should add a new Fastpass to the state', () => {
+			// Arrange
+			const mockFastpass = new Fastpass(
+				'Big Thunder Mountain',
+				new Date('May 27, 2018 10:40:00'),
+				new Date('May 27, 2018 11:10:00'),
+				new Date('May 27, 2018 10:40:00')
+			);
+			const mockNewFastpass = new Fastpass(
+				'Star Tours',
+				new Date('May 27, 2018 17:05:00'),
+				new Date('May 27, 2018 17:35:00'),
+				new Date('May 27, 2018 19:05:00')
+			);
+			const previousState = {
+				...initialFastpassState,
+				ids: [mockFastpass.id],
+				entities: {
+					[mockFastpass.id]: mockFastpass
+				}
+			};
+			const expectedResult: FastpassState = {
+				...initialFastpassState,
+				ids: [
+					...previousState.ids,
+					mockNewFastpass.id
+				],
+				entities: {
+					...previousState.entities,
+					[mockNewFastpass.id]: mockNewFastpass
+				}
+			};
+			const action = new fastpassActions.UpsertFastpass({ fastpass: mockNewFastpass });
+
+			// Act
+			const result = fastpassReducer(previousState, action);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
+		});
+
+		it('should update an existing Fastpass in the state', () => {
+			// Arrange
+			const mockFastpass = new Fastpass(
+				'Big Thunder Mountain',
+				new Date('May 27, 2018 10:40:00'),
+				new Date('May 27, 2018 11:10:00'),
+				new Date('May 27, 2018 10:40:00')
+			);
+			const mockUpdatedFastpass = {
+				...mockFastpass,
+				startTime: new Date('May 27, 2018 10:30:00'),
+				endTime: new Date('May 27, 2018 11:00:00')
+			};
+			const previousState = {
+				...initialFastpassState,
+				ids: [mockFastpass.id],
+				entities: {
+					[mockFastpass.id]: mockFastpass
+				}
+			};
+			const expectedResult: FastpassState = {
+				...initialFastpassState,
+				ids: [mockFastpass.id],
+				entities: {
+					[mockFastpass.id]: mockUpdatedFastpass
+				}
+			};
+			const action = new fastpassActions.UpsertFastpass({ fastpass: mockUpdatedFastpass });
+
+			// Act
+			const result = fastpassReducer(previousState, action);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
+		});
+
+		it('should reset editFastpass to null', () => {
+			// Arrange
+			const previousState = {
+				...initialFastpassState,
+				editFastpass: 'ABCD-1234'
+			};
+			const action = new fastpassActions.UpsertFastpass({ fastpass: new Fastpass(null, null, null, null) });
+
+			// Act
+			const result = fastpassReducer(previousState, action);
+
+			// Assert
+			expect(result.editFastpass).toBeNull();
 		});
 	});
 

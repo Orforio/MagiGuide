@@ -1,5 +1,4 @@
 import { Action } from '@ngrx/store';
-import { Update } from '@ngrx/entity';
 
 import { Fastpass } from '../fastpass.model';
 
@@ -7,9 +6,10 @@ export enum FastpassActionTypes {
 	AddFastpass = '[Fastpass] Add One Fastpass',
 	ClearFastpasses = '[Fastpass] Delete All Fastpasses',
 	DeleteFastpass = '[Fastpass] Delete One Fastpass',
+	EditFastpass = '[Fastpass] Edit One Fastpass',
 	LoadFastpasses = '[Fastpass] Load All Fastpasses',
 	PruneFastpasses = '[Fastpass] Prune Outdated Fastpasses',
-	UpdateFastpass = '[Fastpass] Update One Fastpass'
+	UpsertFastpass = '[Fastpass] Upsert One Fastpass'
 }
 
 export class AddFastpass implements Action {
@@ -28,6 +28,12 @@ export class DeleteFastpass implements Action {
 	constructor(public payload: { id: string }) {}
 }
 
+export class EditFastpass implements Action {
+	readonly type = FastpassActionTypes.EditFastpass;
+
+	constructor(public payload: { id: string }) {}
+}
+
 export class LoadFastpasses implements Action {
 	readonly type = FastpassActionTypes.LoadFastpasses;
 
@@ -40,16 +46,17 @@ export class PruneFastpasses implements Action {
 	constructor(public payload: { todayCutoff: Date }) {}
 }
 
-export class UpdateFastpass implements Action {
-	readonly type = FastpassActionTypes.UpdateFastpass;
+export class UpsertFastpass implements Action {
+	readonly type = FastpassActionTypes.UpsertFastpass;
 
-	constructor(public payload: { fastpass: Update<Fastpass> }) {}
+	constructor(public payload: { fastpass: Fastpass }) {}
 }
 
 export type FastpassActions =
 	AddFastpass
 	| ClearFastpasses
 	| DeleteFastpass
+	| EditFastpass
 	| LoadFastpasses
 	| PruneFastpasses
-	| UpdateFastpass;
+	| UpsertFastpass;
