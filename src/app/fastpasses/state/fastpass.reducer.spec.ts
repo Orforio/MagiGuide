@@ -204,6 +204,85 @@ describe('Fastpass Reducer', () => {
 		});
 	});
 
+	describe('UpsertFastpass', () => {
+		it('should add a new Fastpass to the state', () => {
+			// Arrange
+			const mockFastpass = new Fastpass(
+				'Big Thunder Mountain',
+				new Date('May 27, 2018 10:40:00'),
+				new Date('May 27, 2018 11:10:00'),
+				new Date('May 27, 2018 10:40:00')
+			);
+			const mockNewFastpass = new Fastpass(
+				'Star Tours',
+				new Date('May 27, 2018 17:05:00'),
+				new Date('May 27, 2018 17:35:00'),
+				new Date('May 27, 2018 19:05:00')
+			);
+			const previousState = {
+				...initialFastpassState,
+				ids: [mockFastpass.id],
+				entities: {
+					[mockFastpass.id]: mockFastpass
+				}
+			};
+			const expectedResult: FastpassState = {
+				...initialFastpassState,
+				ids: [
+					...previousState.ids,
+					mockNewFastpass.id
+				],
+				entities: {
+					...previousState.entities,
+					[mockNewFastpass.id]: mockNewFastpass
+				}
+			};
+			const action = new fastpassActions.UpsertFastpass({ fastpass: mockNewFastpass });
+
+			// Act
+			const result = fastpassReducer(previousState, action);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
+		});
+
+		it('should update an existing Fastpass in the state', () => {
+			// Arrange
+			const mockFastpass = new Fastpass(
+				'Big Thunder Mountain',
+				new Date('May 27, 2018 10:40:00'),
+				new Date('May 27, 2018 11:10:00'),
+				new Date('May 27, 2018 10:40:00')
+			);
+			const mockUpdatedFastpass = {
+				...mockFastpass,
+				startTime: new Date('May 27, 2018 10:30:00'),
+				endTime: new Date('May 27, 2018 11:00:00')
+			};
+			const previousState = {
+				...initialFastpassState,
+				ids: [mockFastpass.id],
+				entities: {
+					[mockFastpass.id]: mockFastpass
+				}
+			};
+			const expectedResult: FastpassState = {
+				...initialFastpassState,
+				ids: [mockFastpass.id],
+				entities: {
+					[mockFastpass.id]: mockUpdatedFastpass
+				}
+			};
+			const action = new fastpassActions.UpsertFastpass({ fastpass: mockUpdatedFastpass });
+
+			// Act
+			const result = fastpassReducer(previousState, action);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
+		});
+	});
+
 	describe('default', () => {
 		it('should return the initial state', () => {
 			// Arrange

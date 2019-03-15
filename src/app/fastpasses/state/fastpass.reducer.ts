@@ -36,9 +36,8 @@ export function fastpassReducer(state = initialFastpassState, action: FastpassAc
 					return fastpass.startTime.getTime() < action.payload.todayCutoff.getTime(); },
 				state
 			);
-		// TODO: Update Fastpass
-		// case FastpassActionTypes.UpdateFastpass:
-		// 	return fastpassAdapter.updateOne(action.payload.fastpass, state);
+		case FastpassActionTypes.UpsertFastpass:
+			return fastpassAdapter.upsertOne(action.payload.fastpass, state);
 		default:
 			return state;
 	}
