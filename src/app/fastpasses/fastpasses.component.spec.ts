@@ -5,14 +5,14 @@ import { Store, StoreModule } from '@ngrx/store';
 
 import { DateTimeService } from '../common/date-time.service';
 import { fastpassFixtures } from './fastpass.model.fixtures';
-import { FastpassComponent } from './fastpass.component';
+import { FastpassesComponent } from './fastpasses.component';
 import { fastpassReducer } from './state/fastpass.reducer';
 import * as fastpassActions from './state/fastpass.actions';
 
-describe('FastpassComponent', () => {
+describe('FastpassesComponent', () => {
 	let compiled: HTMLElement;
-	let component: FastpassComponent;
-	let fixture: ComponentFixture<FastpassComponent>;
+	let component: FastpassesComponent;
+	let fixture: ComponentFixture<FastpassesComponent>;
 	let store: Store<any>;
 	const dateTimeServiceMock = jasmine.createSpyObj('DateTimeMock', ['getTodayCutoff']);
 
@@ -33,7 +33,7 @@ describe('FastpassComponent', () => {
 
 		TestBed.configureTestingModule({
 			declarations: [
-				FastpassComponent,
+				FastpassesComponent,
 				UpsertFastpassStubComponent,
 				ViewFastpassStubComponent
 			],
@@ -52,7 +52,7 @@ describe('FastpassComponent', () => {
 
 	beforeEach(() => {
 		// Arrange
-		fixture = TestBed.createComponent(FastpassComponent);
+		fixture = TestBed.createComponent(FastpassesComponent);
 		component = fixture.componentInstance;
 		store = fixture.debugElement.injector.get(Store);
 

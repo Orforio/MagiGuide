@@ -10,10 +10,10 @@ import * as fastpassSelectors from './state/fastpass.selectors';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	templateUrl: './fastpass.component.html',
-	styleUrls: ['./fastpass.component.scss']
+	templateUrl: './fastpasses.component.html',
+	styleUrls: ['./fastpasses.component.scss']
 })
-export class FastpassComponent implements OnInit {
+export class FastpassesComponent implements OnInit {
 	public editFastpassId: Observable<string | null>;
 	public fastpasses: Observable<Fastpass[]>;
 	public nextAvailableTime: Observable<Date>;
