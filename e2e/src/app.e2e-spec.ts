@@ -13,6 +13,10 @@ describe('MagiGuide App', () => {
 		appPage.navigateToApp();
 	});
 
+	afterEach(() => {
+		browser.executeScript('window.localStorage.clear();');
+	});
+
 	it('should display the nav bar', () => {
 		// Assert
 		expect(appPage.getNavBar()).toBeDefined();
