@@ -59,7 +59,7 @@ describe('ViewFastpassComponent', () => {
 		spyOn(component, 'editFastpass');
 
 		// Act
-		compiled.querySelector<HTMLButtonElement>('#editFastpass').click();
+		compiled.querySelector<HTMLButtonElement>('.edit-fastpass').click();
 
 		// Assert
 		expect(component.editFastpass).toHaveBeenCalled();
@@ -70,7 +70,7 @@ describe('ViewFastpassComponent', () => {
 		spyOn(component, 'removeFastpass');
 
 		// Act
-		compiled.querySelector<HTMLButtonElement>('#removeFastpass').click();
+		compiled.querySelector<HTMLButtonElement>('.remove-fastpass').click();
 
 		// Assert
 		expect(component.removeFastpass).toHaveBeenCalled();

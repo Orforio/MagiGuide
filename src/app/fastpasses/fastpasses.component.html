@@ -1,10 +1,11 @@
 <div class="container-fluid">
 	<h1>Fastpass</h1>
-	<ngb-alert *ngIf="nextAvailableTime | async as nextFastpassTime; else noNextAvailableTime" [dismissible]="false" type="info">
+	<ngb-alert *ngIf="nextAvailableTime | async as nextFastpassTime; else noNextAvailableTime" id="next-available-time-alert"
+		[dismissible]="false" type="info">
 		<strong>Next available Fastpass</strong>: {{nextFastpassTime | date:'shortTime'}}
 	</ngb-alert>
 	<ng-template #noNextAvailableTime>
-		<ngb-alert [dismissible]="false" type="success">
+		<ngb-alert id="next-available-time-alert" [dismissible]="false" type="success">
 			<strong>New Fastpass available now!</strong>
 		</ngb-alert>
 	</ng-template>
@@ -14,11 +15,11 @@
 				[fastpass]="fastpass"
 				(edit)="editFastpass($event)"
 				(remove)="removeFastpass($event)"></mg-view-fastpass>
-			<mg-upsert-fastpass *ngIf="fastpass.id === (editFastpassId | async)"
+			<mg-upsert-fastpass *ngIf="fastpass.id === (editFastpassId | async)" id="update-fastpass"
 				(cancelEdit)="editFastpass($event)"
 				(upsert)="upsertFastpass($event)"
 				[fastpass]="fastpass"></mg-upsert-fastpass>
 		</div>
-		<mg-upsert-fastpass (upsert)="upsertFastpass($event)" class="col-xs-12 col-sm-6"></mg-upsert-fastpass>
+		<mg-upsert-fastpass (upsert)="upsertFastpass($event)" class="col-xs-12 col-sm-6" id="add-fastpass"></mg-upsert-fastpass>
 	</div>
 </div>

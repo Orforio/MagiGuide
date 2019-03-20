@@ -66,17 +66,17 @@ describe('UpsertFastpassComponent', () => {
 		expect(component.upsertFastpassForm.controls.nextAvailableTime.value).toEqual('');
 	});
 
-	it('should label the submit button "Add FastPass" if there is no Input Fastpass', () => {
+	it('should label the submit button "Add Fastpass" if there is no Input Fastpass', () => {
 		// Arrange
 
 		// Act
 		fixture.detectChanges();
 
 		// Assert
-		expect(compiled.querySelector('#submitUpsertFastpass').textContent).toEqual('Add FastPass');
+		expect(compiled.querySelector('button[type="submit"]').textContent).toEqual('Add Fastpass');
 	});
 
-	it('should label the submit button "Update FastPass" if there is an Input Fastpass', () => {
+	it('should label the submit button "Update Fastpass" if there is an Input Fastpass', () => {
 		// Arrange
 		component.fastpass = fastpassFixtures.standard1;
 
@@ -84,7 +84,7 @@ describe('UpsertFastpassComponent', () => {
 		fixture.detectChanges();
 
 		// Assert
-		expect(compiled.querySelector('#submitUpsertFastpass').textContent).toEqual('Update FastPass');
+		expect(compiled.querySelector('button[type="submit"]').textContent).toEqual('Update Fastpass');
 	});
 
 	it('should not show the cancel button if there is no Input Fastpass', () => {
@@ -94,7 +94,7 @@ describe('UpsertFastpassComponent', () => {
 		fixture.detectChanges();
 
 		// Assert
-		expect(compiled.querySelectorAll('#cancelEditFastpass').length).toEqual(0);
+		expect(compiled.querySelectorAll('#cancel-edit-fastpass').length).toEqual(0);
 	});
 
 	it('should call cancelEditFastpass() when the cancel button is clicked', () => {
@@ -104,7 +104,7 @@ describe('UpsertFastpassComponent', () => {
 		fixture.detectChanges();
 
 		// Act
-		compiled.querySelector<HTMLButtonElement>('#cancelEditFastpass').click();
+		compiled.querySelector<HTMLButtonElement>('#cancel-edit-fastpass').click();
 
 		// Assert
 		expect(component.cancelEditFastpass).toHaveBeenCalled();
@@ -121,7 +121,7 @@ describe('UpsertFastpassComponent', () => {
 		fixture.detectChanges();
 
 		// Act
-		compiled.querySelector<HTMLButtonElement>('#submitUpsertFastpass').click();
+		compiled.querySelector<HTMLButtonElement>('button[type="submit"]').click();
 
 		// Assert
 		expect(component.upsertFastpass).toHaveBeenCalled();
@@ -133,7 +133,7 @@ describe('UpsertFastpassComponent', () => {
 		spyOn(component, 'upsertFastpass');
 
 		// Act
-		compiled.querySelector<HTMLButtonElement>('#submitUpsertFastpass').click();
+		compiled.querySelector<HTMLButtonElement>('button[type="submit"]').click();
 
 		// Assert
 		expect(component.upsertFastpass).not.toHaveBeenCalled();
