@@ -17,7 +17,8 @@ export const reducers: ActionReducerMap<State> = {
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
 	return localStorageSync({
 		keys: ['fastpasses', 'settings'],
-		rehydrate: true
+		rehydrate: true,
+		removeOnUndefined: true
 	})(reducer);
 }
 

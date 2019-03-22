@@ -4,15 +4,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule } from '@ngrx/store';
 
 import { DateTimeService } from '../common/date-time.service';
-import { Fastpass } from './fastpass.model';
-import { FastpassComponent } from './fastpass.component';
+import { fastpassFixtures } from './fastpass.model.fixtures';
+import { FastpassesComponent } from './fastpasses.component';
 import { fastpassReducer } from './state/fastpass.reducer';
 import * as fastpassActions from './state/fastpass.actions';
 
-describe('FastpassComponent', () => {
+describe('FastpassesComponent', () => {
 	let compiled: HTMLElement;
-	let component: FastpassComponent;
-	let fixture: ComponentFixture<FastpassComponent>;
+	let component: FastpassesComponent;
+	let fixture: ComponentFixture<FastpassesComponent>;
 	let store: Store<any>;
 	const dateTimeServiceMock = jasmine.createSpyObj('DateTimeMock', ['getTodayCutoff']);
 
@@ -33,7 +33,7 @@ describe('FastpassComponent', () => {
 
 		TestBed.configureTestingModule({
 			declarations: [
-				FastpassComponent,
+				FastpassesComponent,
 				UpsertFastpassStubComponent,
 				ViewFastpassStubComponent
 			],
@@ -52,12 +52,12 @@ describe('FastpassComponent', () => {
 
 	beforeEach(() => {
 		// Arrange
-		fixture = TestBed.createComponent(FastpassComponent);
+		fixture = TestBed.createComponent(FastpassesComponent);
 		component = fixture.componentInstance;
 		store = fixture.debugElement.injector.get(Store);
 
 		spyOn(store, 'dispatch').and.callThrough();
-		dateTimeServiceMock.getTodayCutoff.and.returnValue(new Date('2018-05-27T02:00:00'));
+		dateTimeServiceMock.getTodayCutoff.and.returnValue(new Date('2018-04-12T02:00:00'));
 
 		// Act
 		fixture.detectChanges();
@@ -71,7 +71,7 @@ describe('FastpassComponent', () => {
 
 	it('should dispatch the PruneFastpasses action with todayCutoff', () => {
 		// Arrange
-		const mockAction = new fastpassActions.PruneFastpasses({ todayCutoff: new Date('2018-05-27T02:00:00') });
+		const mockAction = new fastpassActions.PruneFastpasses({ todayCutoff: new Date('2018-04-12T02:00:00') });
 
 		// Act
 
@@ -81,22 +81,14 @@ describe('FastpassComponent', () => {
 
 	it('should display next available Fastpass if Fastpasses are set', () => {
 		// Arrange
-		const mockFastpasses = [
-			new Fastpass(
-				'Big Thunder Mountain',
-				new Date('May 27, 2018 10:40:00'),
-				new Date('May 27, 2018 11:10:00'),
-				new Date('May 27, 2018 10:40:00')
-			)
-		];
-		const action = new fastpassActions.LoadFastpasses({ fastpasses: mockFastpasses });
+		const action = new fastpassActions.LoadFastpasses({ fastpasses: [fastpassFixtures.standard1] });
 
 		// Act
 		store.dispatch(action);
 		fixture.detectChanges();
 
 		// Assert
-		expect(compiled.querySelector('ngb-alert').textContent).toContain('10:40 AM');
+		expect(compiled.querySelector('ngb-alert').textContent).toContain('12:25 PM');
 	});
 
 	it('should display "available now" message if Fastpasses are not set', () => {
@@ -113,21 +105,10 @@ describe('FastpassComponent', () => {
 
 	it('should display all retrieved Fastpasses', () => {
 		// Arrange
-		const mockFastpasses = [
-			new Fastpass(
-				'Big Thunder Mountain',
-				new Date('May 27, 2018 10:40:00'),
-				new Date('May 27, 2018 11:10:00'),
-				new Date('May 27, 2018 10:40:00')
-			),
-			new Fastpass(
-				'Hyperspace Mountain',
-				new Date('May 27, 2018 15:20:00'),
-				new Date('May 27, 2018 15:50:00'),
-				new Date('May 27, 2018 12:40:00')
-			)
-		];
-		const action = new fastpassActions.LoadFastpasses({ fastpasses: mockFastpasses });
+		const action = new fastpassActions.LoadFastpasses({ fastpasses: [
+			fastpassFixtures.standard1,
+			fastpassFixtures.standard2
+		] });
 
 		// Act
 		store.dispatch(action);
@@ -139,22 +120,11 @@ describe('FastpassComponent', () => {
 
 	it('should display currently editing Fastpasses', () => {
 		// Arrange
-		const mockFastpasses = [
-			new Fastpass(
-				'Big Thunder Mountain',
-				new Date('May 27, 2018 10:40:00'),
-				new Date('May 27, 2018 11:10:00'),
-				new Date('May 27, 2018 10:40:00')
-			),
-			new Fastpass(
-				'Hyperspace Mountain',
-				new Date('May 27, 2018 15:20:00'),
-				new Date('May 27, 2018 15:50:00'),
-				new Date('May 27, 2018 12:40:00')
-			)
-		];
-		const loadAction = new fastpassActions.LoadFastpasses({ fastpasses: mockFastpasses });
-		const editAction = new fastpassActions.EditFastpass({ id: mockFastpasses[0].id });
+		const loadAction = new fastpassActions.LoadFastpasses({ fastpasses: [
+			fastpassFixtures.knownId,
+			fastpassFixtures.standard1
+		] });
+		const editAction = new fastpassActions.EditFastpass({ id: '17a5c948-224d-460d-b942-8890f1a573ee' });
 
 		// Act
 		store.dispatch(loadAction);
@@ -169,7 +139,7 @@ describe('FastpassComponent', () => {
 	describe('editFastpass()', () => {
 		it('should dispatch the EditFastpass action with the payload', () => {
 			// Arrange
-			const mockId = 'ABCD-1234';
+			const mockId = '17a5c948-224d-460d-b942-8890f1a573ee';
 			const action = new fastpassActions.EditFastpass({ id: mockId });
 
 			// Act
@@ -183,11 +153,10 @@ describe('FastpassComponent', () => {
 	describe('removeFastpass()', () => {
 		it('should dispatch the DeleteFastpass action with the Fastpass.id', () => {
 			// Arrange
-			const mockFastpass = new Fastpass(null, null, null, null);
-			const action = new fastpassActions.DeleteFastpass({ id: mockFastpass.id });
+			const action = new fastpassActions.DeleteFastpass({ id: fastpassFixtures.null.id });
 
 			// Act
-			component.removeFastpass(mockFastpass);
+			component.removeFastpass(fastpassFixtures.null);
 
 			// Assert
 			expect(store.dispatch).toHaveBeenCalledWith(action);
@@ -197,16 +166,10 @@ describe('FastpassComponent', () => {
 	describe('upsertFastpass()', () => {
 		it('should dispatch the UpsertFastpass action with the payload', () => {
 			// Arrange
-			const mockFastpass = new Fastpass(
-				'Big Thunder Mountain',
-				new Date('May 27, 2018 10:40:00'),
-				new Date('May 27, 2018 11:10:00'),
-				new Date('May 27, 2018 10:40:00')
-			);
-			const action = new fastpassActions.UpsertFastpass({ fastpass: mockFastpass });
+			const action = new fastpassActions.UpsertFastpass({ fastpass: fastpassFixtures.standard1 });
 
 			// Act
-			component.upsertFastpass(mockFastpass);
+			component.upsertFastpass(fastpassFixtures.standard1);
 
 			// Assert
 			expect(store.dispatch).toHaveBeenCalledWith(action);

@@ -5,7 +5,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
-	{ path: 'fastpasses', loadChildren: './fastpasses/fastpass.module#FastpassModule' },
+	{ path: 'fastpasses', loadChildren: './fastpasses/fastpasses.module#FastpassesModule' },
 	{ path: 'settings', component: SettingsComponent },
 	{ path: '', component: DashboardComponent },
 	{ path: '**', redirectTo: '' }

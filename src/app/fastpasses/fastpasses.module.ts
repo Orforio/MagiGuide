@@ -5,8 +5,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 
-import { FastpassRoutingModule } from './fastpass-routing.module';
-import { FastpassComponent } from './fastpass.component';
+import { FastpassesRoutingModule } from './fastpasses-routing.module';
+import { FastpassesComponent } from './fastpasses.component';
 import { UpsertFastpassComponent } from './upsert-fastpass/upsert-fastpass.component';
 import { ViewFastpassComponent } from './view-fastpass/view-fastpass.component';
 import { DateTimeService } from '../common/date-time.service';
@@ -14,13 +14,13 @@ import { fastpassReducer } from './state/fastpass.reducer';
 
 @NgModule({
 	declarations: [
-		FastpassComponent,
+		FastpassesComponent,
 		UpsertFastpassComponent,
 		ViewFastpassComponent
 	],
 	imports: [
 		CommonModule,
-		FastpassRoutingModule,
+		FastpassesRoutingModule,
 		FontAwesomeModule,
 		NgbModule,
 		ReactiveFormsModule,
@@ -28,6 +28,6 @@ import { fastpassReducer } from './state/fastpass.reducer';
 	],
 	providers: [DateTimeService]
 })
-export class FastpassModule {
+export class FastpassesModule {
 	constructor() {}
 }

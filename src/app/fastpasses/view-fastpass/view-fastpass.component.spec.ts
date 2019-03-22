@@ -4,6 +4,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { Fastpass } from '../fastpass.model';
+import { fastpassFixtures } from '../fastpass.model.fixtures';
 import { ViewFastpassComponent } from './view-fastpass.component';
 
 describe('ViewFastpassComponent', () => {
@@ -26,13 +27,7 @@ describe('ViewFastpassComponent', () => {
 		fixture = TestBed.createComponent(ViewFastpassComponent);
 		component = fixture.componentInstance;
 
-		const inputFastpass = new Fastpass(
-			'Hyperspace Mountain',
-			new Date('May 27, 2018 15:20:00'),
-			new Date('May 27, 2018 15:50:00'),
-			new Date('May 27, 2018 12:40:00')
-		);
-		component.fastpass = inputFastpass;
+		component.fastpass = fastpassFixtures.standard1;
 
 		// Act
 		fixture.detectChanges();
@@ -46,17 +41,17 @@ describe('ViewFastpassComponent', () => {
 
 	it('should display the ride name', () => {
 		// Assert
-		expect(compiled.querySelector('.ride-name').textContent).toContain('Hyperspace Mountain');
+		expect(compiled.querySelector('.ride-name').textContent).toContain('Big Thunder Mountain');
 	});
 
 	it('should display the start time in 24H format', () => {
 		// Assert
-		expect(compiled.querySelector('.start-time').textContent).toContain('15:20');
+		expect(compiled.querySelector('.start-time').textContent).toContain('10:25');
 	});
 
 	it('should display the end time in 24H format', () => {
 		// Assert
-		expect(compiled.querySelector('.end-time').textContent).toContain('15:50');
+		expect(compiled.querySelector('.end-time').textContent).toContain('10:55');
 	});
 
 	it('should call editFastpass() when the Edit button is clicked', () => {
@@ -64,7 +59,7 @@ describe('ViewFastpassComponent', () => {
 		spyOn(component, 'editFastpass');
 
 		// Act
-		compiled.querySelector<HTMLButtonElement>('#editFastpass').click();
+		compiled.querySelector<HTMLButtonElement>('.edit-fastpass').click();
 
 		// Assert
 		expect(component.editFastpass).toHaveBeenCalled();
@@ -75,7 +70,7 @@ describe('ViewFastpassComponent', () => {
 		spyOn(component, 'removeFastpass');
 
 		// Act
-		compiled.querySelector<HTMLButtonElement>('#removeFastpass').click();
+		compiled.querySelector<HTMLButtonElement>('.remove-fastpass').click();
 
 		// Assert
 		expect(component.removeFastpass).toHaveBeenCalled();

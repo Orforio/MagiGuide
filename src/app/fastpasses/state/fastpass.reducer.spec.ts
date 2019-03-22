@@ -1,42 +1,30 @@
 import { FastpassState, initialFastpassState, fastpassReducer } from './fastpass.reducer';
 import * as fastpassActions from './fastpass.actions';
-import { Fastpass } from '../fastpass.model';
+import { fastpassFixtures } from '../fastpass.model.fixtures';
 
 describe('Fastpass Reducer', () => {
 	describe('AddFastpass', () => {
 		it('should add the new Fastpass to the state', () => {
 			// Arrange
-			const mockFastpass = new Fastpass(
-				'Big Thunder Mountain',
-				new Date('May 27, 2018 10:40:00'),
-				new Date('May 27, 2018 11:10:00'),
-				new Date('May 27, 2018 10:40:00')
-			);
-			const mockNewFastpass = new Fastpass(
-				'Star Tours',
-				new Date('May 27, 2018 17:05:00'),
-				new Date('May 27, 2018 17:35:00'),
-				new Date('May 27, 2018 19:05:00')
-			);
 			const previousState = {
 				...initialFastpassState,
-				ids: [mockFastpass.id],
+				ids: [fastpassFixtures.standard1.id],
 				entities: {
-					[mockFastpass.id]: mockFastpass
+					[fastpassFixtures.standard1.id]: fastpassFixtures.standard1
 				}
 			};
 			const expectedResult: FastpassState = {
 				...initialFastpassState,
 				ids: [
 					...previousState.ids,
-					mockNewFastpass.id
+					fastpassFixtures.standard2.id
 				],
 				entities: {
 					...previousState.entities,
-					[mockNewFastpass.id]: mockNewFastpass
+					[fastpassFixtures.standard2.id]: fastpassFixtures.standard2
 				}
 			};
-			const action = new fastpassActions.AddFastpass({ fastpass: mockNewFastpass });
+			const action = new fastpassActions.AddFastpass({ fastpass: fastpassFixtures.standard2 });
 
 			// Act
 			const result = fastpassReducer(previousState, action);
@@ -49,17 +37,11 @@ describe('Fastpass Reducer', () => {
 	describe('ClearFastpasses', () => {
 		it('should remove all Fastpasses from the state', () => {
 			// Arrange
-			const mockFastpass = new Fastpass(
-				'Big Thunder Mountain',
-				new Date('May 27, 2018 10:40:00'),
-				new Date('May 27, 2018 11:10:00'),
-				new Date('May 27, 2018 10:40:00')
-			);
 			const previousState = {
 				...initialFastpassState,
-				ids: [mockFastpass.id],
+				ids: [fastpassFixtures.standard1.id],
 				entities: {
-					[mockFastpass.id]: mockFastpass
+					[fastpassFixtures.standard1.id]: fastpassFixtures.standard1
 				}
 			};
 			const expectedResult: FastpassState = {
@@ -80,33 +62,21 @@ describe('Fastpass Reducer', () => {
 	describe('DeleteFastpass', () => {
 		it('should remove the given Fastpass from the state', () => {
 			// Arrange
-			const fastpassToKeep = new Fastpass(
-				'Star Tours',
-				new Date('May 27, 2018 17:05:00'),
-				new Date('May 27, 2018 17:35:00'),
-				new Date('May 27, 2018 19:05:00')
-			);
-			const fastpassToDelete = new Fastpass(
-				'Big Thunder Mountain',
-				new Date('May 27, 2018 10:40:00'),
-				new Date('May 27, 2018 11:10:00'),
-				new Date('May 27, 2018 10:40:00')
-			);
 			const previousState: FastpassState = {
 				...initialFastpassState,
-				ids: [fastpassToDelete.id, fastpassToKeep.id],
+				ids: [fastpassFixtures.standard1.id, fastpassFixtures.standard2.id],
 				entities: {
-					[fastpassToDelete.id]: fastpassToDelete,
-					[fastpassToKeep.id]: fastpassToKeep
+					[fastpassFixtures.standard1.id]: fastpassFixtures.standard1,
+					[fastpassFixtures.standard2.id]: fastpassFixtures.standard2
 				}};
 			const expectedResult: FastpassState = {
 				...initialFastpassState,
-				ids: [fastpassToKeep.id],
+				ids: [fastpassFixtures.standard2.id],
 				entities: {
-					[fastpassToKeep.id]: fastpassToKeep
+					[fastpassFixtures.standard2.id]: fastpassFixtures.standard2
 				}
 			};
-			const action = new fastpassActions.DeleteFastpass({ id: fastpassToDelete.id });
+			const action = new fastpassActions.DeleteFastpass({ id: fastpassFixtures.standard1.id });
 
 			// Act
 			const result = fastpassReducer(previousState, action);
@@ -119,12 +89,11 @@ describe('Fastpass Reducer', () => {
 	describe('EditFastpass', () => {
 		it('should set editFastpass to the state', () => {
 			// Arrange
-			const mockId = 'ABCD-1234';
 			const expectedResult: FastpassState = {
 				...initialFastpassState,
-				editFastpass: mockId
+				editFastpass: fastpassFixtures.standard1.id
 			};
-			const action = new fastpassActions.EditFastpass({ id: mockId });
+			const action = new fastpassActions.EditFastpass({ id: fastpassFixtures.standard1.id });
 
 			// Act
 			const result = fastpassReducer(initialFastpassState, action);
@@ -137,34 +106,24 @@ describe('Fastpass Reducer', () => {
 	describe('LoadFastpasses', () => {
 		it('should add all fastpasses to the state in chronological order', () => {
 			// Arrange
-			const mockFastpass1 = new Fastpass(
-				'Big Thunder Mountain',
-				new Date('May 27, 2018 10:40:00'),
-				new Date('May 27, 2018 11:10:00'),
-				new Date('May 27, 2018 10:40:00')
-			);
-			const mockFastpass2 = new Fastpass(
-				'Hyperspace Mountain',
-				new Date('May 27, 2018 15:20:00'),
-				new Date('May 27, 2018 15:50:00'),
-				new Date('May 27, 2018 12:40:00')
-			);
-			const mockFastpass3 = new Fastpass(
-				'Star Tours',
-				new Date('May 27, 2018 13:05:00'),
-				new Date('May 27, 2018 13:35:00'),
-				new Date('May 27, 2018 15:05:00')
-			);
 			const expectedResult: FastpassState = {
 				...initialFastpassState,
-				ids: [mockFastpass1.id, mockFastpass3.id, mockFastpass2.id],
+				ids: [
+					fastpassFixtures.standard1.id,
+					fastpassFixtures.standard2.id,
+					fastpassFixtures.standard3.id
+				],
 				entities: {
-					[mockFastpass1.id]: mockFastpass1,
-					[mockFastpass2.id]: mockFastpass2,
-					[mockFastpass3.id]: mockFastpass3
+					[fastpassFixtures.standard2.id]: fastpassFixtures.standard2,
+					[fastpassFixtures.standard3.id]: fastpassFixtures.standard3,
+					[fastpassFixtures.standard1.id]: fastpassFixtures.standard1
 				}
 			};
-			const action = new fastpassActions.LoadFastpasses({ fastpasses: [mockFastpass1, mockFastpass2, mockFastpass3] });
+			const action = new fastpassActions.LoadFastpasses({ fastpasses: [
+				fastpassFixtures.standard2,
+				fastpassFixtures.standard3,
+				fastpassFixtures.standard1
+			] });
 
 			// Act
 			const result = fastpassReducer(initialFastpassState, action);
@@ -177,41 +136,30 @@ describe('Fastpass Reducer', () => {
 	describe('PruneFastpasses', () => {
 		it('should delete all Fastpasses earlier than the supplied todayCutoff', () => {
 			// Arrange
-			const fastpassToKeep1 = new Fastpass(
-				'Hyperspace Mountain',
-				new Date('May 27, 2018 08:05:00'),
-				new Date('May 27, 2018 08:35:00'),
-				new Date('May 27, 2018 10:05:00')
-			);
-			const fastpassToKeep2 = new Fastpass(
-				'Star Tours',
-				new Date('May 27, 2018 17:05:00'),
-				new Date('May 27, 2018 17:35:00'),
-				new Date('May 27, 2018 19:05:00')
-			);
-			const fastpassToDelete = new Fastpass(
-				'Big Thunder Mountain',
-				new Date('May 26, 2018 21:40:00'),
-				new Date('May 26, 2018 22:10:00'),
-				new Date('May 26, 2018 23:40:00')
-			);
 			const previousState: FastpassState = {
 				...initialFastpassState,
-				ids: [fastpassToDelete.id, fastpassToKeep1.id, fastpassToKeep2.id],
+				ids: [
+					fastpassFixtures.previousDay.id,
+					fastpassFixtures.standard1.id,
+					fastpassFixtures.standard2.id
+				],
 				entities: {
-					[fastpassToDelete.id]: fastpassToDelete,
-					[fastpassToKeep1.id]: fastpassToKeep1,
-					[fastpassToKeep2.id]: fastpassToKeep2
+					[fastpassFixtures.previousDay.id]: fastpassFixtures.previousDay,
+					[fastpassFixtures.standard1.id]: fastpassFixtures.standard1,
+					[fastpassFixtures.standard2.id]: fastpassFixtures.standard2
 				}};
 			const expectedResult: FastpassState = {
 				...initialFastpassState,
-				ids: [fastpassToKeep1.id, fastpassToKeep2.id],
+				ids: [
+					fastpassFixtures.standard1.id,
+					fastpassFixtures.standard2.id
+				],
 				entities: {
-					[fastpassToKeep1.id]: fastpassToKeep1,
-					[fastpassToKeep2.id]: fastpassToKeep2
+					[fastpassFixtures.standard1.id]: fastpassFixtures.standard1,
+					[fastpassFixtures.standard2.id]: fastpassFixtures.standard2
 				}
 			};
-			const mockTodayCutoff = new Date('May 27, 2018 02:00:00');
+			const mockTodayCutoff = new Date('2018-04-12T02:00:00');
 			const action = new fastpassActions.PruneFastpasses({ todayCutoff: mockTodayCutoff });
 
 			// Act
@@ -225,37 +173,25 @@ describe('Fastpass Reducer', () => {
 	describe('UpsertFastpass', () => {
 		it('should add a new Fastpass to the state', () => {
 			// Arrange
-			const mockFastpass = new Fastpass(
-				'Big Thunder Mountain',
-				new Date('May 27, 2018 10:40:00'),
-				new Date('May 27, 2018 11:10:00'),
-				new Date('May 27, 2018 10:40:00')
-			);
-			const mockNewFastpass = new Fastpass(
-				'Star Tours',
-				new Date('May 27, 2018 17:05:00'),
-				new Date('May 27, 2018 17:35:00'),
-				new Date('May 27, 2018 19:05:00')
-			);
 			const previousState = {
 				...initialFastpassState,
-				ids: [mockFastpass.id],
+				ids: [fastpassFixtures.standard1.id],
 				entities: {
-					[mockFastpass.id]: mockFastpass
+					[fastpassFixtures.standard1.id]: fastpassFixtures.standard1
 				}
 			};
 			const expectedResult: FastpassState = {
 				...initialFastpassState,
 				ids: [
 					...previousState.ids,
-					mockNewFastpass.id
+					fastpassFixtures.standard2.id
 				],
 				entities: {
 					...previousState.entities,
-					[mockNewFastpass.id]: mockNewFastpass
+					[fastpassFixtures.standard2.id]: fastpassFixtures.standard2
 				}
 			};
-			const action = new fastpassActions.UpsertFastpass({ fastpass: mockNewFastpass });
+			const action = new fastpassActions.UpsertFastpass({ fastpass: fastpassFixtures.standard2 });
 
 			// Act
 			const result = fastpassReducer(previousState, action);
@@ -266,32 +202,21 @@ describe('Fastpass Reducer', () => {
 
 		it('should update an existing Fastpass in the state', () => {
 			// Arrange
-			const mockFastpass = new Fastpass(
-				'Big Thunder Mountain',
-				new Date('May 27, 2018 10:40:00'),
-				new Date('May 27, 2018 11:10:00'),
-				new Date('May 27, 2018 10:40:00')
-			);
-			const mockUpdatedFastpass = {
-				...mockFastpass,
-				startTime: new Date('May 27, 2018 10:30:00'),
-				endTime: new Date('May 27, 2018 11:00:00')
-			};
 			const previousState = {
 				...initialFastpassState,
-				ids: [mockFastpass.id],
+				ids: [fastpassFixtures.knownId.id],
 				entities: {
-					[mockFastpass.id]: mockFastpass
+					[fastpassFixtures.knownId.id]: fastpassFixtures.knownId
 				}
 			};
 			const expectedResult: FastpassState = {
 				...initialFastpassState,
-				ids: [mockFastpass.id],
+				ids: [fastpassFixtures.knownId.id],
 				entities: {
-					[mockFastpass.id]: mockUpdatedFastpass
+					[fastpassFixtures.knownId.id]: {...fastpassFixtures.knownIdUpdated}
 				}
 			};
-			const action = new fastpassActions.UpsertFastpass({ fastpass: mockUpdatedFastpass });
+			const action = new fastpassActions.UpsertFastpass({ fastpass: fastpassFixtures.knownIdUpdated });
 
 			// Act
 			const result = fastpassReducer(previousState, action);
@@ -304,9 +229,9 @@ describe('Fastpass Reducer', () => {
 			// Arrange
 			const previousState = {
 				...initialFastpassState,
-				editFastpass: 'ABCD-1234'
+				editFastpass: '17a5c948-224d-460d-b942-8890f1a573ee'
 			};
-			const action = new fastpassActions.UpsertFastpass({ fastpass: new Fastpass(null, null, null, null) });
+			const action = new fastpassActions.UpsertFastpass({ fastpass: fastpassFixtures.null });
 
 			// Act
 			const result = fastpassReducer(previousState, action);

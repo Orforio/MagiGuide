@@ -3,7 +3,7 @@
 		<div class="card-header">
 			<div class="form-group">
 				<label for="ride">Attraction</label>
-				<select formControlName="ride" id="ride" class="form-control" required>
+				<select formControlName="ride" name="ride" class="form-control" required>
 					<option>Big Thunder Mountain</option>
 					<option>Buzz Lightyear Laser Blast</option>
 					<option>Indiana Jones and the Temple of Peril</option>
@@ -22,7 +22,7 @@
 					Start <span class="sr-only">time</span>
 				</label>
 				<div class="col-auto">
-					<ngb-timepicker id="startTime" name="startTime"
+					<ngb-timepicker name="startTime"
 					formControlName="startTime" [minuteStep]="5" size="large" required></ngb-timepicker>
 				</div>
 			</div>
@@ -31,7 +31,7 @@
 					End <span class="sr-only">time hours</span>
 				</label>
 				<div class="col-auto">
-					<ngb-timepicker id="endTime" name="endTime"
+					<ngb-timepicker name="endTime"
 					formControlName="endTime" [minuteStep]="5" size="large" required></ngb-timepicker>
 				</div>
 			</div>
@@ -40,15 +40,15 @@
 					Next available <span class="sr-only">time</span>
 				</label>
 				<div class="col-auto">
-					<ngb-timepicker id="nextAvailableTime" name="nextAvailableTime"
+					<ngb-timepicker name="nextAvailableTime"
 					formControlName="nextAvailableTime" size="small" required></ngb-timepicker>
 				</div>
 			</div>
 		</div>
 		<div class="card-footer">
-			<button *ngIf="fastpass" type="button" id="cancelEditFastpass" class="btn btn-outline-secondary float-right" (click)="cancelEditFastpass()">Cancel Update</button>
-			<button *ngIf="fastpass" [disabled]="!upsertFastpassForm.valid" type="submit" id="submitUpsertFastpass" class="btn btn-primary">Update FastPass</button>
-			<button *ngIf="!fastpass" [disabled]="!upsertFastpassForm.valid" type="submit" id="submitUpsertFastpass" class="btn btn-primary">Add FastPass</button>
+			<button *ngIf="fastpass" type="button" id="cancel-edit-fastpass" class="btn btn-outline-secondary float-right" (click)="cancelEditFastpass()">Cancel Update</button>
+			<button *ngIf="fastpass" [disabled]="!upsertFastpassForm.valid" type="submit" class="btn btn-primary">Update Fastpass</button>
+			<button *ngIf="!fastpass" [disabled]="!upsertFastpassForm.valid" type="submit" class="btn btn-primary">Add Fastpass</button>
 		</div>
 	</div>
 </form>
