@@ -12,6 +12,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppRoutingModule } from './app-routing.module';
+import { FastpassesModule } from './fastpasses/fastpasses.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SettingsComponent } from './settings/settings.component';
@@ -29,6 +30,7 @@ import { metaReducers, reducers } from './state';
 		SettingsComponent
 	],
 	imports: [
+		FastpassesModule,
 		AppRoutingModule,
 		BrowserModule,
 		EffectsModule.forRoot([]),

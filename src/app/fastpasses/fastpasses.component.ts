@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { DateTimeService } from '../common/date-time.service';
 import { Fastpass } from './fastpass.model';
 import { DeleteFastpass, PruneFastpasses, UpsertFastpass, EditFastpass } from './state/fastpass.actions';
-import * as fromFastpass from './state/fastpass.reducer';
+import * as fromRoot from '../state';
 import * as fastpassSelectors from './state/fastpass.selectors';
 
 @Component({
@@ -20,7 +20,7 @@ export class FastpassesComponent implements OnInit {
 
 	constructor(
 		private dateTimeService: DateTimeService,
-		private store: Store<fromFastpass.State>
+		private store: Store<fromRoot.State>
 		) {}
 
 	public ngOnInit(): void {

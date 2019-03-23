@@ -3,14 +3,16 @@ import { storeFreeze } from 'ngrx-store-freeze';
 import { localStorageSync } from 'ngrx-store-localstorage';
 
 import { SettingsActionTypes } from '../settings/state/settings.actions';
+import { FastpassState } from '../fastpasses/state/fastpass.reducer';
 import { settingsReducer, SettingsState } from '../settings/state/settings.reducer';
 import { environment } from '../../environments/environment';
 
 export interface State {
+	fastpasses: FastpassState;
 	settings: SettingsState;
 }
 
-export const reducers: ActionReducerMap<State> = {
+export const reducers: ActionReducerMap<any> = {
 	settings: settingsReducer
 };
 

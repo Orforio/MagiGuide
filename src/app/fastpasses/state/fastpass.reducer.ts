@@ -2,11 +2,6 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 import { FastpassActions, FastpassActionTypes } from './fastpass.actions';
 import { Fastpass } from '../fastpass.model';
-import * as fromRoot from '../../state';
-
-export interface State extends fromRoot.State {
-	fastpasses: FastpassState;
-}
 
 export interface FastpassState extends EntityState<Fastpass> {
 	editFastpass: string | null;
