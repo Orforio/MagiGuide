@@ -17,20 +17,12 @@ install:
 before_script:
   - greenkeeper-lockfile-update
   - ./cc-test-reporter before-build
-  
-matrix:
-  include:
-  - name: "Linting"
-    env: TEST_SUITE=lint
-  - name: "Unit Tests"
-    env: TEST_SUITE=test --code-coverage
-  - name: "End-To-End Tests"
-    env: TEST_SUITE=e2e
-  - name: "Production Build"
-    env: TEST_SUITE=build --prod --build-optimizer
 
 script:
-  - ng $TEST_SUITE
+  - ng lint
+  - ng test --code-coverage
+  - ng e2e
+  - ng build --prod --build-optimizer
 
 after_script:
   - greenkeeper-lockfile-upload
