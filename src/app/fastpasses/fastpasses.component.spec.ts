@@ -14,7 +14,7 @@ describe('FastpassesComponent', () => {
 	let component: FastpassesComponent;
 	let fixture: ComponentFixture<FastpassesComponent>;
 	let store: Store<any>;
-	const dateTimeServiceMock = jasmine.createSpyObj('DateTimeMock', ['getTodayCutoff']);
+	const dateTimeServiceMock = jasmine.createSpyObj<DateTimeService>('DateTimeService', ['getTodayCutoff']);
 
 	beforeEach(async(() => {
 		@Component({selector: 'mg-view-fastpass', template: ''})

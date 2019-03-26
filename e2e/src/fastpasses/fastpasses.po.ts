@@ -98,9 +98,18 @@ export class FastpassesPage extends MagiGuidePage {
 		nextAvailableTime: number[]
 		): void {
 			this.getAddFastpassRide().element(by.cssContainingText('option', ride)).click();
-			this.getAddFastpassStartTime().all(by.tagName('input')).each((input, index) => input.sendKeys(startTime[index]));
-			this.getAddFastpassEndTime().all(by.tagName('input')).each((input, index) => input.sendKeys(endTime[index]));
-			this.getAddFastpassNextAvailableTime().all(by.tagName('input')).each((input, index) => input.sendKeys(nextAvailableTime[index]));
+			this.getAddFastpassStartTime().all(by.tagName('input')).each((input, index) => {
+				input.clear();
+				input.sendKeys(startTime[index]);
+			});
+			this.getAddFastpassEndTime().all(by.tagName('input')).each((input, index) => {
+				input.clear();
+				input.sendKeys(endTime[index]);
+			});
+			this.getAddFastpassNextAvailableTime().all(by.tagName('input')).each((input, index) => {
+				input.clear();
+				input.sendKeys(nextAvailableTime[index]);
+			});
 			this.getAddFastpassButton().click();
 		}
 

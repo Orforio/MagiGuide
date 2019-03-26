@@ -18,6 +18,7 @@ import { fastpassReducer } from './state/fastpass.reducer';
 		UpsertFastpassComponent,
 		ViewFastpassComponent
 	],
+	exports: [ViewFastpassComponent],
 	imports: [
 		CommonModule,
 		FastpassesRoutingModule,
