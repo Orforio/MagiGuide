@@ -3,7 +3,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-import { Fastpass } from '../fastpass.model';
 import { fastpassFixtures } from '../fastpass.model.fixtures';
 import { ViewFastpassComponent } from './view-fastpass.component';
 
@@ -56,7 +55,10 @@ describe('ViewFastpassComponent', () => {
 
 	it('should call editFastpass() when the Edit button is clicked', () => {
 		// Arrange
+		component.edit.subscribe();
 		spyOn(component, 'editFastpass');
+		component.ngOnInit();
+		fixture.detectChanges();
 
 		// Act
 		compiled.querySelector<HTMLButtonElement>('.edit-fastpass').click();
@@ -65,15 +67,28 @@ describe('ViewFastpassComponent', () => {
 		expect(component.editFastpass).toHaveBeenCalled();
 	});
 
+	it('should not display the Edit button if no edit Output was supplied', () => {
+		// Assert
+		expect(compiled.querySelectorAll('.edit-fastpass').length).toBe(0);
+	});
+
 	it('should call removeFastpass() when the Remove button is clicked', () => {
 		// Arrange
+		component.remove.subscribe();
 		spyOn(component, 'removeFastpass');
+		component.ngOnInit();
+		fixture.detectChanges();
 
 		// Act
 		compiled.querySelector<HTMLButtonElement>('.remove-fastpass').click();
 
 		// Assert
 		expect(component.removeFastpass).toHaveBeenCalled();
+	});
+
+	it('should not display the Remove button if no remove Output was supplied', () => {
+		// Assert
+		expect(compiled.querySelectorAll('.remove-fastpass').length).toBe(0);
 	});
 
 	describe('editFastpass()', () => {
