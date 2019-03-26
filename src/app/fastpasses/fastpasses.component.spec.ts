@@ -14,7 +14,7 @@ describe('FastpassesComponent', () => {
 	let component: FastpassesComponent;
 	let fixture: ComponentFixture<FastpassesComponent>;
 	let store: Store<any>;
-	const dateTimeServiceMock = jasmine.createSpyObj<DateTimeService>('DateTimeService', ['getTodayCutoff']);
+	const dateTimeServiceMock = jasmine.createSpyObj<DateTimeService>('DateTimeService', ['getCurrentDateTime', 'getTodayCutoff']);
 
 	beforeEach(async(() => {
 		@Component({selector: 'mg-view-fastpass', template: ''})
@@ -57,6 +57,7 @@ describe('FastpassesComponent', () => {
 		store = fixture.debugElement.injector.get(Store);
 
 		spyOn(store, 'dispatch').and.callThrough();
+		dateTimeServiceMock.getCurrentDateTime.and.returnValue(new Date('2018-04-12T10:00:00'));
 		dateTimeServiceMock.getTodayCutoff.and.returnValue(new Date('2018-04-12T02:00:00'));
 
 		// Act
@@ -94,6 +95,19 @@ describe('FastpassesComponent', () => {
 	it('should display "available now" message if Fastpasses are not set', () => {
 		// Arrange
 		const action = new fastpassActions.LoadFastpasses({ fastpasses: [] });
+
+		// Act
+		store.dispatch(action);
+		fixture.detectChanges();
+
+		// Assert
+		expect(compiled.querySelector('ngb-alert').textContent).toContain('available now');
+	});
+
+	it('should display "available now" message if Fastpasses are expired', () => {
+		// Arrange
+		dateTimeServiceMock.getCurrentDateTime.and.returnValue(new Date('2018-04-12T19:00:00'));
+		const action = new fastpassActions.LoadFastpasses({ fastpasses: [fastpassFixtures.standard1] });
 
 		// Act
 		store.dispatch(action);
