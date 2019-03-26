@@ -4,4 +4,22 @@
 		<p class="lead">A companion PWA for Disneyland Paris</p>
 	</div>
 </div>
-<p><a [routerLink]="['/fastpasses']">FastPasses</a></p>
+<div class="container-fluid">
+	<div class="row">
+		<div *ngIf="nextFastpass | async as nextFastpassAsync" class="col-xs-12 col-sm-6 mb-2">
+			<mg-view-fastpass class="card-deck clickable"
+				[fastpass]="nextFastpassAsync" [routerLink]="'/fastpasses'"></mg-view-fastpass>
+		</div>
+		<div class="col-xs-12 col-sm-6 mb-2">
+			<div class="card border-primary" id="next-available-time">
+				<div class="card-body">
+					<p *ngIf="nextAvailableTime | async as nextAvailableTimeAsync; else noNextAvailableTime" class="display-4">Next Fastpass available {{nextAvailableTimeAsync | date:'H:mm'}}</p>
+					<ng-template #noNextAvailableTime>
+						<p class="display-4">Next Fastpass available now!</p>
+					</ng-template>
+				</div>
+				<button type="button" class="btn btn-primary btn-block card-footer bg-primary" [routerLink]="'/fastpasses'">Add new Fastpass</button>
+			</div>
+		</div>
+	</div>
+</div>

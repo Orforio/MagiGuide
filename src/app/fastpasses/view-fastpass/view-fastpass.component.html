@@ -1,9 +1,11 @@
 <div class="card text-white bg-primary">
 	<div class="card-header">
-		<button class="btn btn-danger float-right ml-2 remove-fastpass" type="button" aria-label="Remove Fastpass" (click)="removeFastpass()">
+		<button *ngIf="showRemove" class="btn btn-danger float-right ml-2 remove-fastpass" type="button" aria-label="Remove Fastpass"
+			(click)="removeFastpass()">
 			<fa-icon [icon]="['fas', 'trash-alt']"></fa-icon>
 		</button>
-		<button class="btn btn-warning float-right edit-fastpass" type="button" aria-label="Edit Fastpass" (click)="editFastpass()">
+		<button *ngIf="showEdit" class="btn btn-warning float-right edit-fastpass" type="button" aria-label="Edit Fastpass"
+			(click)="editFastpass()">
 			<fa-icon [icon]="['fas', 'edit']"></fa-icon> Edit
 		</button>
 		<h5 class="card-title ride-name">{{fastpass.ride}}</h5>
