@@ -25,7 +25,7 @@ describe('Fastpasses Page', () => {
 	describe('on first load', () => {
 		it('should display the "new Fastpass available" message', () => {
 			// Assert
-			expect(fastpassesPage.getNextAvailableFastpass()).toEqual('New Fastpass available now!');
+			expect(fastpassesPage.getNextAvailableFastpass()).toContain('available now');
 		});
 
 		it('should display no Fastpasses', () => {
@@ -56,11 +56,6 @@ describe('Fastpasses Page', () => {
 			// Assert
 			expect(fastpassesPage.getFastpasses().count()).toEqual(1);
 		});
-
-		it('should display the next available time', () => {
-			// Assert
-			expect(fastpassesPage.getNextAvailableFastpass()).toContain('2:15 PM');
-		});
 	});
 
 	describe('editing a Fastpass', () => {
@@ -84,14 +79,6 @@ describe('Fastpasses Page', () => {
 			expect(fastpassesPage.getFastpassRide(0).getText()).toEqual('Big Thunder Mountain');
 			expect(fastpassesPage.getFastpassStartTime(0).getText()).toEqual('11:15');
 			expect(fastpassesPage.getFastpassEndTime(0).getText()).toEqual('11:45');
-		});
-
-		it('should display the updated next available time', () => {
-			// Act
-			fastpassesPage.fillInUpdateFastpass('Big Thunder Mountain', [11, 15], [11, 45], [11, 15]);
-
-			// Assert
-			expect(fastpassesPage.getNextAvailableFastpass()).toContain('11:15 AM');
 		});
 
 		it('should cancel the update when the Cancel button is clicked', () => {
