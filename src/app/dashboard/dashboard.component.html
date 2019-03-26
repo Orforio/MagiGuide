@@ -7,8 +7,8 @@
 <div class="container-fluid">
 	<div class="row">
 		<div *ngIf="nextFastpass | async as nextFastpassAsync" class="col-xs-12 col-sm-6 mb-2">
-			<mg-view-fastpass class="card-deck"
-				[fastpass]="nextFastpassAsync"></mg-view-fastpass>
+			<mg-view-fastpass class="card-deck clickable"
+				[fastpass]="nextFastpassAsync" [routerLink]="'/fastpasses'"></mg-view-fastpass>
 		</div>
 		<div class="col-xs-12 col-sm-6 mb-2">
 			<div class="card border-primary" id="next-available-time">
