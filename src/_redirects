@@ -1,2 +1,2 @@
 # Redirect default Netlify subdomain to primary domain
-https://magiguide.netlify.com/* https://magiguide.sblorgh.org/:splat 301!
+https://magiguide.netlify.com/* https://magiguide.com/:splat 301!
