@@ -12,6 +12,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AttractionsModule } from './attractions/attractions.module';
 import { FastpassesModule } from './fastpasses/fastpasses.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -30,8 +31,8 @@ import { metaReducers, reducers } from './state';
 		SettingsComponent
 	],
 	imports: [
+		AttractionsModule,
 		FastpassesModule,
-		AppRoutingModule,
 		BrowserModule,
 		EffectsModule.forRoot([]),
 		FontAwesomeModule,
@@ -41,7 +42,8 @@ import { metaReducers, reducers } from './state';
 		StoreModule.forRoot(reducers, { metaReducers }),
 		!environment.production ? StoreDevtoolsModule.instrument({
 			name: 'MagiGuide'
-		}) : []
+		}) : [],
+		AppRoutingModule
 	],
 	providers: [
 		DateTimeService,
