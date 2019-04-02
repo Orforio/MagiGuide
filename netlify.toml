@@ -10,6 +10,6 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "http://api.magiguide.com/:splat
+  to = "http://api.magiguide.com/:splat"
   status = 200
   force = true
