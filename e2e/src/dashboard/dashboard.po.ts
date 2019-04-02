@@ -4,7 +4,7 @@ import { MagiGuidePage } from '../common.po';
 
 export class DashboardPage extends MagiGuidePage {
 	public navigateToDashboard(): promise.Promise<any> {
-		return browser.get('/dashboard');
+		return browser.get('/');
 	}
 
 	public getNextFastpass(): ElementFinder {

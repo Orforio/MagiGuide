@@ -1,0 +1,14 @@
+[build]
+  base = ""
+  publish = "dist/MagiGuide"
+  command = "ng build --prod --build-optimizer"
+
+[[redirects]]
+  from = "https://magiguide.netlify.com/*"
+  to = "https://www.magiguide.com/:splat"
+  force = true
+
+[[redirects]]
+  from = "/api/*"
+  to = "http://api.magiguide.com/:splat 200
+  force = true
