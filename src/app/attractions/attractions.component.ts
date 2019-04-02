@@ -10,7 +10,11 @@ import { AttractionsService } from './attractions.service';
 	templateUrl: './attractions.component.html'
 })
 export class AttractionsComponent implements OnInit {
-	constructor(private attractions: AttractionsService) {}
+	public attractions;
 
-	public ngOnInit(): void {}
+	constructor(private attractionsService: AttractionsService) {}
+
+	public ngOnInit(): void {
+		this.attractions = this.attractionsService.testApi();
+	}
 }
