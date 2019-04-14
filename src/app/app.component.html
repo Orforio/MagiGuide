@@ -1,4 +1,4 @@
-<nav class="navbar navbar-light bg-light justify-content-end">
+<nav class="navbar navbar-light bg-light justify-content-end" id="active-park-bar">
 	<form [formGroup]="activeParksForm" class="form-inline">
 		<span class="navbar-text">Active park</span>
 		<div class="form-row">
@@ -11,7 +11,7 @@
 	</form>
 </nav>
 <router-outlet></router-outlet>
-<nav class="navbar navbar-expand fixed-bottom navbar-dark bg-dark py-0">
+<nav class="navbar navbar-expand fixed-bottom navbar-dark bg-dark py-0" id="navigation-bar">
 	<ul class="navbar-nav w-100 justify-content-between justify-content-md-start">
 		<li class="nav-item">
 			<a class="nav-link" [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">

@@ -5,8 +5,12 @@ export class AppPage {
 		return browser.get('/');
 	}
 
+	public getActiveParkBar(): ElementFinder {
+		return element(by.id('active-park-bar'));
+	}
+
 	public getNavBar(): ElementFinder {
-		return element(by.tagName('nav'));
+		return element(by.id('navigation-bar'));
 	}
 
 	public getNavButtons(): ElementArrayFinder {
