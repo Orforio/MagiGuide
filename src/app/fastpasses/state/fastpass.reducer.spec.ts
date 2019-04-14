@@ -242,7 +242,7 @@ describe('Fastpass Reducer', () => {
 	});
 
 	describe('default', () => {
-		it('should return the initial state', () => {
+		it('should return the previous state', () => {
 			// Arrange
 			const action = {} as any;
 

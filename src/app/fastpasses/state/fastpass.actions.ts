@@ -53,10 +53,10 @@ export class UpsertFastpass implements Action {
 }
 
 export type FastpassActions =
-	AddFastpass
-	| ClearFastpasses
-	| DeleteFastpass
-	| EditFastpass
-	| LoadFastpasses
-	| PruneFastpasses
-	| UpsertFastpass;
+	AddFastpass |
+	ClearFastpasses |
+	DeleteFastpass |
+	EditFastpass |
+	LoadFastpasses |
+	PruneFastpasses |
+	UpsertFastpass;
