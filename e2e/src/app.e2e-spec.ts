@@ -17,6 +17,11 @@ describe('MagiGuide App', () => {
 		browser.executeScript('window.localStorage.clear();');
 	});
 
+	it('should display the Active Park bar', () => {
+		// Assert
+		expect(appPage.getActiveParkBar()).toBeDefined();
+	});
+
 	it('should display the nav bar', () => {
 		// Assert
 		expect(appPage.getNavBar()).toBeDefined();
