@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { UpsertFastpassComponent } from './upsert-fastpass.component';
-import { fastpassFixtures } from '../fastpass.model.fixtures';
+import { fastpassFixtures } from '../fastpass.fixtures';
 import { _createFeatureReducers } from '@ngrx/store';
 
 describe('UpsertFastpassComponent', () => {

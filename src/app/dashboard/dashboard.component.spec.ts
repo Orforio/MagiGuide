@@ -5,7 +5,7 @@ import { Store, StoreModule } from '@ngrx/store';
 
 import { DashboardComponent } from './dashboard.component';
 import { DateTimeService } from '../common/date-time.service';
-import { fastpassFixtures } from '../fastpasses/fastpass.model.fixtures';
+import { fastpassFixtures } from '../fastpasses/fastpass.fixtures';
 import { fastpassReducer } from '../fastpasses/state/fastpass.reducer';
 import * as fastpassActions from '../fastpasses/state/fastpass.actions';
 

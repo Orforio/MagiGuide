@@ -1,6 +1,6 @@
 import { FastpassState, initialFastpassState, fastpassReducer } from './fastpass.reducer';
 import * as fastpassActions from './fastpass.actions';
-import { fastpassFixtures } from '../fastpass.model.fixtures';
+import { fastpassFixtures } from '../fastpass.fixtures';
 
 describe('Fastpass Reducer', () => {
 	describe('AddFastpass', () => {

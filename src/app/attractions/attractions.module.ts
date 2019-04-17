@@ -15,7 +15,7 @@ import { AttractionsEffects } from './state/attractions.effects';
 		CommonModule,
 		EffectsModule.forFeature([AttractionsEffects]),
 		HttpClientModule,
-		StoreModule.forFeature('attractions', fromAttractions.reducer),
+		StoreModule.forFeature('attractions', fromAttractions.attractionsReducer),
 		AttractionsRoutingModule
 	]
 })

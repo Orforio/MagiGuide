@@ -15,6 +15,6 @@ export class AttractionsComponent implements OnInit {
 	constructor(private attractionsService: AttractionsService) {}
 
 	public ngOnInit(): void {
-		this.attractions = this.attractionsService.testApi();
+		// this.attractions = this.attractionsService.testApi();
 	}
 }

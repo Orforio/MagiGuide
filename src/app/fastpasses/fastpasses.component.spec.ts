@@ -4,7 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule } from '@ngrx/store';
 
 import { DateTimeService } from '../common/date-time.service';
-import { fastpassFixtures } from './fastpass.model.fixtures';
+import { fastpassFixtures } from './fastpass.fixtures';
 import { FastpassesComponent } from './fastpasses.component';
 import { fastpassReducer } from './state/fastpass.reducer';
 import * as fastpassActions from './state/fastpass.actions';

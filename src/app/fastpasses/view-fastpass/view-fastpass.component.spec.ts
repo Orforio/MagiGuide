@@ -3,7 +3,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-import { fastpassFixtures } from '../fastpass.model.fixtures';
+import { fastpassFixtures } from '../fastpass.fixtures';
 import { ViewFastpassComponent } from './view-fastpass.component';
 
 describe('ViewFastpassComponent', () => {
