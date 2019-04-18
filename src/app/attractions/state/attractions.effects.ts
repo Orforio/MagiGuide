@@ -1,22 +1,29 @@
 import { Injectable } from '@angular/core';
+import { select, Store } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { EMPTY, of as observableOf } from 'rxjs';
-import { catchError, concatMap, map } from 'rxjs/operators';
+import { of as observableOf } from 'rxjs';
+import { catchError, flatMap, map, withLatestFrom } from 'rxjs/operators';
 
-import { LoadAttractionsFailure, LoadAttractionsSuccess, AttractionActionTypes, AttractionActions } from './attractions.actions';
+import { AttractionsService } from '../attractions.service';
+import { AttractionActions, AttractionActionTypes, LoadAttractionsFailure, LoadAttractionsSuccess } from './attractions.actions';
+import * as fromSettings from '../../settings/state/settings.reducer';
+import * as settingsSelectors from '../../settings/state/settings.selectors';
 
 @Injectable()
 export class AttractionsEffects {
+	constructor(
+		private actions: Actions<AttractionActions>,
+		private attractionsService: AttractionsService,
+		private store: Store<fromSettings.SettingsState>
+		) {}
+
 	@Effect()
-	loadAttractionss = this.actions.pipe(
+	loadAttractions = this.actions.pipe(
 		ofType(AttractionActionTypes.LoadAttractions),
-		concatMap(() =>
-			/** An EMPTY observable only emits completion. Replace with your own observable API request */
-			EMPTY.pipe(
-				map(data => new LoadAttractionsSuccess({ data })),
-				catchError(error => observableOf(new LoadAttractionsFailure({ error }))))
+		withLatestFrom(this.store.pipe(select(settingsSelectors.getActivePark))),
+		flatMap(([payload, activePark]) => this.attractionsService.getAttractions(activePark).pipe(
+			map(attractions => new LoadAttractionsSuccess({ attractions })),
+			catchError(error => observableOf(new LoadAttractionsFailure({ error }))))
 		)
 	);
-
-	constructor(private actions: Actions<AttractionActions>) {}
 }

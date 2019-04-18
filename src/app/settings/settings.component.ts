@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { FormBuilder, Validators } from '@angular/forms';
+import { select, Store } from '@ngrx/store';
+import { FormBuilder } from '@angular/forms';
 import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { DateTimeService } from '../common/date-time.service';
 import { GlobalObjectService } from '../common/global-object.service';
-import { SetDebug, ResetApp } from './state/settings.actions';
+import { ResetApp, SetDebug } from './state/settings.actions';
 import { LoadFastpasses, PruneFastpasses } from '../fastpasses/state/fastpass.actions';
 import { Fastpass } from '../fastpasses/fastpass.model';
 import * as fromRoot from '../state';
