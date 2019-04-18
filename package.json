@@ -37,7 +37,6 @@
     "moment": "^2.24.0",
     "ngrx-store-localstorage": "^7.0.0",
     "rxjs": "^6.4.0",
-    "themeparks": "^4.7.13",
     "zone.js": "^0.8.29"
   },
   "devDependencies": {
