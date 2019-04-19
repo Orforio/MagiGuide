@@ -6,6 +6,6 @@ export class Attraction {
 	public id: string;
 	public name: string;
 	public park: Parks;
-	public schedule: AttractionSchedule;
+	public schedule: AttractionSchedule | null;
 	public updated: Date;
 }

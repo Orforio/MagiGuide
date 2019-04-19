@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { of as observableOf } from 'rxjs';
-import { catchError, flatMap, map, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { AttractionsService } from '../attractions.service';
 import { AttractionActions, AttractionActionTypes, LoadAttractionsFailure, LoadAttractionsSuccess } from './attractions.actions';
@@ -21,9 +21,8 @@ export class AttractionsEffects {
 	loadAttractions = this.actions.pipe(
 		ofType(AttractionActionTypes.LoadAttractions),
 		withLatestFrom(this.store.pipe(select(settingsSelectors.getActivePark))),
-		flatMap(([payload, activePark]) => this.attractionsService.getAttractions(activePark).pipe(
-			map(attractions => new LoadAttractionsSuccess({ attractions })),
-			catchError(error => observableOf(new LoadAttractionsFailure({ error }))))
-		)
+		switchMap(([payload, activePark]) => this.attractionsService.getAttractions(activePark)),
+		map(attractions => new LoadAttractionsSuccess({ attractions })),
+		catchError(error => observableOf(new LoadAttractionsFailure({ error })))
 	);
 }

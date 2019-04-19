@@ -49,9 +49,22 @@ const park01Attraction02Updated: Attraction = {
 	}
 };
 
+const park02Attraction01: Attraction = {
+	id: 'ATT03',
+	name: 'Attraction 03',
+	park: Parks.WaltDisneyStudios,
+	fastpassEnabled: true,
+	updated: new Date(),
+	schedule: {
+		openingTime: new Date(),
+		closingTime: new Date()
+	}
+};
+
 export const attractionFixtures = {
 	park01Attraction01,
 	park01Attraction02,
 	park01Attraction01Updated,
-	park01Attraction02Updated
+	park01Attraction02Updated,
+	park02Attraction01
 };

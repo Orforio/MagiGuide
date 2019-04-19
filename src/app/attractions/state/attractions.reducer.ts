@@ -29,3 +29,10 @@ export function attractionsReducer(state = initialAttractionsState, action: Attr
 			return state;
 	}
 }
+
+export const {
+	selectAll,
+	selectEntities,
+	selectIds,
+	selectTotal
+} = attractionsAdapter.getSelectors();
