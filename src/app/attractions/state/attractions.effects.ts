@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { select, Store } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { of as observableOf } from 'rxjs';
@@ -23,6 +24,6 @@ export class AttractionsEffects {
 		withLatestFrom(this.store.pipe(select(settingsSelectors.getActivePark))),
 		switchMap(([payload, activePark]) => this.attractionsService.getAttractions(activePark)),
 		map(attractions => new LoadAttractionsSuccess({ attractions })),
-		catchError(error => observableOf(new LoadAttractionsFailure({ error })))
+		catchError((error: HttpErrorResponse) => observableOf(new LoadAttractionsFailure({ error: error.message })))
 	);
 }

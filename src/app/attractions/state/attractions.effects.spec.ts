@@ -85,10 +85,10 @@ describe('AttractionsEffects', () => {
 
 		it('should dispatch LoadAttractionsFailure with error on failure', (done: DoneFn) => {
 			// Arrange
-			const mockError = 'Something went wrong';
+			const mockError = { message: 'Something went wrong' };
 			mockAttractionsService.getAttractions.and.returnValue(observableThrowError(mockError));
 			const action = new attractionActions.LoadAttractions();
-			const expectedAction = new attractionActions.LoadAttractionsFailure({ error: mockError });
+			const expectedAction = new attractionActions.LoadAttractionsFailure({ error: mockError.message });
 
 			// Act
 			actions = new ReplaySubject(1);
