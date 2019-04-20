@@ -5,8 +5,6 @@ import * as moment from 'moment';
 	providedIn: 'root'
 })
 export class DateTimeService {
-	constructor() {}
-
 	public getCurrentDateTime(): Date {
 		return moment().toDate();
 	}
@@ -15,5 +13,9 @@ export class DateTimeService {
 		return moment().isBetween({ hours: 0, minutes: 0, seconds: 0 }, { hours: 2, minutes: 0, seconds: 0 }) ?
 			moment().subtract(1, 'day').hours(2).minutes(0).seconds(0).toDate() :
 			moment().hours(2).minutes(0).seconds(0).toDate();
+	}
+
+	public isOlderThanHours(date: Date, hours: number): boolean {
+		return moment().subtract(hours, 'hours').isAfter(date);
 	}
 }

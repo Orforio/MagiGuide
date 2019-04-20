@@ -61,10 +61,40 @@ const park02Attraction01: Attraction = {
 	}
 };
 
+const updatedNewer: Attraction = {
+	id: 'ATT05',
+	name: 'Attraction 05',
+	park: Parks.DisneylandPark,
+	fastpassEnabled: true,
+	updated: new Date('1992-04-12T18:00:00Z'),
+	schedule: null
+};
+
+const updatedNewest: Attraction = {
+	id: 'ATT06',
+	name: 'Attraction 06',
+	park: Parks.DisneylandPark,
+	fastpassEnabled: true,
+	updated: new Date('1992-04-12T14:00:00Z'),
+	schedule: null
+};
+
+const updatedOldest: Attraction = {
+	id: 'ATT04',
+	name: 'Attraction 04',
+	park: Parks.DisneylandPark,
+	fastpassEnabled: true,
+	updated: new Date('1992-04-12T10:00:00Z'),
+	schedule: null
+};
+
 export const attractionFixtures = {
 	park01Attraction01,
 	park01Attraction02,
 	park01Attraction01Updated,
 	park01Attraction02Updated,
-	park02Attraction01
+	park02Attraction01,
+	updatedNewer,
+	updatedNewest,
+	updatedOldest
 };

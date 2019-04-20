@@ -54,4 +54,32 @@ describe('Attractions Selectors', () => {
 			]);
 		});
 	});
+
+	describe('getAttractionsOldestUpdateForPark()', () => {
+		it('should return the oldest updated Date', () => {
+			// Arrange
+			const mockState = [
+				attractionFixtures.updatedNewer,
+				attractionFixtures.updatedNewest,
+				attractionFixtures.updatedOldest
+			];
+
+			// Act
+			const result = attractionsSelectors.getAttractionsOldestUpdateForPark.projector(mockState);
+
+			// Assert
+			expect(result).toEqual(attractionFixtures.updatedOldest.updated);
+		});
+
+		it('should return null if there are no Attractions', () => {
+			// Arrange
+			const mockState = [];
+
+			// Act
+			const result = attractionsSelectors.getAttractionsOldestUpdateForPark.projector(mockState);
+
+			// Assert
+			expect(result).toBeNull();
+		});
+	});
 });

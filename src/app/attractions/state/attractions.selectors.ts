@@ -15,3 +15,10 @@ export const getAttractionsForPark = createSelector(
 	fromSettings.getActivePark,
 	(attractions, activePark) => attractions.filter(attraction => attraction.park === activePark)
 );
+
+export const getAttractionsOldestUpdateForPark = createSelector(
+	getAttractionsForPark,
+	attractions => attractions
+		.map(attraction => attraction.updated)
+		.reduce((accumulator, currentValue) => accumulator && accumulator.getTime() < currentValue.getTime() ? accumulator : currentValue, null)
+);
