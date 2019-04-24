@@ -3,10 +3,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule } from '@ngrx/store';
 
-import { DateTimeService } from '../common/date-time.service';
+import { DateTimeService } from '../common';
+import { attractionFixtures } from '../attractions/attraction.fixtures';
 import { fastpassFixtures } from './fastpass.fixtures';
 import { FastpassesComponent } from './fastpasses.component';
+import { attractionsReducer } from '../attractions/state/attractions.reducer';
 import { fastpassReducer } from './state/fastpass.reducer';
+import { settingsReducer } from '../settings/state/settings.reducer';
+import * as attractionActions from '../attractions/state/attractions.actions';
 import * as fastpassActions from './state/fastpass.actions';
 
 describe('FastpassesComponent', () => {
@@ -14,7 +18,11 @@ describe('FastpassesComponent', () => {
 	let component: FastpassesComponent;
 	let fixture: ComponentFixture<FastpassesComponent>;
 	let store: Store<any>;
-	const dateTimeServiceMock = jasmine.createSpyObj<DateTimeService>('DateTimeService', ['getCurrentDateTime', 'getTodayCutoff']);
+	const dateTimeServiceMock = jasmine.createSpyObj<DateTimeService>('DateTimeService', [
+		'getCurrentDateTime',
+		'getTodayCutoff',
+		'isOlderThanHours'
+	]);
 
 	beforeEach(async(() => {
 		@Component({selector: 'mg-view-fastpass', template: ''})
@@ -26,6 +34,7 @@ describe('FastpassesComponent', () => {
 
 		@Component({selector: 'mg-upsert-fastpass', template: ''})
 		class UpsertFastpassStubComponent {
+			@Input() public attractions: any;
 			@Input() public fastpass: any;
 			@Output() public cancelEdit = new EventEmitter<any>();
 			@Output() public upsert = new EventEmitter<any>();
@@ -40,7 +49,9 @@ describe('FastpassesComponent', () => {
 			imports: [
 				NgbModule,
 				StoreModule.forRoot({
-					'fastpasses': fastpassReducer
+					'attractions': attractionsReducer,
+					'fastpasses': fastpassReducer,
+					'settings': settingsReducer
 				})
 			],
 			providers: [
@@ -59,6 +70,7 @@ describe('FastpassesComponent', () => {
 		spyOn(store, 'dispatch').and.callThrough();
 		dateTimeServiceMock.getCurrentDateTime.and.returnValue(new Date('2018-04-12T10:00:00'));
 		dateTimeServiceMock.getTodayCutoff.and.returnValue(new Date('2018-04-12T02:00:00'));
+		dateTimeServiceMock.isOlderThanHours.and.returnValue(false);
 
 		// Act
 		fixture.detectChanges();
@@ -68,6 +80,74 @@ describe('FastpassesComponent', () => {
 	it('should create', () => {
 		// Assert
 		expect(component).toBeTruthy();
+	});
+
+	it('should dispatch the LoadAttractions action if the state contains no Attractions', (done: DoneFn) => {
+		// Arrange
+		const mockAction = new attractionActions.LoadAttractions();
+
+		// Act
+		// Assert
+		component.attractions.subscribe(() => {
+			expect(store.dispatch).toHaveBeenCalledWith(mockAction);
+			done();
+		});
+	});
+
+	it('should dispatch the LoadAttractions action if state contains Attractions older than 12 hours', (done: DoneFn) => {
+		// Arrange
+		const mockAction = new attractionActions.LoadAttractions();
+		const mockAttractions = [
+			attractionFixtures.updatedOldest,
+			attractionFixtures.updatedNewer
+		];
+		dateTimeServiceMock.isOlderThanHours.and.returnValue(true);
+		store.dispatch(new attractionActions.LoadAttractionsSuccess({ attractions: mockAttractions }));
+		fixture.detectChanges();
+
+		// Act
+		// Assert
+		component.attractions.subscribe(() => {
+			expect(store.dispatch).toHaveBeenCalledWith(mockAction);
+			done();
+		});
+	});
+
+	it('should not dispatch the LoadAttractions action if state contains Attractions newer than 12 hours', (done: DoneFn) => {
+		// Arrange
+		const mockAction = new attractionActions.LoadAttractions();
+		const mockAttractions = [
+			attractionFixtures.updatedOldest,
+			attractionFixtures.updatedNewer
+		];
+		dateTimeServiceMock.isOlderThanHours.and.returnValue(false);
+		store.dispatch(new attractionActions.LoadAttractionsSuccess({ attractions: mockAttractions }));
+		fixture.detectChanges();
+
+		// Act
+		// Assert
+		component.attractions.subscribe(() => {
+			expect(store.dispatch).not.toHaveBeenCalledWith(mockAction);
+			done();
+		});
+	});
+
+	it('should retrieve the Attractions data', (done: DoneFn) => {
+		// Arrange
+		const mockAttractions = [
+			attractionFixtures.park01Attraction01,
+			attractionFixtures.park01Attraction02
+		];
+
+		// Act
+		store.dispatch(new attractionActions.LoadAttractionsSuccess({ attractions: mockAttractions }));
+		fixture.detectChanges();
+
+		// Assert
+		component.attractions.subscribe(result => {
+			expect(result).toEqual(mockAttractions);
+			done();
+		});
 	});
 
 	it('should dispatch the PruneFastpasses action with todayCutoff', () => {

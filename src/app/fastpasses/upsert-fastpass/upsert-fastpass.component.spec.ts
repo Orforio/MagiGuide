@@ -3,8 +3,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { UpsertFastpassComponent } from './upsert-fastpass.component';
+import { attractionFixtures } from '../../attractions/attraction.fixtures';
 import { fastpassFixtures } from '../fastpass.fixtures';
-import { _createFeatureReducers } from '@ngrx/store';
 
 describe('UpsertFastpassComponent', () => {
 	let compiled: HTMLElement;
@@ -37,6 +37,23 @@ describe('UpsertFastpassComponent', () => {
 
 		// Assert
 		expect(component).toBeTruthy();
+	});
+
+	it('should set the attraction select options to the input Attractions', () => {
+		// Arrange
+		component.attractions = [
+			attractionFixtures.park01Attraction01,
+			attractionFixtures.park01Attraction02
+		];
+
+		// Act
+		fixture.detectChanges();
+		const result = compiled.querySelectorAll<HTMLOptionElement>('select option');
+
+		// Assert
+		expect(result.length).toEqual(2);
+		expect(result[0].textContent).toEqual(attractionFixtures.park01Attraction01.name);
+		expect(result[1].textContent).toEqual(attractionFixtures.park01Attraction02.name);
 	});
 
 	it('should set the form elements to the values of the Input Fastpass', () => {

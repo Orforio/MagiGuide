@@ -4,15 +4,7 @@
 			<div class="form-group">
 				<label for="ride">Attraction</label>
 				<select formControlName="ride" name="ride" class="form-control" required>
-					<option>Big Thunder Mountain</option>
-					<option>Buzz Lightyear Laser Blast</option>
-					<option>Indiana Jones and the Temple of Peril</option>
-					<option>Peter Pan's Flight</option>
-					<option>Star Tours</option>
-					<option>Star Wars: Hyperspace Mountain</option>
-					<option>Ratatouille: The Adventure</option>
-					<option>Rock'n'Roller Coaster starring Aerosmith</option>
-					<option>The Twilight Zone Tower of Terror</option>
+					<option *ngFor="let attraction of attractions" [value]="attraction.id">{{attraction.name}}</option>
 				</select>
 			</div>
 		</div>

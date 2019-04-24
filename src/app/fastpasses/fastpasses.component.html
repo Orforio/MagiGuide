@@ -15,11 +15,16 @@
 				[fastpass]="fastpass"
 				(edit)="editFastpass($event)"
 				(remove)="removeFastpass($event)"></mg-view-fastpass>
-			<mg-upsert-fastpass *ngIf="fastpass.id === (editFastpassId | async)" id="update-fastpass"
+			<mg-upsert-fastpass *ngIf="fastpass.id === (editFastpassId | async)"
+				id="update-fastpass"
 				(cancelEdit)="editFastpass($event)"
 				(upsert)="upsertFastpass($event)"
+				[attractions]="attractions | async"
 				[fastpass]="fastpass"></mg-upsert-fastpass>
 		</div>
-		<mg-upsert-fastpass (upsert)="upsertFastpass($event)" class="col-xs-12 col-sm-6" id="add-fastpass"></mg-upsert-fastpass>
+		<mg-upsert-fastpass class="col-xs-12 col-sm-6" id="add-fastpass"
+			(upsert)="upsertFastpass($event)"
+			[attractions]="attractions | async">
+		</mg-upsert-fastpass>
 	</div>
 </div>

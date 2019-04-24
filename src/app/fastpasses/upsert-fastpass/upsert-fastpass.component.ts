@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
+import { Attraction } from '../../attractions/attraction.model';
 import { Fastpass } from '../fastpass.model';
 
 @Component({
@@ -15,6 +16,7 @@ export class UpsertFastpassComponent implements OnInit {
 		endTime: ['', Validators.required],
 		nextAvailableTime: ['', Validators.required]
 	});
+	@Input() public attractions: Attraction[];
 	@Input() public fastpass: Fastpass;
 	@Output() public cancelEdit = new EventEmitter<null>();
 	@Output() public upsert = new EventEmitter<Fastpass>();

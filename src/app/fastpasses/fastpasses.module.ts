@@ -5,6 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 
+import { AttractionsModule } from '../attractions/attractions.module';
 import { FastpassesRoutingModule } from './fastpasses-routing.module';
 import { FastpassesComponent } from './fastpasses.component';
 import { UpsertFastpassComponent } from './upsert-fastpass/upsert-fastpass.component';
@@ -20,12 +21,13 @@ import { fastpassReducer } from './state/fastpass.reducer';
 	],
 	exports: [ViewFastpassComponent],
 	imports: [
+		AttractionsModule,
 		CommonModule,
-		FastpassesRoutingModule,
 		FontAwesomeModule,
 		NgbModule,
 		ReactiveFormsModule,
 		StoreModule.forFeature('fastpasses', fastpassReducer),
+		FastpassesRoutingModule
 	],
 	providers: [DateTimeService]
 })
