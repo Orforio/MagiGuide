@@ -9,6 +9,12 @@
 			<strong>New Fastpass available now!</strong>
 		</ngb-alert>
 	</ng-template>
+	<ngb-alert *ngIf="attractionsError | async as attractionsErrorAsync"
+		id="attractions-error-alert"
+		type="danger"
+		[dismissible]="false">
+		<strong>Sorry, something went wrong while loading Attractions</strong>: {{attractionsErrorAsync}}
+	</ngb-alert>
 	<div class="row">
 		<div *ngFor="let fastpass of fastpasses | async" class="col-xs-12 col-sm-6 mb-4">
 			<mg-view-fastpass *ngIf="fastpass.id !== (editFastpassId | async)" class="card-deck"
@@ -20,11 +26,13 @@
 				(cancelEdit)="editFastpass($event)"
 				(upsert)="upsertFastpass($event)"
 				[attractions]="attractions | async"
+				[attractionsLoading]="attractionsLoading | async"
 				[fastpass]="fastpass"></mg-upsert-fastpass>
 		</div>
 		<mg-upsert-fastpass class="col-xs-12 col-sm-6" id="add-fastpass"
 			(upsert)="upsertFastpass($event)"
-			[attractions]="attractions | async">
+			[attractions]="attractions | async"
+			[attractionsLoading]="(attractionsLoading | async) || !!(attractionsError | async)">
 		</mg-upsert-fastpass>
 	</div>
 </div>

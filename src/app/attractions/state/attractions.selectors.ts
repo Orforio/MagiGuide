@@ -22,3 +22,13 @@ export const getAttractionsOldestUpdateForPark = createSelector(
 		.map(attraction => attraction.updated)
 		.reduce((accumulator, currentValue) => accumulator && accumulator.getTime() < currentValue.getTime() ? accumulator : currentValue, null)
 );
+
+export const getAttractionsError = createSelector(
+	getAttractionsFeatureState,
+	state => state.error
+);
+
+export const getAttractionsLoading = createSelector(
+	getAttractionsFeatureState,
+	state => state.loading
+);

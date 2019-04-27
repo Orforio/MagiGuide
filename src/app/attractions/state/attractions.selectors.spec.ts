@@ -34,6 +34,23 @@ describe('Attractions Selectors', () => {
 		});
 	});
 
+	describe('getAttractionsError()', () => {
+		it('should return the error message', () => {
+			// Arrange
+			const errorMessage = 'Something went wrong';
+			const mockState: AttractionsState = {
+				...initialAttractionsState,
+				error: errorMessage
+			};
+
+			// Act
+			const result = attractionsSelectors.getAttractionsError.projector(mockState);
+
+			// Assert
+			expect(result).toEqual(errorMessage);
+		});
+	});
+
 	describe('getAttractionsForPark()', () => {
 		it('should return all Attractions for activePark', () => {
 			// Arrange
@@ -52,6 +69,22 @@ describe('Attractions Selectors', () => {
 				attractionFixtures.park01Attraction01,
 				attractionFixtures.park01Attraction02
 			]);
+		});
+	});
+
+	describe('getAttractionsLoading()', () => {
+		it('should return the loading status', () => {
+			// Arrange
+			const mockState: AttractionsState = {
+				...initialAttractionsState,
+				loading: true
+			};
+
+			// Act
+			const result = attractionsSelectors.getAttractionsLoading.projector(mockState);
+
+			// Assert
+			expect(result).toEqual(true);
 		});
 	});
 

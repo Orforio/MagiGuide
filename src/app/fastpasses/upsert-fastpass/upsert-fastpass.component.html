@@ -1,10 +1,19 @@
-<form [formGroup]="upsertFastpassForm" (ngSubmit)="upsertFastpass()">
+<form [formGroup]="upsertFastpassForm"
+	(ngSubmit)="upsertFastpass()">
 	<div class="card bg-light">
 		<div class="card-header">
 			<div class="form-group">
 				<label for="ride">Attraction</label>
-				<select formControlName="ride" name="ride" class="form-control" required>
-					<option *ngFor="let attraction of attractions" [value]="attraction.id">{{attraction.name}}</option>
+				<select formControlName="ride"
+					name="ride"
+					class="form-control"
+					[mgDisableControl]="attractionsLoading"
+					required>
+					<option *ngIf="attractionsLoading"
+						disabled="true"
+						value="">Loading...</option>
+					<option *ngFor="let attraction of attractions"
+						[value]="attraction.id">{{attraction.name}}</option>
 				</select>
 			</div>
 		</div>
@@ -15,7 +24,10 @@
 				</label>
 				<div class="col-auto">
 					<ngb-timepicker name="startTime"
-					formControlName="startTime" [minuteStep]="5" size="large" required></ngb-timepicker>
+						formControlName="startTime"
+						[minuteStep]="5"
+						size="large"
+						required></ngb-timepicker>
 				</div>
 			</div>
 			<div class="form-group form-row">
@@ -24,7 +36,10 @@
 				</label>
 				<div class="col-auto">
 					<ngb-timepicker name="endTime"
-					formControlName="endTime" [minuteStep]="5" size="large" required></ngb-timepicker>
+						formControlName="endTime"
+						[minuteStep]="5"
+						size="large"
+						required></ngb-timepicker>
 				</div>
 			</div>
 			<div class="form-group form-row">
@@ -33,14 +48,26 @@
 				</label>
 				<div class="col-auto">
 					<ngb-timepicker name="nextAvailableTime"
-					formControlName="nextAvailableTime" size="small" required></ngb-timepicker>
+						formControlName="nextAvailableTime"
+						size="small"
+						required></ngb-timepicker>
 				</div>
 			</div>
 		</div>
 		<div class="card-footer">
-			<button *ngIf="fastpass" type="button" id="cancel-edit-fastpass" class="btn btn-outline-secondary float-right" (click)="cancelEditFastpass()">Cancel Update</button>
-			<button *ngIf="fastpass" [disabled]="!upsertFastpassForm.valid" type="submit" class="btn btn-primary">Update Fastpass</button>
-			<button *ngIf="!fastpass" [disabled]="!upsertFastpassForm.valid" type="submit" class="btn btn-primary">Add Fastpass</button>
+			<button *ngIf="fastpass"
+				type="button"
+				id="cancel-edit-fastpass"
+				class="btn btn-outline-secondary float-right"
+				(click)="cancelEditFastpass()">Cancel Update</button>
+			<button *ngIf="fastpass"
+				[disabled]="!upsertFastpassForm.valid"
+				type="submit"
+				class="btn btn-primary">Update Fastpass</button>
+			<button *ngIf="!fastpass"
+				[disabled]="!upsertFastpassForm.valid"
+				type="submit"
+				class="btn btn-primary">Add Fastpass</button>
 		</div>
 	</div>
 </form>

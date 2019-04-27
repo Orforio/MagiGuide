@@ -5,6 +5,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UpsertFastpassComponent } from './upsert-fastpass.component';
 import { attractionFixtures } from '../../attractions/attraction.fixtures';
 import { fastpassFixtures } from '../fastpass.fixtures';
+import { DisableControlDirective } from '../../common';
 
 describe('UpsertFastpassComponent', () => {
 	let compiled: HTMLElement;
@@ -13,7 +14,10 @@ describe('UpsertFastpassComponent', () => {
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			declarations: [UpsertFastpassComponent],
+			declarations: [
+				DisableControlDirective,
+				UpsertFastpassComponent
+			],
 			imports: [
 				ReactiveFormsModule,
 				NgbModule
@@ -37,6 +41,20 @@ describe('UpsertFastpassComponent', () => {
 
 		// Assert
 		expect(component).toBeTruthy();
+	});
+
+	it('should lock out the attractions select if Attractions are loading', () => {
+		// Arrange
+		component.attractionsLoading = true;
+
+		// Act
+		fixture.detectChanges();
+		const options = compiled.querySelectorAll<HTMLOptionElement>('select option');
+
+		// Assert
+		expect(component.upsertFastpassForm.controls.ride.disabled).toBe(true);
+		expect(options.length).toEqual(1);
+		expect(options[0].textContent).toEqual('Loading...');
 	});
 
 	it('should set the attraction select options to the input Attractions', () => {

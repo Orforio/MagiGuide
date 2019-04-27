@@ -10,14 +10,15 @@ import { FastpassesRoutingModule } from './fastpasses-routing.module';
 import { FastpassesComponent } from './fastpasses.component';
 import { UpsertFastpassComponent } from './upsert-fastpass/upsert-fastpass.component';
 import { ViewFastpassComponent } from './view-fastpass/view-fastpass.component';
-import { DateTimeService } from '../common/date-time.service';
 import { fastpassReducer } from './state/fastpass.reducer';
+import { DateTimeService, DisableControlDirective } from '../common';
 
 @NgModule({
 	declarations: [
 		FastpassesComponent,
 		UpsertFastpassComponent,
-		ViewFastpassComponent
+		ViewFastpassComponent,
+		DisableControlDirective
 	],
 	exports: [ViewFastpassComponent],
 	imports: [

@@ -3,6 +3,23 @@ import * as attractionActions from './attractions.actions';
 import { attractionFixtures } from '../attraction.fixtures';
 
 describe('Attractions Reducer', () => {
+	describe('LoadAttractions', () => {
+		it('should set loading to true', () => {
+			// Arrange
+			const expectedResult: AttractionsState = {
+				...initialAttractionsState,
+				loading: true
+			};
+			const action = new attractionActions.LoadAttractions();
+
+			// Act
+			const result = attractionsReducer(initialAttractionsState, action);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
+		});
+	});
+
 	describe('LoadAttractionsFailure', () => {
 		it('should set error to the state', () => {
 			// Arrange
@@ -14,6 +31,25 @@ describe('Attractions Reducer', () => {
 
 			// Act
 			const result = attractionsReducer(initialAttractionsState, action);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
+		});
+
+		it('should set loading to false', () => {
+			// Arrange
+			const previousState: AttractionsState = {
+				...initialAttractionsState,
+				loading: true
+			};
+			const expectedResult: AttractionsState = {
+				...initialAttractionsState,
+				loading: false
+			};
+			const action = new attractionActions.LoadAttractionsFailure({ error: '' });
+
+			// Act
+			const result = attractionsReducer(previousState, action);
 
 			// Assert
 			expect(result).toEqual(expectedResult);
@@ -99,6 +135,25 @@ describe('Attractions Reducer', () => {
 
 			// Assert
 			expect(result.error).toEqual('');
+		});
+
+		it('should set loading to false', () => {
+			// Arrange
+			const previousState: AttractionsState = {
+				...initialAttractionsState,
+				loading: true
+			};
+			const expectedResult: AttractionsState = {
+				...initialAttractionsState,
+				loading: false
+			};
+			const action = new attractionActions.LoadAttractionsSuccess({ attractions: [] });
+
+			// Act
+			const result = attractionsReducer(previousState, action);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
 		});
 	});
 

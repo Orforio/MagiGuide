@@ -5,7 +5,7 @@ import { Attraction } from '../attraction.model';
 export enum AttractionActionTypes {
 	LoadAttractions = '[Attractions] Load Attractions',
 	LoadAttractionsFailure = '[Attractions] Load Attractions Failure',
-	LoadAttractionsSuccess = '[Attractions] Load Attractions Success',
+	LoadAttractionsSuccess = '[Attractions] Load Attractions Success'
 }
 
 export class LoadAttractions implements Action {

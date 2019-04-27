@@ -19,6 +19,8 @@ import { DateTimeService } from '../common';
 })
 export class FastpassesComponent implements OnInit {
 	public attractions: Observable<Attraction[]>;
+	public attractionsError: Observable<string>;
+	public attractionsLoading: Observable<boolean>;
 	public editFastpassId: Observable<string | null>;
 	public fastpasses: Observable<Fastpass[]>;
 	public nextAvailableTime: Observable<Date>;
@@ -40,6 +42,8 @@ export class FastpassesComponent implements OnInit {
 			}),
 			map(([attractions]) => attractions)
 		);
+		this.attractionsError = this.store.pipe(select(attractionSelectors.getAttractionsError));
+		this.attractionsLoading = this.store.pipe(select(attractionSelectors.getAttractionsLoading));
 		this.editFastpassId = this.store.pipe(select(fastpassSelectors.getEditFastpass));
 		this.fastpasses = this.store.pipe(select(fastpassSelectors.getFastpasses));
 		this.nextAvailableTime = this.store.pipe(

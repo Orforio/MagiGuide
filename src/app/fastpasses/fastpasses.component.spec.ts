@@ -18,6 +18,7 @@ describe('FastpassesComponent', () => {
 	let component: FastpassesComponent;
 	let fixture: ComponentFixture<FastpassesComponent>;
 	let store: Store<any>;
+	let storeSpy: jasmine.Spy;
 	const dateTimeServiceMock = jasmine.createSpyObj<DateTimeService>('DateTimeService', [
 		'getCurrentDateTime',
 		'getTodayCutoff',
@@ -35,6 +36,7 @@ describe('FastpassesComponent', () => {
 		@Component({selector: 'mg-upsert-fastpass', template: ''})
 		class UpsertFastpassStubComponent {
 			@Input() public attractions: any;
+			@Input() public attractionsLoading: any;
 			@Input() public fastpass: any;
 			@Output() public cancelEdit = new EventEmitter<any>();
 			@Output() public upsert = new EventEmitter<any>();
@@ -67,7 +69,7 @@ describe('FastpassesComponent', () => {
 		component = fixture.componentInstance;
 		store = fixture.debugElement.injector.get(Store);
 
-		spyOn(store, 'dispatch').and.callThrough();
+		storeSpy = spyOn(store, 'dispatch').and.callThrough();
 		dateTimeServiceMock.getCurrentDateTime.and.returnValue(new Date('2018-04-12T10:00:00'));
 		dateTimeServiceMock.getTodayCutoff.and.returnValue(new Date('2018-04-12T02:00:00'));
 		dateTimeServiceMock.isOlderThanHours.and.returnValue(false);
@@ -103,12 +105,13 @@ describe('FastpassesComponent', () => {
 		];
 		dateTimeServiceMock.isOlderThanHours.and.returnValue(true);
 		store.dispatch(new attractionActions.LoadAttractionsSuccess({ attractions: mockAttractions }));
+		storeSpy.calls.reset();
 		fixture.detectChanges();
 
 		// Act
 		// Assert
 		component.attractions.subscribe(() => {
-			expect(store.dispatch).toHaveBeenCalledWith(mockAction);
+			expect(storeSpy).toHaveBeenCalledWith(mockAction);
 			done();
 		});
 	});
@@ -122,12 +125,13 @@ describe('FastpassesComponent', () => {
 		];
 		dateTimeServiceMock.isOlderThanHours.and.returnValue(false);
 		store.dispatch(new attractionActions.LoadAttractionsSuccess({ attractions: mockAttractions }));
+		storeSpy.calls.reset();
 		fixture.detectChanges();
 
 		// Act
 		// Assert
 		component.attractions.subscribe(() => {
-			expect(store.dispatch).not.toHaveBeenCalledWith(mockAction);
+			expect(storeSpy).not.toHaveBeenCalledWith(mockAction);
 			done();
 		});
 	});
@@ -150,6 +154,16 @@ describe('FastpassesComponent', () => {
 		});
 	});
 
+	it('should retrieve the Attractions loading status', () => {
+		// Arrange
+
+		// Act
+		// Assert
+		component.attractionsLoading.subscribe(result => {
+			expect(result).toEqual(jasmine.any(Boolean));
+		});
+	});
+
 	it('should dispatch the PruneFastpasses action with todayCutoff', () => {
 		// Arrange
 		const mockAction = new fastpassActions.PruneFastpasses({ todayCutoff: new Date('2018-04-12T02:00:00') });
@@ -169,7 +183,7 @@ describe('FastpassesComponent', () => {
 		fixture.detectChanges();
 
 		// Assert
-		expect(compiled.querySelector('ngb-alert').textContent).toContain('12:25 PM');
+		expect(compiled.querySelector('#next-available-time-alert').textContent).toContain('12:25 PM');
 	});
 
 	it('should display "available now" message if Fastpasses are not set', () => {
@@ -181,7 +195,7 @@ describe('FastpassesComponent', () => {
 		fixture.detectChanges();
 
 		// Assert
-		expect(compiled.querySelector('ngb-alert').textContent).toContain('available now');
+		expect(compiled.querySelector('#next-available-time-alert').textContent).toContain('available now');
 	});
 
 	it('should display "available now" message if Fastpasses are expired', () => {
@@ -194,7 +208,19 @@ describe('FastpassesComponent', () => {
 		fixture.detectChanges();
 
 		// Assert
-		expect(compiled.querySelector('ngb-alert').textContent).toContain('available now');
+		expect(compiled.querySelector('#next-available-time-alert').textContent).toContain('available now');
+	});
+
+	it('should display error message if Attractions failed to load', () => {
+		// Arrange
+		const errorMessage = 'Failed to load Attractions';
+
+		// Act
+		store.dispatch(new attractionActions.LoadAttractionsFailure({ error: errorMessage }));
+		fixture.detectChanges();
+
+		// Assert
+		expect(compiled.querySelector('#attractions-error-alert').textContent).toContain(errorMessage);
 	});
 
 	it('should display all retrieved Fastpasses', () => {

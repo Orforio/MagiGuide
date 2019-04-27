@@ -5,25 +5,34 @@ import { Attraction } from '../attraction.model';
 
 export interface AttractionsState extends EntityState<Attraction> {
 	error: string;
+	loading: boolean;
 }
 
 const attractionsAdapter: EntityAdapter<Attraction> = createEntityAdapter<Attraction>({});
 
 export const initialAttractionsState: AttractionsState = attractionsAdapter.getInitialState({
-	error: ''
+	error: '',
+	loading: false
 });
 
 export function attractionsReducer(state = initialAttractionsState, action: AttractionActions): AttractionsState {
 	switch (action.type) {
+		case AttractionActionTypes.LoadAttractions:
+			return {
+				...state,
+				loading: true
+			};
 		case AttractionActionTypes.LoadAttractionsFailure:
 			return {
 				...state,
-				error: action.payload.error
+				error: action.payload.error,
+				loading: false
 			};
 		case AttractionActionTypes.LoadAttractionsSuccess:
 			return attractionsAdapter.upsertMany(action.payload.attractions, {
 				...state,
-				error: ''
+				error: '',
+				loading: false
 			});
 		default:
 			return state;

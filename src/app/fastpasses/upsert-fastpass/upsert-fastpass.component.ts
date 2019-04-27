@@ -17,6 +17,7 @@ export class UpsertFastpassComponent implements OnInit {
 		nextAvailableTime: ['', Validators.required]
 	});
 	@Input() public attractions: Attraction[];
+	@Input() public attractionsLoading: boolean;
 	@Input() public fastpass: Fastpass;
 	@Output() public cancelEdit = new EventEmitter<null>();
 	@Output() public upsert = new EventEmitter<Fastpass>();
