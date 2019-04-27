@@ -241,7 +241,7 @@ describe('FastpassesComponent', () => {
 	it('should display currently editing Fastpasses', () => {
 		// Arrange
 		const loadAction = new fastpassActions.LoadFastpasses({ fastpasses: [
-			fastpassFixtures.knownId,
+			fastpassFixtures.knownId1,
 			fastpassFixtures.standard1
 		] });
 		const editAction = new fastpassActions.EditFastpass({ id: '17a5c948-224d-460d-b942-8890f1a573ee' });

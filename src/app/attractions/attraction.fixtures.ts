@@ -25,6 +25,18 @@ const park01Attraction02: Attraction = {
 	}
 };
 
+const park01Attraction03: Attraction = {
+	id: 'ATT03',
+	name: 'Attraction 03',
+	park: Parks.DisneylandPark,
+	fastpassEnabled: true,
+	updated: new Date(),
+	schedule: {
+		openingTime: new Date(),
+		closingTime: new Date()
+	}
+};
+
 const park01Attraction01Updated: Attraction = {
 	id: 'ATT01',
 	name: 'Attraction 01',
@@ -91,6 +103,7 @@ const updatedOldest: Attraction = {
 export const attractionFixtures = {
 	park01Attraction01,
 	park01Attraction02,
+	park01Attraction03,
 	park01Attraction01Updated,
 	park01Attraction02Updated,
 	park02Attraction01,

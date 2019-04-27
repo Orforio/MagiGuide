@@ -204,19 +204,19 @@ describe('Fastpass Reducer', () => {
 			// Arrange
 			const previousState = {
 				...initialFastpassState,
-				ids: [fastpassFixtures.knownId.id],
+				ids: [fastpassFixtures.knownId1.id],
 				entities: {
-					[fastpassFixtures.knownId.id]: fastpassFixtures.knownId
+					[fastpassFixtures.knownId1.id]: fastpassFixtures.knownId1
 				}
 			};
 			const expectedResult: FastpassState = {
 				...initialFastpassState,
-				ids: [fastpassFixtures.knownId.id],
+				ids: [fastpassFixtures.knownId1.id],
 				entities: {
-					[fastpassFixtures.knownId.id]: {...fastpassFixtures.knownIdUpdated}
+					[fastpassFixtures.knownId1.id]: {...fastpassFixtures.knownId1Updated}
 				}
 			};
-			const action = new fastpassActions.UpsertFastpass({ fastpass: fastpassFixtures.knownIdUpdated });
+			const action = new fastpassActions.UpsertFastpass({ fastpass: fastpassFixtures.knownId1Updated });
 
 			// Act
 			const result = fastpassReducer(previousState, action);

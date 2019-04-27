@@ -11,7 +11,7 @@ import { Fastpass } from '../fastpass.model';
 })
 export class UpsertFastpassComponent implements OnInit {
 	public upsertFastpassForm = this.formBuilder.group({
-		ride: ['', Validators.required],
+		attraction: ['', Validators.required],
 		startTime: ['', Validators.required],
 		endTime: ['', Validators.required],
 		nextAvailableTime: ['', Validators.required]
@@ -26,7 +26,12 @@ export class UpsertFastpassComponent implements OnInit {
 
 	public ngOnInit(): void {
 		if (this.fastpass) {
-			this.upsertFastpassForm.patchValue(this.fastpass);
+			this.upsertFastpassForm.patchValue({
+				attraction: this.fastpass.attraction.id,
+				startTime: this.fastpass.startTime,
+				endTime: this.fastpass.endTime,
+				nextAvailableTime: this.fastpass.nextAvailableTime
+			});
 		}
 	}
 
@@ -37,7 +42,7 @@ export class UpsertFastpassComponent implements OnInit {
 	public upsertFastpass(): void {
 		if (this.upsertFastpassForm.valid && this.upsertFastpassForm.dirty) {
 			this.upsert.emit(new Fastpass(
-				this.upsertFastpassForm.value.ride,
+				this.attractions.find(attraction => attraction.id === this.upsertFastpassForm.value.attraction),
 				this.upsertFastpassForm.value.startTime,
 				this.upsertFastpassForm.value.endTime,
 				this.upsertFastpassForm.value.nextAvailableTime,

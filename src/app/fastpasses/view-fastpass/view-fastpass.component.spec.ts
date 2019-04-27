@@ -40,7 +40,7 @@ describe('ViewFastpassComponent', () => {
 
 	it('should display the ride name', () => {
 		// Assert
-		expect(compiled.querySelector('.ride-name').textContent).toContain('Big Thunder Mountain');
+		expect(compiled.querySelector('.ride-name').textContent).toContain('Attraction 01');
 	});
 
 	it('should display the start time in 24H format', () => {
