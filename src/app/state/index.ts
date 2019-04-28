@@ -2,18 +2,17 @@ import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { storeFreeze } from 'ngrx-store-freeze';
 import { localStorageSync } from 'ngrx-store-localstorage';
 
-import { SettingsActionTypes } from '../settings/state/settings.actions';
-import { FastpassState } from '../fastpasses/state/fastpass.reducer';
-import { settingsReducer, SettingsState } from '../settings/state/settings.reducer';
+import * as fromSettings from '../settings/state';
+import * as fromFastpasses from '../fastpasses/state';
 import { environment } from '../../environments/environment';
 
 export interface State {
-	fastpasses: FastpassState;
-	settings: SettingsState;
+	fastpasses: fromFastpasses.FastpassesState;
+	settings: fromSettings.SettingsState;
 }
 
 export const reducers: ActionReducerMap<any> = {
-	settings: settingsReducer
+	settings: fromSettings.settingsReducer
 };
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
@@ -26,7 +25,7 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
 
 export function resetAppReducer(reducer: ActionReducer<any>): ActionReducer<any> {
 	return function (state, action) {
-		return reducer(action.type === SettingsActionTypes.ResetApp ? undefined : state, action);
+		return reducer(action.type === fromSettings.SettingsActionTypes.ResetApp ? undefined : state, action);
 	};
 }
 

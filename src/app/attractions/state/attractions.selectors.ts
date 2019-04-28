@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import * as fromAttractions from './attractions.reducer';
-import * as fromSettings from '../../settings/state/settings.selectors';
+import * as fromSettings from '../../settings/state';
 
 const getAttractionsFeatureState = createFeatureSelector<fromAttractions.AttractionsState>('attractions');
 

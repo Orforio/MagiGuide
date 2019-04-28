@@ -10,7 +10,7 @@ import { FastpassesRoutingModule } from './fastpasses-routing.module';
 import { FastpassesComponent } from './fastpasses.component';
 import { UpsertFastpassComponent } from './upsert-fastpass/upsert-fastpass.component';
 import { ViewFastpassComponent } from './view-fastpass/view-fastpass.component';
-import { fastpassReducer } from './state/fastpass.reducer';
+import * as fromFastpasses from './state';
 import { DateTimeService, DisableControlDirective } from '../common';
 
 @NgModule({
@@ -27,7 +27,7 @@ import { DateTimeService, DisableControlDirective } from '../common';
 		FontAwesomeModule,
 		NgbModule,
 		ReactiveFormsModule,
-		StoreModule.forFeature('fastpasses', fastpassReducer),
+		StoreModule.forFeature('fastpasses', fromFastpasses.fastpassesReducer),
 		FastpassesRoutingModule
 	],
 	providers: [DateTimeService]

@@ -17,9 +17,7 @@ import { FastpassesModule } from './fastpasses/fastpasses.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SettingsComponent } from './settings/settings.component';
-import { DateTimeService } from './common/date-time.service';
-import { GlobalObjectService } from './common/global-object.service';
-import { NgbTimeDateAdapter } from './common/ngb-time-date.adapter';
+import { DateTimeService, GlobalObjectService, NgbTimeDateAdapter } from './common';
 import { environment } from '../environments/environment';
 import { metaReducers, reducers } from './state';
 

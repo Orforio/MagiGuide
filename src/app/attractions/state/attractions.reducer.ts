@@ -1,6 +1,6 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
-import { AttractionActions, AttractionActionTypes } from './attractions.actions';
+import { AttractionsActions, AttractionsActionTypes } from './attractions.actions';
 import { Attraction } from '../attraction.model';
 
 export interface AttractionsState extends EntityState<Attraction> {
@@ -15,20 +15,20 @@ export const initialAttractionsState: AttractionsState = attractionsAdapter.getI
 	loading: false
 });
 
-export function attractionsReducer(state = initialAttractionsState, action: AttractionActions): AttractionsState {
+export function attractionsReducer(state = initialAttractionsState, action: AttractionsActions): AttractionsState {
 	switch (action.type) {
-		case AttractionActionTypes.LoadAttractions:
+		case AttractionsActionTypes.LoadAttractions:
 			return {
 				...state,
 				loading: true
 			};
-		case AttractionActionTypes.LoadAttractionsFailure:
+		case AttractionsActionTypes.LoadAttractionsFailure:
 			return {
 				...state,
 				error: action.payload.error,
 				loading: false
 			};
-		case AttractionActionTypes.LoadAttractionsSuccess:
+		case AttractionsActionTypes.LoadAttractionsSuccess:
 			return attractionsAdapter.upsertMany(action.payload.attractions, {
 				...state,
 				error: '',

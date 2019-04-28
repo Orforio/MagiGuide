@@ -6,22 +6,21 @@ import { of as observableOf } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { AttractionsService } from '../attractions.service';
-import { AttractionActions, AttractionActionTypes, LoadAttractionsFailure, LoadAttractionsSuccess } from './attractions.actions';
-import * as fromSettings from '../../settings/state/settings.reducer';
-import * as settingsSelectors from '../../settings/state/settings.selectors';
+import { AttractionsActions, AttractionsActionTypes, LoadAttractionsFailure, LoadAttractionsSuccess } from './attractions.actions';
+import * as fromSettings from '../../settings/state';
 
 @Injectable()
 export class AttractionsEffects {
 	constructor(
-		private actions: Actions<AttractionActions>,
+		private actions: Actions<AttractionsActions>,
 		private attractionsService: AttractionsService,
 		private store: Store<fromSettings.SettingsState>
 		) {}
 
 	@Effect()
 	loadAttractions = this.actions.pipe(
-		ofType(AttractionActionTypes.LoadAttractions),
-		withLatestFrom(this.store.pipe(select(settingsSelectors.getActivePark))),
+		ofType(AttractionsActionTypes.LoadAttractions),
+		withLatestFrom(this.store.pipe(select(fromSettings.getActivePark))),
 		switchMap(([payload, activePark]) => this.attractionsService.getAttractions(activePark)),
 		map(attractions => new LoadAttractionsSuccess({ attractions })),
 		catchError((error: HttpErrorResponse) => observableOf(new LoadAttractionsFailure({ error: error.message })))

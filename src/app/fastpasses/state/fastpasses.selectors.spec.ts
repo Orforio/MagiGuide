@@ -1,12 +1,12 @@
-import { FastpassState } from './fastpass.reducer';
-import * as fastpassSelectors from './fastpass.selectors';
+import { FastpassesState } from './fastpasses.reducer';
+import * as fastpassSelectors from './fastpasses.selectors';
 import { fastpassFixtures } from '../fastpass.fixtures';
 
 describe('Fastpass Selectors', () => {
 	describe('getEditFastpass()', () => {
 		it('should return the editFastpass value', () => {
 			// Arrange
-			const mockState: FastpassState = {
+			const mockState: FastpassesState = {
 				ids: [fastpassFixtures.knownId1.id],
 				entities: {
 					[fastpassFixtures.knownId1.id]: fastpassFixtures.knownId1
@@ -25,7 +25,7 @@ describe('Fastpass Selectors', () => {
 	describe('getFastpasses()', () => {
 		it('should return all Fastpasses', () => {
 			// Arrange
-			const mockState: FastpassState = {
+			const mockState: FastpassesState = {
 				ids: [
 					fastpassFixtures.knownId1.id,
 					fastpassFixtures.knownId2.id

@@ -7,7 +7,7 @@ import { SettingsComponent } from './settings.component';
 import { DateTimeService } from '../common/date-time.service';
 import { GlobalObjectService } from '../common/global-object.service';
 import { settingsReducer } from './state/settings.reducer';
-import * as fastpassActions from '../fastpasses/state/fastpass.actions';
+import * as fastpassActions from '../fastpasses/state';
 import * as settingsActions from './state/settings.actions';
 
 describe('SettingsComponent', () => {

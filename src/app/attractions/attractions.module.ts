@@ -7,15 +7,14 @@ import { StoreModule } from '@ngrx/store';
 import { AttractionsRoutingModule } from './attractions-routing.module';
 import { AttractionsComponent } from './attractions.component';
 import { AttractionsService } from './attractions.service';
-import * as fromAttractions from './state/attractions.reducer';
-import { AttractionsEffects } from './state/attractions.effects';
+import * as fromAttractions from './state';
 import { DateTimeService } from '../common';
 
 @NgModule({
 	declarations: [AttractionsComponent],
 	imports: [
 		CommonModule,
-		EffectsModule.forFeature([AttractionsEffects]),
+		EffectsModule.forFeature([fromAttractions.AttractionsEffects]),
 		HttpClientModule,
 		StoreModule.forFeature('attractions', fromAttractions.attractionsReducer),
 		AttractionsRoutingModule

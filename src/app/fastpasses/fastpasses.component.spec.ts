@@ -3,15 +3,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Store, StoreModule } from '@ngrx/store';
 
-import { DateTimeService } from '../common';
 import { attractionFixtures } from '../attractions/attraction.fixtures';
 import { fastpassFixtures } from './fastpass.fixtures';
 import { FastpassesComponent } from './fastpasses.component';
 import { attractionsReducer } from '../attractions/state/attractions.reducer';
-import { fastpassReducer } from './state/fastpass.reducer';
-import { settingsReducer } from '../settings/state/settings.reducer';
 import * as attractionActions from '../attractions/state/attractions.actions';
-import * as fastpassActions from './state/fastpass.actions';
+import * as fromFastpasses from './state';
+import * as fromSettings from '../settings/state';
+import { DateTimeService } from '../common';
 
 describe('FastpassesComponent', () => {
 	let compiled: HTMLElement;
@@ -52,8 +51,8 @@ describe('FastpassesComponent', () => {
 				NgbModule,
 				StoreModule.forRoot({
 					'attractions': attractionsReducer,
-					'fastpasses': fastpassReducer,
-					'settings': settingsReducer
+					'fastpasses': fromFastpasses.fastpassesReducer,
+					'settings': fromSettings.settingsReducer
 				})
 			],
 			providers: [
@@ -166,7 +165,7 @@ describe('FastpassesComponent', () => {
 
 	it('should dispatch the PruneFastpasses action with todayCutoff', () => {
 		// Arrange
-		const mockAction = new fastpassActions.PruneFastpasses({ todayCutoff: new Date('2018-04-12T02:00:00') });
+		const mockAction = new fromFastpasses.PruneFastpasses({ todayCutoff: new Date('2018-04-12T02:00:00') });
 
 		// Act
 
@@ -176,7 +175,7 @@ describe('FastpassesComponent', () => {
 
 	it('should display next available Fastpass if Fastpasses are set', () => {
 		// Arrange
-		const action = new fastpassActions.LoadFastpasses({ fastpasses: [fastpassFixtures.standard1] });
+		const action = new fromFastpasses.LoadFastpasses({ fastpasses: [fastpassFixtures.standard1] });
 
 		// Act
 		store.dispatch(action);
@@ -188,7 +187,7 @@ describe('FastpassesComponent', () => {
 
 	it('should display "available now" message if Fastpasses are not set', () => {
 		// Arrange
-		const action = new fastpassActions.LoadFastpasses({ fastpasses: [] });
+		const action = new fromFastpasses.LoadFastpasses({ fastpasses: [] });
 
 		// Act
 		store.dispatch(action);
@@ -201,7 +200,7 @@ describe('FastpassesComponent', () => {
 	it('should display "available now" message if Fastpasses are expired', () => {
 		// Arrange
 		dateTimeServiceMock.getCurrentDateTime.and.returnValue(new Date('2018-04-12T19:00:00'));
-		const action = new fastpassActions.LoadFastpasses({ fastpasses: [fastpassFixtures.standard1] });
+		const action = new fromFastpasses.LoadFastpasses({ fastpasses: [fastpassFixtures.standard1] });
 
 		// Act
 		store.dispatch(action);
@@ -225,7 +224,7 @@ describe('FastpassesComponent', () => {
 
 	it('should display all retrieved Fastpasses', () => {
 		// Arrange
-		const action = new fastpassActions.LoadFastpasses({ fastpasses: [
+		const action = new fromFastpasses.LoadFastpasses({ fastpasses: [
 			fastpassFixtures.standard1,
 			fastpassFixtures.standard2
 		] });
@@ -240,11 +239,11 @@ describe('FastpassesComponent', () => {
 
 	it('should display currently editing Fastpasses', () => {
 		// Arrange
-		const loadAction = new fastpassActions.LoadFastpasses({ fastpasses: [
+		const loadAction = new fromFastpasses.LoadFastpasses({ fastpasses: [
 			fastpassFixtures.knownId1,
 			fastpassFixtures.standard1
 		] });
-		const editAction = new fastpassActions.EditFastpass({ id: '17a5c948-224d-460d-b942-8890f1a573ee' });
+		const editAction = new fromFastpasses.EditFastpass({ id: '17a5c948-224d-460d-b942-8890f1a573ee' });
 
 		// Act
 		store.dispatch(loadAction);
@@ -260,7 +259,7 @@ describe('FastpassesComponent', () => {
 		it('should dispatch the EditFastpass action with the payload', () => {
 			// Arrange
 			const mockId = '17a5c948-224d-460d-b942-8890f1a573ee';
-			const action = new fastpassActions.EditFastpass({ id: mockId });
+			const action = new fromFastpasses.EditFastpass({ id: mockId });
 
 			// Act
 			component.editFastpass(mockId);
@@ -273,7 +272,7 @@ describe('FastpassesComponent', () => {
 	describe('removeFastpass()', () => {
 		it('should dispatch the DeleteFastpass action with the Fastpass.id', () => {
 			// Arrange
-			const action = new fastpassActions.DeleteFastpass({ id: fastpassFixtures.null.id });
+			const action = new fromFastpasses.DeleteFastpass({ id: fastpassFixtures.null.id });
 
 			// Act
 			component.removeFastpass(fastpassFixtures.null);
@@ -286,7 +285,7 @@ describe('FastpassesComponent', () => {
 	describe('upsertFastpass()', () => {
 		it('should dispatch the UpsertFastpass action with the payload', () => {
 			// Arrange
-			const action = new fastpassActions.UpsertFastpass({ fastpass: fastpassFixtures.standard1 });
+			const action = new fromFastpasses.UpsertFastpass({ fastpass: fastpassFixtures.standard1 });
 
 			// Act
 			component.upsertFastpass(fastpassFixtures.standard1);

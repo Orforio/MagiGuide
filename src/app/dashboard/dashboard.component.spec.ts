@@ -4,10 +4,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
 
 import { DashboardComponent } from './dashboard.component';
-import { DateTimeService } from '../common/date-time.service';
 import { fastpassFixtures } from '../fastpasses/fastpass.fixtures';
-import { fastpassReducer } from '../fastpasses/state/fastpass.reducer';
-import * as fastpassActions from '../fastpasses/state/fastpass.actions';
+import * as fromFastpasses from '../fastpasses/state';
+import { DateTimeService } from '../common';
 
 describe('DashboardComponent', () => {
 	let compiled: HTMLElement;
@@ -32,7 +31,7 @@ describe('DashboardComponent', () => {
 			imports: [
 				RouterTestingModule,
 				StoreModule.forRoot({
-					'fastpasses': fastpassReducer
+					'fastpasses': fromFastpasses.fastpassesReducer
 				})
 			],
 			providers: [
@@ -63,7 +62,7 @@ describe('DashboardComponent', () => {
 
 	it('should dispatch the PruneFastpasses action with todayCutoff', () => {
 		// Arrange
-		const mockAction = new fastpassActions.PruneFastpasses({ todayCutoff: new Date('2018-04-13T02:00:00') });
+		const mockAction = new fromFastpasses.PruneFastpasses({ todayCutoff: new Date('2018-04-13T02:00:00') });
 
 		// Act
 
@@ -74,7 +73,7 @@ describe('DashboardComponent', () => {
 	describe('with no Fastpasses', () => {
 		beforeEach(() => {
 			// Arrange
-			const action = new fastpassActions.LoadFastpasses({ fastpasses: [] });
+			const action = new fromFastpasses.LoadFastpasses({ fastpasses: [] });
 
 			// Act
 			store.dispatch(action);
@@ -96,7 +95,7 @@ describe('DashboardComponent', () => {
 		beforeEach(() => {
 			// Arrange
 			dateTimeServiceMock.getCurrentDateTime.and.returnValue(new Date('2018-04-12T10:30:00'));
-			const action = new fastpassActions.LoadFastpasses({ fastpasses: [
+			const action = new fromFastpasses.LoadFastpasses({ fastpasses: [
 				fastpassFixtures.standard1,
 				fastpassFixtures.standard2
 			] });
@@ -125,7 +124,7 @@ describe('DashboardComponent', () => {
 		beforeEach(() => {
 			// Arrange
 			dateTimeServiceMock.getCurrentDateTime.and.returnValue(new Date('2018-04-12T13:00:00'));
-			const action = new fastpassActions.LoadFastpasses({ fastpasses: [
+			const action = new fromFastpasses.LoadFastpasses({ fastpasses: [
 				fastpassFixtures.standard1,
 				fastpassFixtures.standard2
 			] });
@@ -154,7 +153,7 @@ describe('DashboardComponent', () => {
 		beforeEach(() => {
 			// Arrange
 			dateTimeServiceMock.getCurrentDateTime.and.returnValue(new Date('2018-04-12T18:00:00'));
-			const action = new fastpassActions.LoadFastpasses({ fastpasses: [
+			const action = new fromFastpasses.LoadFastpasses({ fastpasses: [
 				fastpassFixtures.standard1,
 				fastpassFixtures.standard2
 			] });

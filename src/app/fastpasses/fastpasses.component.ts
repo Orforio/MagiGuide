@@ -5,11 +5,9 @@ import { map, tap } from 'rxjs/operators';
 
 import { Attraction } from '../attractions/attraction.model';
 import { Fastpass } from './fastpass.model';
-import { LoadAttractions } from '../attractions/state/attractions.actions';
-import { DeleteFastpass, PruneFastpasses, UpsertFastpass, EditFastpass } from './state/fastpass.actions';
+import * as fromAttractions from '../attractions/state';
+import * as fromFastpasses from './state';
 import * as fromRoot from '../state';
-import * as attractionSelectors from '../attractions/state/attractions.selectors';
-import * as fastpassSelectors from './state/fastpass.selectors';
 import { DateTimeService } from '../common';
 
 @Component({
@@ -32,37 +30,37 @@ export class FastpassesComponent implements OnInit {
 
 	public ngOnInit(): void {
 		this.attractions = combineLatest(
-			this.store.pipe(select(attractionSelectors.getAttractionsForPark)),
-			this.store.pipe(select(attractionSelectors.getAttractionsOldestUpdateForPark))
+			this.store.pipe(select(fromAttractions.getAttractionsForPark)),
+			this.store.pipe(select(fromAttractions.getAttractionsOldestUpdateForPark))
 		).pipe(
 			tap(([attractions, oldestUpdate]) => {
 				if (attractions.length === 0 || (attractions.length > 0 && this.dateTimeService.isOlderThanHours(oldestUpdate, 12))) {
-					this.store.dispatch(new LoadAttractions());
+					this.store.dispatch(new fromAttractions.LoadAttractions());
 				}
 			}),
 			map(([attractions]) => attractions)
 		);
-		this.attractionsError = this.store.pipe(select(attractionSelectors.getAttractionsError));
-		this.attractionsLoading = this.store.pipe(select(attractionSelectors.getAttractionsLoading));
-		this.editFastpassId = this.store.pipe(select(fastpassSelectors.getEditFastpass));
-		this.fastpasses = this.store.pipe(select(fastpassSelectors.getFastpasses));
+		this.attractionsError = this.store.pipe(select(fromAttractions.getAttractionsError));
+		this.attractionsLoading = this.store.pipe(select(fromAttractions.getAttractionsLoading));
+		this.editFastpassId = this.store.pipe(select(fromFastpasses.getEditFastpass));
+		this.fastpasses = this.store.pipe(select(fromFastpasses.getFastpasses));
 		this.nextAvailableTime = this.store.pipe(
-			select(fastpassSelectors.getNextAvailableTime),
+			select(fromFastpasses.getNextAvailableTime),
 			map(nextAvailableTime => nextAvailableTime && nextAvailableTime.getTime() > this.dateTimeService.getCurrentDateTime().getTime() ?
 				nextAvailableTime : null)
 		);
-		this.store.dispatch(new PruneFastpasses({ todayCutoff: this.dateTimeService.getTodayCutoff() }));
+		this.store.dispatch(new fromFastpasses.PruneFastpasses({ todayCutoff: this.dateTimeService.getTodayCutoff() }));
 	}
 
 	public editFastpass(id: string | null): void {
-		this.store.dispatch(new EditFastpass({ id }));
+		this.store.dispatch(new fromFastpasses.EditFastpass({ id }));
 	}
 
 	public removeFastpass(fastpass: Fastpass): void {
-		this.store.dispatch(new DeleteFastpass({ id: fastpass.id }));
+		this.store.dispatch(new fromFastpasses.DeleteFastpass({ id: fastpass.id }));
 	}
 
 	public upsertFastpass(fastpass: Fastpass): void {
-		this.store.dispatch(new UpsertFastpass({ fastpass }));
+		this.store.dispatch(new fromFastpasses.UpsertFastpass({ fastpass }));
 	}
 }

@@ -1,5 +1,5 @@
-import { FastpassState, initialFastpassState, fastpassReducer } from './fastpass.reducer';
-import * as fastpassActions from './fastpass.actions';
+import { FastpassesState, initialFastpassesState, fastpassesReducer } from './fastpasses.reducer';
+import * as fastpassActions from './fastpasses.actions';
 import { fastpassFixtures } from '../fastpass.fixtures';
 
 describe('Fastpass Reducer', () => {
@@ -7,14 +7,14 @@ describe('Fastpass Reducer', () => {
 		it('should add the new Fastpass to the state', () => {
 			// Arrange
 			const previousState = {
-				...initialFastpassState,
+				...initialFastpassesState,
 				ids: [fastpassFixtures.standard1.id],
 				entities: {
 					[fastpassFixtures.standard1.id]: fastpassFixtures.standard1
 				}
 			};
-			const expectedResult: FastpassState = {
-				...initialFastpassState,
+			const expectedResult: FastpassesState = {
+				...initialFastpassesState,
 				ids: [
 					...previousState.ids,
 					fastpassFixtures.standard2.id
@@ -27,7 +27,7 @@ describe('Fastpass Reducer', () => {
 			const action = new fastpassActions.AddFastpass({ fastpass: fastpassFixtures.standard2 });
 
 			// Act
-			const result = fastpassReducer(previousState, action);
+			const result = fastpassesReducer(previousState, action);
 
 			// Assert
 			expect(result).toEqual(expectedResult);
@@ -38,21 +38,21 @@ describe('Fastpass Reducer', () => {
 		it('should remove all Fastpasses from the state', () => {
 			// Arrange
 			const previousState = {
-				...initialFastpassState,
+				...initialFastpassesState,
 				ids: [fastpassFixtures.standard1.id],
 				entities: {
 					[fastpassFixtures.standard1.id]: fastpassFixtures.standard1
 				}
 			};
-			const expectedResult: FastpassState = {
-				...initialFastpassState,
+			const expectedResult: FastpassesState = {
+				...initialFastpassesState,
 				ids: [],
 				entities: {}
 			};
 			const action = new fastpassActions.ClearFastpasses();
 
 			// Act
-			const result = fastpassReducer(previousState, action);
+			const result = fastpassesReducer(previousState, action);
 
 			// Assert
 			expect(result).toEqual(expectedResult);
@@ -62,15 +62,15 @@ describe('Fastpass Reducer', () => {
 	describe('DeleteFastpass', () => {
 		it('should remove the given Fastpass from the state', () => {
 			// Arrange
-			const previousState: FastpassState = {
-				...initialFastpassState,
+			const previousState: FastpassesState = {
+				...initialFastpassesState,
 				ids: [fastpassFixtures.standard1.id, fastpassFixtures.standard2.id],
 				entities: {
 					[fastpassFixtures.standard1.id]: fastpassFixtures.standard1,
 					[fastpassFixtures.standard2.id]: fastpassFixtures.standard2
 				}};
-			const expectedResult: FastpassState = {
-				...initialFastpassState,
+			const expectedResult: FastpassesState = {
+				...initialFastpassesState,
 				ids: [fastpassFixtures.standard2.id],
 				entities: {
 					[fastpassFixtures.standard2.id]: fastpassFixtures.standard2
@@ -79,7 +79,7 @@ describe('Fastpass Reducer', () => {
 			const action = new fastpassActions.DeleteFastpass({ id: fastpassFixtures.standard1.id });
 
 			// Act
-			const result = fastpassReducer(previousState, action);
+			const result = fastpassesReducer(previousState, action);
 
 			// Assert
 			expect(result).toEqual(expectedResult);
@@ -89,14 +89,14 @@ describe('Fastpass Reducer', () => {
 	describe('EditFastpass', () => {
 		it('should set editFastpass to the state', () => {
 			// Arrange
-			const expectedResult: FastpassState = {
-				...initialFastpassState,
+			const expectedResult: FastpassesState = {
+				...initialFastpassesState,
 				editFastpass: fastpassFixtures.standard1.id
 			};
 			const action = new fastpassActions.EditFastpass({ id: fastpassFixtures.standard1.id });
 
 			// Act
-			const result = fastpassReducer(initialFastpassState, action);
+			const result = fastpassesReducer(initialFastpassesState, action);
 
 			// Assert
 			expect(result).toEqual(expectedResult);
@@ -106,8 +106,8 @@ describe('Fastpass Reducer', () => {
 	describe('LoadFastpasses', () => {
 		it('should add all fastpasses to the state in chronological order', () => {
 			// Arrange
-			const expectedResult: FastpassState = {
-				...initialFastpassState,
+			const expectedResult: FastpassesState = {
+				...initialFastpassesState,
 				ids: [
 					fastpassFixtures.standard1.id,
 					fastpassFixtures.standard2.id,
@@ -126,7 +126,7 @@ describe('Fastpass Reducer', () => {
 			] });
 
 			// Act
-			const result = fastpassReducer(initialFastpassState, action);
+			const result = fastpassesReducer(initialFastpassesState, action);
 
 			// Assert
 			expect(result).toEqual(expectedResult);
@@ -136,8 +136,8 @@ describe('Fastpass Reducer', () => {
 	describe('PruneFastpasses', () => {
 		it('should delete all Fastpasses earlier than the supplied todayCutoff', () => {
 			// Arrange
-			const previousState: FastpassState = {
-				...initialFastpassState,
+			const previousState: FastpassesState = {
+				...initialFastpassesState,
 				ids: [
 					fastpassFixtures.previousDay.id,
 					fastpassFixtures.standard1.id,
@@ -148,8 +148,8 @@ describe('Fastpass Reducer', () => {
 					[fastpassFixtures.standard1.id]: fastpassFixtures.standard1,
 					[fastpassFixtures.standard2.id]: fastpassFixtures.standard2
 				}};
-			const expectedResult: FastpassState = {
-				...initialFastpassState,
+			const expectedResult: FastpassesState = {
+				...initialFastpassesState,
 				ids: [
 					fastpassFixtures.standard1.id,
 					fastpassFixtures.standard2.id
@@ -163,7 +163,7 @@ describe('Fastpass Reducer', () => {
 			const action = new fastpassActions.PruneFastpasses({ todayCutoff: mockTodayCutoff });
 
 			// Act
-			const result = fastpassReducer(previousState, action);
+			const result = fastpassesReducer(previousState, action);
 
 			// Assert
 			expect(result).toEqual(expectedResult);
@@ -174,14 +174,14 @@ describe('Fastpass Reducer', () => {
 		it('should add a new Fastpass to the state', () => {
 			// Arrange
 			const previousState = {
-				...initialFastpassState,
+				...initialFastpassesState,
 				ids: [fastpassFixtures.standard1.id],
 				entities: {
 					[fastpassFixtures.standard1.id]: fastpassFixtures.standard1
 				}
 			};
-			const expectedResult: FastpassState = {
-				...initialFastpassState,
+			const expectedResult: FastpassesState = {
+				...initialFastpassesState,
 				ids: [
 					...previousState.ids,
 					fastpassFixtures.standard2.id
@@ -194,7 +194,7 @@ describe('Fastpass Reducer', () => {
 			const action = new fastpassActions.UpsertFastpass({ fastpass: fastpassFixtures.standard2 });
 
 			// Act
-			const result = fastpassReducer(previousState, action);
+			const result = fastpassesReducer(previousState, action);
 
 			// Assert
 			expect(result).toEqual(expectedResult);
@@ -203,14 +203,14 @@ describe('Fastpass Reducer', () => {
 		it('should update an existing Fastpass in the state', () => {
 			// Arrange
 			const previousState = {
-				...initialFastpassState,
+				...initialFastpassesState,
 				ids: [fastpassFixtures.knownId1.id],
 				entities: {
 					[fastpassFixtures.knownId1.id]: fastpassFixtures.knownId1
 				}
 			};
-			const expectedResult: FastpassState = {
-				...initialFastpassState,
+			const expectedResult: FastpassesState = {
+				...initialFastpassesState,
 				ids: [fastpassFixtures.knownId1.id],
 				entities: {
 					[fastpassFixtures.knownId1.id]: {...fastpassFixtures.knownId1Updated}
@@ -219,7 +219,7 @@ describe('Fastpass Reducer', () => {
 			const action = new fastpassActions.UpsertFastpass({ fastpass: fastpassFixtures.knownId1Updated });
 
 			// Act
-			const result = fastpassReducer(previousState, action);
+			const result = fastpassesReducer(previousState, action);
 
 			// Assert
 			expect(result).toEqual(expectedResult);
@@ -228,13 +228,13 @@ describe('Fastpass Reducer', () => {
 		it('should reset editFastpass to null', () => {
 			// Arrange
 			const previousState = {
-				...initialFastpassState,
+				...initialFastpassesState,
 				editFastpass: '17a5c948-224d-460d-b942-8890f1a573ee'
 			};
 			const action = new fastpassActions.UpsertFastpass({ fastpass: fastpassFixtures.null });
 
 			// Act
-			const result = fastpassReducer(previousState, action);
+			const result = fastpassesReducer(previousState, action);
 
 			// Assert
 			expect(result.editFastpass).toBeNull();
@@ -247,10 +247,10 @@ describe('Fastpass Reducer', () => {
 			const action = {} as any;
 
 			// Act
-			const result = fastpassReducer(initialFastpassState, action);
+			const result = fastpassesReducer(initialFastpassesState, action);
 
 			// Assert
-			expect(result).toEqual(initialFastpassState);
+			expect(result).toEqual(initialFastpassesState);
 		});
 	});
 });
