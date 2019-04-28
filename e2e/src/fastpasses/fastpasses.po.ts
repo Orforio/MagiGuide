@@ -1,4 +1,4 @@
-import { browser, by, element, ElementArrayFinder, ElementFinder, promise } from 'protractor';
+import { browser, by, element, ElementArrayFinder, ElementFinder, ExpectedConditions, promise } from 'protractor';
 
 import { MagiGuidePage } from '../common.po';
 
@@ -20,7 +20,7 @@ export class FastpassesPage extends MagiGuidePage {
 	}
 
 	public getFastpassRide(number: number): ElementFinder {
-		return this.getFastpass(number).element(by.className('ride-name'));
+		return this.getFastpass(number).element(by.className('attraction-name'));
 	}
 
 	public getFastpassStartTime(number: number): ElementFinder {
@@ -44,7 +44,7 @@ export class FastpassesPage extends MagiGuidePage {
 	}
 
 	public getUpdateFastpassRide(): ElementFinder {
-		return this.getUpdateFastpass().element(by.name('ride'));
+		return this.getUpdateFastpass().element(by.name('attraction'));
 	}
 
 	public getUpdateFastpassStartTime(): ElementFinder {
@@ -72,7 +72,7 @@ export class FastpassesPage extends MagiGuidePage {
 	}
 
 	public getAddFastpassRide(): ElementFinder {
-		return this.getAddFastpass().element(by.name('ride'));
+		return this.getAddFastpass().element(by.name('attraction'));
 	}
 
 	public getAddFastpassStartTime(): ElementFinder {
@@ -92,12 +92,19 @@ export class FastpassesPage extends MagiGuidePage {
 	}
 
 	public fillInAddFastpass(
-		ride: string,
+		attraction: string,
 		startTime: number[],
 		endTime: number[],
 		nextAvailableTime: number[]
 		): void {
-			this.getAddFastpassRide().element(by.cssContainingText('option', ride)).click();
+			browser.wait(
+				ExpectedConditions.elementToBeClickable(
+					this.getAddFastpassRide().element(by.cssContainingText('option', attraction))
+				),
+				30000,
+				'API failed to respond'
+			);
+			this.getAddFastpassRide().element(by.cssContainingText('option', attraction)).click();
 			this.getAddFastpassStartTime().all(by.tagName('input')).each((input, index) => {
 				input.clear();
 				input.sendKeys(startTime[index]);
@@ -114,12 +121,19 @@ export class FastpassesPage extends MagiGuidePage {
 		}
 
 	public fillInUpdateFastpass(
-		ride: string,
+		attraction: string,
 		startTime: number[],
 		endTime: number[],
 		nextAvailableTime: number[]
 		): void {
-			this.getUpdateFastpassRide().element(by.cssContainingText('option', ride)).click();
+			browser.wait(
+				ExpectedConditions.elementToBeClickable(
+					this.getAddFastpassRide().element(by.cssContainingText('option', attraction))
+				),
+				30000,
+				'API failed to respond'
+			);
+			this.getUpdateFastpassRide().element(by.cssContainingText('option', attraction)).click();
 			this.getUpdateFastpassStartTime().all(by.tagName('input')).each((input, index) => {
 				input.clear();
 				input.sendKeys(startTime[index]);

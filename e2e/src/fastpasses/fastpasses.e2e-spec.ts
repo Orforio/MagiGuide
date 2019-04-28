@@ -97,7 +97,7 @@ describe('Fastpasses Page', () => {
 	describe('removing a Fastpass', () => {
 		beforeEach(() => {
 			// Arrange
-			fastpassesPage.fillInAddFastpass('Star Wars: Hyperspace Mountain', [16, 20], [16, 50], [13, 30]);
+			fastpassesPage.fillInAddFastpass('Big Thunder Mountain', [16, 20], [16, 50], [13, 30]);
 		});
 
 		it('should remove the Fastpass when the Remove button is clicked', () => {
