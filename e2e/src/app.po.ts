@@ -1,4 +1,11 @@
-import { browser, by, element, ElementArrayFinder, ElementFinder, promise } from 'protractor';
+import {
+	browser,
+	by,
+	element,
+	ElementArrayFinder,
+	ElementFinder,
+	promise
+} from 'protractor';
 
 export class AppPage {
 	public navigateToApp(): promise.Promise<any> {
@@ -7,6 +14,10 @@ export class AppPage {
 
 	public getActiveParkBar(): ElementFinder {
 		return element(by.id('active-park-bar'));
+	}
+
+	public getActiveParkSelect(): ElementFinder {
+		return this.getActiveParkBar().element(by.tagName('select'));
 	}
 
 	public getNavBar(): ElementFinder {
@@ -31,5 +42,9 @@ export class AppPage {
 
 	public getNavSettingsButton(): ElementFinder {
 		return this.getNavButtons().get(3);
+	}
+
+	public selectActivePark(park: string): void {
+		this.getActiveParkSelect().element(by.cssContainingText('option', park)).click();
 	}
 }

@@ -115,4 +115,21 @@ describe('Attractions Selectors', () => {
 			expect(result).toBeNull();
 		});
 	});
+
+	describe('getFastpassAttractionsForPark()', () => {
+		it('should only return attractions with Fastpass active', () => {
+			// Arrange
+			const mockState = [
+				attractionFixtures.park02Attraction01,
+				attractionFixtures.park02Attraction02NoFastpass
+			];
+			const expectedResult = [attractionFixtures.park02Attraction01];
+
+			// Act
+			const result = attractionsSelectors.getFastpassAttractionsForPark.projector(mockState);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
+		});
+	});
 });

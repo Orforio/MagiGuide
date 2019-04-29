@@ -1,12 +1,15 @@
-import { browser } from 'protractor';
+import { browser, ExpectedConditions } from 'protractor';
 
+import { AppPage } from '../app.po';
 import { FastpassesPage } from './fastpasses.po';
 
 describe('Fastpasses Page', () => {
+	let appPage: AppPage;
 	let fastpassesPage: FastpassesPage;
 
 	beforeEach(() => {
 		// Arrange
+		appPage = new AppPage();
 		fastpassesPage = new FastpassesPage();
 
 		// Act
@@ -45,6 +48,46 @@ describe('Fastpasses Page', () => {
 		});
 	});
 
+	describe('changing the Active Park', () => {
+		it('should only show Disneyland Park Fastpass attractions when selected', () => {
+			// Arrange
+
+			// Act
+			appPage.selectActivePark('Disneyland Park');
+			fastpassesPage.waitForApiLoad();
+
+			// Assert
+			expect(
+				fastpassesPage.getAddFastpassAttractionOption('Big Thunder Mountain').isPresent()
+			).toBeTruthy('Fastpass Attraction not present');
+			expect(
+				fastpassesPage.getAddFastpassAttractionOption('Pirates of the Caribbean').isPresent()
+			).toBeFalsy('Non-Fastpass Attraction present');
+			// expect(
+			// 	fastpassesPage.getAddFastpassAttractionOption('The Twilight Zone Tower of Terror™').isPresent()
+			// ).toBeFalsy('Attraction from wrong park present');
+		});
+
+		xit('should only show Walt Disney Studios Fastpass attractions when selected', () => {
+			// Arrange
+
+			// Act
+			appPage.selectActivePark('Walt Disney Studios');
+			fastpassesPage.waitForApiLoad();
+
+			// Assert
+			expect(
+				fastpassesPage.getAddFastpassAttractionOption('The Twilight Zone Tower of Terror™').isPresent()
+			).toBeTruthy('Fastpass Attraction not present');
+			expect(
+				fastpassesPage.getAddFastpassAttractionOption('RC Racer').isPresent()
+			).toBeFalsy('Non-Fastpass Attraction present');
+			expect(
+				fastpassesPage.getAddFastpassAttractionOption('Big Thunder Mountain').isPresent()
+			).toBeFalsy('Attraction from wrong park present');
+		});
+	});
+
 	describe('adding a Fastpass', () => {
 		beforeEach(() => {
 			// Arrange
@@ -76,7 +119,7 @@ describe('Fastpasses Page', () => {
 
 			// Assert
 			expect(fastpassesPage.getFastpasses().count()).toEqual(1);
-			expect(fastpassesPage.getFastpassRide(0).getText()).toEqual('Big Thunder Mountain');
+			expect(fastpassesPage.getFastpassAttraction(0).getText()).toEqual('Big Thunder Mountain');
 			expect(fastpassesPage.getFastpassStartTime(0).getText()).toEqual('11:15');
 			expect(fastpassesPage.getFastpassEndTime(0).getText()).toEqual('11:45');
 		});
@@ -88,7 +131,7 @@ describe('Fastpasses Page', () => {
 			// Assert
 			expect(fastpassesPage.getUpdateFastpass().isPresent()).toBeFalsy();
 			expect(fastpassesPage.getFastpasses().count()).toEqual(1);
-			expect(fastpassesPage.getFastpassRide(0).getText()).toEqual('Big Thunder Mountain');
+			expect(fastpassesPage.getFastpassAttraction(0).getText()).toEqual('Big Thunder Mountain');
 			expect(fastpassesPage.getFastpassStartTime(0).getText()).toEqual('11:00');
 			expect(fastpassesPage.getFastpassEndTime(0).getText()).toEqual('11:30');
 		});

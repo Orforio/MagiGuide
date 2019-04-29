@@ -19,7 +19,7 @@ export class FastpassesPage extends MagiGuidePage {
 		return this.getFastpasses().get(number);
 	}
 
-	public getFastpassRide(number: number): ElementFinder {
+	public getFastpassAttraction(number: number): ElementFinder {
 		return this.getFastpass(number).element(by.className('attraction-name'));
 	}
 
@@ -43,7 +43,7 @@ export class FastpassesPage extends MagiGuidePage {
 		return element(by.css('mg-upsert-fastpass#update-fastpass'));
 	}
 
-	public getUpdateFastpassRide(): ElementFinder {
+	public getUpdateFastpassAttraction(): ElementFinder {
 		return this.getUpdateFastpass().element(by.name('attraction'));
 	}
 
@@ -71,8 +71,12 @@ export class FastpassesPage extends MagiGuidePage {
 		return element(by.css('mg-upsert-fastpass#add-fastpass'));
 	}
 
-	public getAddFastpassRide(): ElementFinder {
+	public getAddFastpassAttraction(): ElementFinder {
 		return this.getAddFastpass().element(by.name('attraction'));
+	}
+
+	public getAddFastpassAttractionOption(attraction: string): ElementFinder {
+		return this.getAddFastpassAttraction().element(by.cssContainingText('option', attraction));
 	}
 
 	public getAddFastpassStartTime(): ElementFinder {
@@ -97,14 +101,8 @@ export class FastpassesPage extends MagiGuidePage {
 		endTime: number[],
 		nextAvailableTime: number[]
 		): void {
-			browser.wait(
-				ExpectedConditions.elementToBeClickable(
-					this.getAddFastpassRide().element(by.cssContainingText('option', attraction))
-				),
-				30000,
-				'API failed to respond'
-			);
-			this.getAddFastpassRide().element(by.cssContainingText('option', attraction)).click();
+			this.waitForApiLoad();
+			this.getAddFastpassAttraction().element(by.cssContainingText('option', attraction)).click();
 			this.getAddFastpassStartTime().all(by.tagName('input')).each((input, index) => {
 				input.clear();
 				input.sendKeys(startTime[index]);
@@ -126,14 +124,8 @@ export class FastpassesPage extends MagiGuidePage {
 		endTime: number[],
 		nextAvailableTime: number[]
 		): void {
-			browser.wait(
-				ExpectedConditions.elementToBeClickable(
-					this.getAddFastpassRide().element(by.cssContainingText('option', attraction))
-				),
-				30000,
-				'API failed to respond'
-			);
-			this.getUpdateFastpassRide().element(by.cssContainingText('option', attraction)).click();
+			this.waitForApiLoad();
+			this.getUpdateFastpassAttraction().element(by.cssContainingText('option', attraction)).click();
 			this.getUpdateFastpassStartTime().all(by.tagName('input')).each((input, index) => {
 				input.clear();
 				input.sendKeys(startTime[index]);
@@ -148,4 +140,14 @@ export class FastpassesPage extends MagiGuidePage {
 			});
 			this.getUpdateFastpassButton().click();
 		}
+
+	public waitForApiLoad(): void {
+		browser.wait(
+			ExpectedConditions.elementToBeClickable(
+				this.getAddFastpassAttraction()
+			),
+			30000,
+			'API failed to respond'
+		);
+	}
 }

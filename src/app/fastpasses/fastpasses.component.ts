@@ -30,7 +30,7 @@ export class FastpassesComponent implements OnInit {
 
 	public ngOnInit(): void {
 		this.attractions = combineLatest(
-			this.store.pipe(select(fromAttractions.getAttractionsForPark)),
+			this.store.pipe(select(fromAttractions.getFastpassAttractionsForPark)),
 			this.store.pipe(select(fromAttractions.getAttractionsOldestUpdateForPark))
 		).pipe(
 			tap(([attractions, oldestUpdate]) => {

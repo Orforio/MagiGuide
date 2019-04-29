@@ -135,9 +135,14 @@ describe('FastpassesComponent', () => {
 		});
 	});
 
-	it('should retrieve the Attractions data', (done: DoneFn) => {
+	it('should retrieve the Attractions data for Fastpass attractions', (done: DoneFn) => {
 		// Arrange
 		const mockAttractions = [
+			attractionFixtures.park01Attraction01,
+			attractionFixtures.park01Attraction02,
+			attractionFixtures.park01Attraction03NoFastpass
+		];
+		const expectedAttractions = [
 			attractionFixtures.park01Attraction01,
 			attractionFixtures.park01Attraction02
 		];
@@ -148,7 +153,7 @@ describe('FastpassesComponent', () => {
 
 		// Assert
 		component.attractions.subscribe(result => {
-			expect(result).toEqual(mockAttractions);
+			expect(result).toEqual(expectedAttractions);
 			done();
 		});
 	});

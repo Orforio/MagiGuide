@@ -61,11 +61,35 @@ const park01Attraction02Updated: Attraction = {
 	}
 };
 
-const park02Attraction01: Attraction = {
+const park01Attraction03NoFastpass: Attraction = {
 	id: 'ATT03',
 	name: 'Attraction 03',
+	park: Parks.DisneylandPark,
+	fastpassEnabled: false,
+	updated: new Date(),
+	schedule: {
+		openingTime: new Date(),
+		closingTime: new Date()
+	}
+};
+
+const park02Attraction01: Attraction = {
+	id: 'ATT04',
+	name: 'Attraction 04',
 	park: Parks.WaltDisneyStudios,
 	fastpassEnabled: true,
+	updated: new Date(),
+	schedule: {
+		openingTime: new Date(),
+		closingTime: new Date()
+	}
+};
+
+const park02Attraction02NoFastpass: Attraction = {
+	id: 'ATT05',
+	name: 'Attraction 05',
+	park: Parks.WaltDisneyStudios,
+	fastpassEnabled: false,
 	updated: new Date(),
 	schedule: {
 		openingTime: new Date(),
@@ -106,7 +130,9 @@ export const attractionFixtures = {
 	park01Attraction03,
 	park01Attraction01Updated,
 	park01Attraction02Updated,
+	park01Attraction03NoFastpass,
 	park02Attraction01,
+	park02Attraction02NoFastpass,
 	updatedNewer,
 	updatedNewest,
 	updatedOldest

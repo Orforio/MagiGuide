@@ -23,6 +23,12 @@ export const getAttractionsOldestUpdateForPark = createSelector(
 		.reduce((accumulator, currentValue) => accumulator && accumulator.getTime() < currentValue.getTime() ? accumulator : currentValue, null)
 );
 
+export const getFastpassAttractionsForPark = createSelector(
+	getAttractionsForPark,
+	attractions => attractions
+		.filter(attraction => attraction.fastpassEnabled)
+);
+
 export const getAttractionsError = createSelector(
 	getAttractionsFeatureState,
 	state => state.error
