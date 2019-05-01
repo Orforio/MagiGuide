@@ -29,29 +29,43 @@ describe('AttractionsService', () => {
 					name: 'Test Attraction 01',
 					fastpassEnabled: true,
 					schedule: {
-						openingTime: new Date(),
-						closingTime: new Date()
+						openingTime: '1992-04-12T10:00:00Z',
+						closingTime: '1992-04-12T22:00:00Z'
 					},
-					updated: new Date()
+					updated: '1992-04-12T14:30:00Z'
 				},
 				{
 					id: 'TEST02',
 					name: 'Test Attraction 02',
 					fastpassEnabled: false,
 					schedule: {
-						openingTime: new Date(),
-						closingTime: new Date()
+						openingTime: '1992-04-12T09:00:00Z',
+						closingTime: '1992-04-12T21:00:00Z'
 					},
-					updated: new Date()
+					updated: '1992-04-12T14:30:00Z'
 				}
 			];
 			const expectedAttractions: Attraction[] = [
 				{
-					...mockAttractions[0],
+					id: 'TEST01',
+					name: 'Test Attraction 01',
+					fastpassEnabled: true,
+					schedule: {
+						openingTime: new Date('1992-04-12T10:00:00Z'),
+						closingTime: new Date('1992-04-12T22:00:00Z')
+					},
+					updated: new Date('1992-04-12T14:30:00Z'),
 					park: Parks.WaltDisneyStudios
 				},
 				{
-					...mockAttractions[1],
+					id: 'TEST02',
+					name: 'Test Attraction 02',
+					fastpassEnabled: false,
+					schedule: {
+						openingTime: new Date('1992-04-12T09:00:00Z'),
+						closingTime: new Date('1992-04-12T21:00:00Z')
+					},
+					updated: new Date('1992-04-12T14:30:00Z'),
 					park: Parks.WaltDisneyStudios
 				}
 			];

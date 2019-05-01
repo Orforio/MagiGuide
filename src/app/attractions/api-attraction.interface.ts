@@ -3,10 +3,10 @@ export interface APIAttraction {
 	id: string;
 	name: string;
 	schedule: APIAttractionSchedule;
-	updated: Date;
+	updated: string;
 }
 
 export interface APIAttractionSchedule {
-	closingTime: Date;
-	openingTime: Date;
+	closingTime: string;
+	openingTime: string;
 }

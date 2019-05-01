@@ -10,7 +10,7 @@ import { attractionsReducer } from '../attractions/state/attractions.reducer';
 import * as attractionActions from '../attractions/state/attractions.actions';
 import * as fromFastpasses from './state';
 import * as fromSettings from '../settings/state';
-import { DateTimeService } from '../common';
+import { DateTimeService, Parks } from '../common';
 
 describe('FastpassesComponent', () => {
 	let compiled: HTMLElement;
@@ -149,6 +149,27 @@ describe('FastpassesComponent', () => {
 
 		// Act
 		store.dispatch(new attractionActions.LoadAttractionsSuccess({ attractions: mockAttractions }));
+		fixture.detectChanges();
+
+		// Assert
+		component.attractions.subscribe(result => {
+			expect(result).toEqual(expectedAttractions);
+			done();
+		});
+	});
+
+	it('should switch out the loaded Attractions when Active Park is changed', (done: DoneFn) => {
+		// Arrange
+		const mockAttractions = [
+			attractionFixtures.park01Attraction01,
+			attractionFixtures.park02Attraction01
+		];
+		const expectedAttractions = [attractionFixtures.park02Attraction01];
+		store.dispatch(new attractionActions.LoadAttractionsSuccess({ attractions: mockAttractions }));
+		fixture.detectChanges();
+
+		// Act
+		store.dispatch(new fromSettings.SetActivePark({ activePark: Parks.WaltDisneyStudios }));
 		fixture.detectChanges();
 
 		// Assert

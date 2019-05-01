@@ -63,12 +63,12 @@ describe('Fastpasses Page', () => {
 			expect(
 				fastpassesPage.getAddFastpassAttractionOption('Pirates of the Caribbean').isPresent()
 			).toBeFalsy('Non-Fastpass Attraction present');
-			// expect(
-			// 	fastpassesPage.getAddFastpassAttractionOption('The Twilight Zone Tower of Terror™').isPresent()
-			// ).toBeFalsy('Attraction from wrong park present');
+			expect(
+				fastpassesPage.getAddFastpassAttractionOption('The Twilight Zone Tower of Terror™').isPresent()
+			).toBeFalsy('Attraction from wrong park present');
 		});
 
-		xit('should only show Walt Disney Studios Fastpass attractions when selected', () => {
+		it('should only show Walt Disney Studios Fastpass attractions when selected', () => {
 			// Arrange
 
 			// Act

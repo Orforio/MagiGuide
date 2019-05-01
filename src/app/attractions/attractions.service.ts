@@ -23,7 +23,19 @@ export class AttractionsService {
 		return this.http.get<APIAttraction[]>(`${this.apiUrl}/${this.mapParksToString[park]}/attractions`)
 			.pipe(
 				map(attractions => attractions.map(attraction => {
-					return {...attraction, park};
+					const schedule = attraction.schedule ? {
+							closingTime: new Date(attraction.schedule.closingTime),
+							openingTime: new Date(attraction.schedule.openingTime)
+						} : null;
+
+					return {
+						id: attraction.id,
+						fastpassEnabled: attraction.fastpassEnabled,
+						name: attraction.name,
+						park,
+						schedule,
+						updated: new Date(attraction.updated)
+					};
 				}))
 			);
 	}
