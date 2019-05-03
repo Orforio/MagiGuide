@@ -83,7 +83,7 @@ describe('FastpassesComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
-	it('should dispatch the LoadAttractions action if the state contains no Attractions', (done: DoneFn) => {
+	it('should dispatch the LoadAttractions action', (done: DoneFn) => {
 		// Arrange
 		const mockAction = new attractionActions.LoadAttractions();
 
@@ -91,46 +91,6 @@ describe('FastpassesComponent', () => {
 		// Assert
 		component.attractions.subscribe(() => {
 			expect(store.dispatch).toHaveBeenCalledWith(mockAction);
-			done();
-		});
-	});
-
-	it('should dispatch the LoadAttractions action if state contains Attractions older than 12 hours', (done: DoneFn) => {
-		// Arrange
-		const mockAction = new attractionActions.LoadAttractions();
-		const mockAttractions = [
-			attractionFixtures.updatedOldest,
-			attractionFixtures.updatedNewer
-		];
-		dateTimeServiceMock.isOlderThanHours.and.returnValue(true);
-		store.dispatch(new attractionActions.LoadAttractionsSuccess({ attractions: mockAttractions }));
-		storeSpy.calls.reset();
-		fixture.detectChanges();
-
-		// Act
-		// Assert
-		component.attractions.subscribe(() => {
-			expect(storeSpy).toHaveBeenCalledWith(mockAction);
-			done();
-		});
-	});
-
-	it('should not dispatch the LoadAttractions action if state contains Attractions newer than 12 hours', (done: DoneFn) => {
-		// Arrange
-		const mockAction = new attractionActions.LoadAttractions();
-		const mockAttractions = [
-			attractionFixtures.updatedOldest,
-			attractionFixtures.updatedNewer
-		];
-		dateTimeServiceMock.isOlderThanHours.and.returnValue(false);
-		store.dispatch(new attractionActions.LoadAttractionsSuccess({ attractions: mockAttractions }));
-		storeSpy.calls.reset();
-		fixture.detectChanges();
-
-		// Act
-		// Assert
-		component.attractions.subscribe(() => {
-			expect(storeSpy).not.toHaveBeenCalledWith(mockAction);
 			done();
 		});
 	});
@@ -164,9 +124,11 @@ describe('FastpassesComponent', () => {
 			attractionFixtures.park01Attraction01,
 			attractionFixtures.park02Attraction01
 		];
+		const expectedAction = new attractionActions.LoadAttractions();
 		const expectedAttractions = [attractionFixtures.park02Attraction01];
 		store.dispatch(new attractionActions.LoadAttractionsSuccess({ attractions: mockAttractions }));
 		fixture.detectChanges();
+		storeSpy.calls.reset();
 
 		// Act
 		store.dispatch(new fromSettings.SetActivePark({ activePark: Parks.WaltDisneyStudios }));
@@ -175,6 +137,7 @@ describe('FastpassesComponent', () => {
 		// Assert
 		component.attractions.subscribe(result => {
 			expect(result).toEqual(expectedAttractions);
+			expect(storeSpy).toHaveBeenCalledWith(expectedAction);
 			done();
 		});
 	});

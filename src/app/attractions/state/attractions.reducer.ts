@@ -17,6 +17,11 @@ export const initialAttractionsState: AttractionsState = attractionsAdapter.getI
 
 export function attractionsReducer(state = initialAttractionsState, action: AttractionsActions): AttractionsState {
 	switch (action.type) {
+		case AttractionsActionTypes.CancelLoadAttractions:
+			return {
+				...state,
+				loading: false
+			};
 		case AttractionsActionTypes.LoadAttractions:
 			return {
 				...state,

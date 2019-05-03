@@ -3,6 +3,27 @@ import * as attractionActions from './attractions.actions';
 import { attractionFixtures } from '../attraction.fixtures';
 
 describe('Attractions Reducer', () => {
+	describe('CancelLoadAttractions', () => {
+		it('should set loading to false', () => {
+			// Arrange
+			const previousState: AttractionsState = {
+				...initialAttractionsState,
+				loading: true
+			};
+			const expectedResult: AttractionsState = {
+				...initialAttractionsState,
+				loading: false
+			};
+			const action = new attractionActions.CancelLoadAttractions();
+
+			// Act
+			const result = attractionsReducer(previousState, action);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
+		});
+	});
+
 	describe('LoadAttractions', () => {
 		it('should set loading to true', () => {
 			// Arrange

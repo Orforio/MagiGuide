@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { Attraction } from '../attractions/attraction.model';
@@ -29,16 +29,9 @@ export class FastpassesComponent implements OnInit {
 	) {}
 
 	public ngOnInit(): void {
-		this.attractions = combineLatest(
-			this.store.pipe(select(fromAttractions.getFastpassAttractionsForPark)),
-			this.store.pipe(select(fromAttractions.getAttractionsOldestUpdateForPark))
-		).pipe(
-			tap(([attractions, oldestUpdate]) => {
-				if (attractions.length === 0 || (attractions.length > 0 && this.dateTimeService.isOlderThanHours(oldestUpdate, 12))) {
-					this.store.dispatch(new fromAttractions.LoadAttractions());
-				}
-			}),
-			map(([attractions]) => attractions)
+		this.attractions = this.store.pipe(
+			select(fromAttractions.getFastpassAttractionsForPark),
+			tap(() => this.store.dispatch(new fromAttractions.LoadAttractions()))
 		);
 		this.attractionsError = this.store.pipe(select(fromAttractions.getAttractionsError));
 		this.attractionsLoading = this.store.pipe(select(fromAttractions.getAttractionsLoading));
@@ -49,6 +42,7 @@ export class FastpassesComponent implements OnInit {
 			map(nextAvailableTime => nextAvailableTime && nextAvailableTime.getTime() > this.dateTimeService.getCurrentDateTime().getTime() ?
 				nextAvailableTime : null)
 		);
+		this.store.dispatch(new fromAttractions.LoadAttractions());
 		this.store.dispatch(new fromFastpasses.PruneFastpasses({ todayCutoff: this.dateTimeService.getTodayCutoff() }));
 	}
 

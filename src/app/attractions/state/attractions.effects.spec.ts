@@ -5,24 +5,28 @@ import { of as observableOf, ReplaySubject, throwError as observableThrowError }
 
 import { AttractionsEffects } from './attractions.effects';
 import * as attractionActions from './attractions.actions';
+import * as settingsActions from '../../settings/state/settings.actions';
+import { attractionsReducer } from './attractions.reducer';
+import { settingsReducer } from '../../settings/state/settings.reducer';
 import { AttractionsService } from '../attractions.service';
 import { attractionFixtures } from '../attraction.fixtures';
-import * as settingsActions from '../../settings/state/settings.actions';
-import { settingsReducer } from '../../settings/state/settings.reducer';
-import { Parks } from '../../common';
+import { DateTimeService, Parks } from '../../common';
 
 describe('AttractionsEffects', () => {
 	let actions: ReplaySubject<any>;
+	let attractionsServiceMock: jasmine.SpyObj<AttractionsService>;
+	let dateTimeServiceMock: jasmine.SpyObj<DateTimeService>;
 	let effects: AttractionsEffects;
-	let mockAttractionsService: jasmine.SpyObj<AttractionsService>;
 	let store: Store<any>;
 
 	beforeEach(() => {
-		mockAttractionsService = jasmine.createSpyObj<AttractionsService>('AttractionsService', ['getAttractions']);
+		attractionsServiceMock = jasmine.createSpyObj<AttractionsService>('AttractionsService', ['getAttractions']);
+		dateTimeServiceMock = jasmine.createSpyObj<DateTimeService>('DateTimeService', ['isOlderThanHours']);
 
 		TestBed.configureTestingModule({
 			imports: [
 				StoreModule.forRoot({
+					'attractions': attractionsReducer,
 					'settings': settingsReducer
 				})
 			],
@@ -31,7 +35,11 @@ describe('AttractionsEffects', () => {
 				provideMockActions(() => actions),
 				{
 					provide: AttractionsService,
-					useValue: mockAttractionsService
+					useValue: attractionsServiceMock
+				},
+				{
+					provide: DateTimeService,
+					useValue: dateTimeServiceMock
 				}
 			]
 		});
@@ -46,29 +54,103 @@ describe('AttractionsEffects', () => {
 
 	describe('loadAttractions()', () => {
 		beforeEach(() => {
-			mockAttractionsService.getAttractions.and.returnValue(observableOf([]));
+			attractionsServiceMock.getAttractions.and.returnValue(observableOf([]));
+			dateTimeServiceMock.isOlderThanHours.and.returnValue(false);
 		});
 
-		it('should call AttractionsService.getAttractions with the activePark', (done: DoneFn) => {
-			// Arrange
-			store.dispatch(new settingsActions.SetActivePark({ activePark: Parks.WaltDisneyStudios }));
-			const action = new attractionActions.LoadAttractions();
+		describe('with no Attractions in the store', () => {
+			it('should call AttractionsService.getAttractions with the activePark', (done: DoneFn) => {
+				// Arrange
+				store.dispatch(new settingsActions.SetActivePark({ activePark: Parks.WaltDisneyStudios }));
+				const action = new attractionActions.LoadAttractions();
 
-			// Arrange
-			actions = new ReplaySubject(1);
-			actions.next(action);
+				// Arrange
+				actions = new ReplaySubject(1);
+				actions.next(action);
 
-			// Assert
-			effects.loadAttractions.subscribe(() => {
-				expect(mockAttractionsService.getAttractions).toHaveBeenCalledWith(Parks.WaltDisneyStudios);
-				done();
+				// Assert
+				effects.loadAttractions.subscribe(() => {
+					expect(attractionsServiceMock.getAttractions).toHaveBeenCalledWith(Parks.WaltDisneyStudios);
+					done();
+				});
+			});
+		});
+
+		describe('with Attractions older than 12 hours in the store', () => {
+			beforeEach(() => {
+				// Arrange
+				const mockAttractions = [
+					attractionFixtures.updatedOldest,
+					attractionFixtures.updatedNewer
+				];
+				dateTimeServiceMock.isOlderThanHours.and.returnValue(true);
+				store.dispatch(new attractionActions.LoadAttractionsSuccess({ attractions: mockAttractions }));
+			});
+
+			it('should call AttractionsService.getAttractions with the activePark', (done: DoneFn) => {
+				// Arrange
+				store.dispatch(new settingsActions.SetActivePark({ activePark: Parks.DisneylandPark }));
+				const action = new attractionActions.LoadAttractions();
+
+				// Arrange
+				actions = new ReplaySubject(1);
+				actions.next(action);
+
+				// Assert
+				effects.loadAttractions.subscribe(() => {
+					expect(attractionsServiceMock.getAttractions).toHaveBeenCalledWith(Parks.DisneylandPark);
+					done();
+				});
+			});
+		});
+
+		describe('with Attractions newer than 12 hours in the store', () => {
+			beforeEach(() => {
+				// Arrange
+				const mockAttractions = [
+					attractionFixtures.updatedOldest,
+					attractionFixtures.updatedNewer
+				];
+				dateTimeServiceMock.isOlderThanHours.and.returnValue(false);
+				store.dispatch(new attractionActions.LoadAttractionsSuccess({ attractions: mockAttractions }));
+			});
+
+			it('should not call AttractionsService.getAttractions', (done: DoneFn) => {
+				// Arrange
+				const action = new attractionActions.LoadAttractions();
+
+				// Arrange
+				actions = new ReplaySubject(1);
+				actions.next(action);
+
+				// Assert
+				effects.loadAttractions.subscribe(() => {
+					expect(attractionsServiceMock.getAttractions).not.toHaveBeenCalled();
+					done();
+				});
+			});
+
+			it('should dispatch CancelLoadAttractions', (done: DoneFn) => {
+				// Arrange
+				const action = new attractionActions.LoadAttractions();
+				const expectedAction = new attractionActions.CancelLoadAttractions();
+
+				// Act
+				actions = new ReplaySubject(1);
+				actions.next(action);
+
+				// Assert
+				effects.loadAttractions.subscribe(result => {
+					expect(result).toEqual(expectedAction);
+					done();
+				});
 			});
 		});
 
 		it('should dispatch LoadAttractionsSuccess with Attractions data on success', (done: DoneFn) => {
 			// Arrange
 			const mockAttractions = [attractionFixtures.park01Attraction01];
-			mockAttractionsService.getAttractions.and.returnValue(observableOf(mockAttractions));
+			attractionsServiceMock.getAttractions.and.returnValue(observableOf(mockAttractions));
 			const action = new attractionActions.LoadAttractions();
 			const expectedAction = new attractionActions.LoadAttractionsSuccess({ attractions: mockAttractions });
 
@@ -86,7 +168,7 @@ describe('AttractionsEffects', () => {
 		it('should dispatch LoadAttractionsFailure with error on failure', (done: DoneFn) => {
 			// Arrange
 			const mockError = { message: 'Something went wrong' };
-			mockAttractionsService.getAttractions.and.returnValue(observableThrowError(mockError));
+			attractionsServiceMock.getAttractions.and.returnValue(observableThrowError(mockError));
 			const action = new attractionActions.LoadAttractions();
 			const expectedAction = new attractionActions.LoadAttractionsFailure({ error: mockError.message });
 
