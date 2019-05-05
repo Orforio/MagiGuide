@@ -41,6 +41,6 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	public setActivePark(): void {
-		this.store.dispatch(new SetActivePark({ activePark: this.activeParksForm.value.activePark }));
+		this.store.dispatch(new SetActivePark({ activePark: +this.activeParksForm.value.activePark }));
 	}
 }

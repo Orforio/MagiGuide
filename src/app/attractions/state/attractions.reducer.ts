@@ -1,6 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
-import { AttractionsActions, AttractionsActionTypes } from './attractions.actions';
+import { AttractionsActions, AttractionsActionTypes } from './';
+import { SettingsActions, SettingsActionTypes } from '../../settings/state';
 import { Attraction } from '../attraction.model';
 
 export interface AttractionsState extends EntityState<Attraction> {
@@ -21,7 +22,9 @@ function sortByName(attraction1: Attraction, attraction2: Attraction): number {
 	return attraction1.name.localeCompare(attraction2.name);
 }
 
-export function attractionsReducer(state = initialAttractionsState, action: AttractionsActions): AttractionsState {
+export function attractionsReducer(
+	state = initialAttractionsState,
+	action: AttractionsActions | SettingsActions): AttractionsState {
 	switch (action.type) {
 		case AttractionsActionTypes.CancelLoadAttractions:
 			return {
@@ -29,6 +32,7 @@ export function attractionsReducer(state = initialAttractionsState, action: Attr
 				loading: false
 			};
 		case AttractionsActionTypes.LoadAttractions:
+		case SettingsActionTypes.SetActivePark:
 			return {
 				...state,
 				loading: true

@@ -182,5 +182,20 @@ describe('AttractionsEffects', () => {
 				done();
 			});
 		});
+
+		it('should also activate on the "[Settings] Set Active Park" action', (done: DoneFn) => {
+			// Arrange
+			const action = new settingsActions.SetActivePark({ activePark: Parks.DisneylandPark });
+
+			// Arrange
+			actions = new ReplaySubject(1);
+			actions.next(action);
+
+			// Assert
+			effects.loadAttractions.subscribe(() => {
+				expect(true).toBeTruthy('Did not respond to "[Settings] Set Active Park"');
+				done();
+			});
+		});
 	});
 });

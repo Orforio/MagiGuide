@@ -28,7 +28,10 @@ export class AttractionsEffects {
 
 	@Effect()
 	loadAttractions = this.actions.pipe(
-		ofType(AttractionsActionTypes.LoadAttractions),
+		ofType(
+			AttractionsActionTypes.LoadAttractions,
+			fromSettings.SettingsActionTypes.SetActivePark
+		),
 		withLatestFrom(
 			this.store.pipe(select(fromSettings.getActivePark)),
 			this.store.pipe(select(fromAttractions.getAttractionsOldestUpdateForPark))

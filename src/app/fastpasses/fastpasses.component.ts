@@ -29,10 +29,7 @@ export class FastpassesComponent implements OnInit {
 	) {}
 
 	public ngOnInit(): void {
-		this.attractions = this.store.pipe(
-			select(fromAttractions.getFastpassAttractionsForPark),
-			tap(() => this.store.dispatch(new fromAttractions.LoadAttractions()))
-		);
+		this.attractions = this.store.pipe(select(fromAttractions.getFastpassAttractionsForPark));
 		this.attractionsError = this.store.pipe(select(fromAttractions.getAttractionsError));
 		this.attractionsLoading = this.store.pipe(select(fromAttractions.getAttractionsLoading));
 		this.editFastpassId = this.store.pipe(select(fromFastpasses.getEditFastpass));

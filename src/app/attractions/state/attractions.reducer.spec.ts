@@ -1,6 +1,8 @@
 import { attractionsReducer, AttractionsState, initialAttractionsState } from './attractions.reducer';
 import * as attractionActions from './attractions.actions';
 import { attractionFixtures } from '../attraction.fixtures';
+import * as fromSettings from '../../settings/state';
+import { Parks } from '../..//common';
 
 describe('Attractions Reducer', () => {
 	describe('CancelLoadAttractions', () => {
@@ -18,6 +20,23 @@ describe('Attractions Reducer', () => {
 
 			// Act
 			const result = attractionsReducer(previousState, action);
+
+			// Assert
+			expect(result).toEqual(expectedResult);
+		});
+	});
+
+	describe('fromSettings.SetActivePark', () => {
+		it('should set loading to true', () => {
+			// Arrange
+			const expectedResult: AttractionsState = {
+				...initialAttractionsState,
+				loading: true
+			};
+			const action = new fromSettings.SetActivePark({ activePark: Parks.DisneylandPark });
+
+			// Act
+			const result = attractionsReducer(initialAttractionsState, action);
 
 			// Assert
 			expect(result).toEqual(expectedResult);

@@ -118,30 +118,6 @@ describe('FastpassesComponent', () => {
 		});
 	});
 
-	it('should switch out the loaded Attractions when Active Park is changed', (done: DoneFn) => {
-		// Arrange
-		const mockAttractions = [
-			attractionFixtures.park01Attraction01,
-			attractionFixtures.park02Attraction01
-		];
-		const expectedAction = new attractionActions.LoadAttractions();
-		const expectedAttractions = [attractionFixtures.park02Attraction01];
-		store.dispatch(new attractionActions.LoadAttractionsSuccess({ attractions: mockAttractions }));
-		fixture.detectChanges();
-		storeSpy.calls.reset();
-
-		// Act
-		store.dispatch(new fromSettings.SetActivePark({ activePark: Parks.WaltDisneyStudios }));
-		fixture.detectChanges();
-
-		// Assert
-		component.attractions.subscribe(result => {
-			expect(result).toEqual(expectedAttractions);
-			expect(storeSpy).toHaveBeenCalledWith(expectedAction);
-			done();
-		});
-	});
-
 	it('should retrieve the Attractions loading status', () => {
 		// Arrange
 
