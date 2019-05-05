@@ -78,27 +78,27 @@ describe('Attractions Reducer', () => {
 	});
 
 	describe('LoadAttractionsSuccess', () => {
-		it('should add a new Attraction to the state', () => {
+		it('should add new Attractions to the state in alphabetical order', () => {
 			// Arrange
 			const previousState = {
 				...initialAttractionsState,
-				ids: [attractionFixtures.park01Attraction01.id],
+				ids: [attractionFixtures.park01Attraction03.id],
 				entities: {
-					[attractionFixtures.park01Attraction01.id]: attractionFixtures.park01Attraction01
+					[attractionFixtures.park01Attraction03.id]: attractionFixtures.park01Attraction03
 				}
 			};
 			const expectedResult: AttractionsState = {
 				...initialAttractionsState,
 				ids: [
-					...previousState.ids,
-					attractionFixtures.park01Attraction02.id
+					attractionFixtures.park01Attraction01.id,
+					attractionFixtures.park01Attraction03.id
 				],
 				entities: {
-					...previousState.entities,
-					[attractionFixtures.park01Attraction02.id]: attractionFixtures.park01Attraction02
+					[attractionFixtures.park01Attraction01.id]: attractionFixtures.park01Attraction01,
+					[attractionFixtures.park01Attraction03.id]: attractionFixtures.park01Attraction03
 				}
 			};
-			const action = new attractionActions.LoadAttractionsSuccess({ attractions: [attractionFixtures.park01Attraction02] });
+			const action = new attractionActions.LoadAttractionsSuccess({ attractions: [attractionFixtures.park01Attraction01] });
 
 			// Act
 			const result = attractionsReducer(previousState, action);

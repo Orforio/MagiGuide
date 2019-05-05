@@ -8,12 +8,18 @@ export interface AttractionsState extends EntityState<Attraction> {
 	loading: boolean;
 }
 
-const attractionsAdapter: EntityAdapter<Attraction> = createEntityAdapter<Attraction>({});
+const attractionsAdapter: EntityAdapter<Attraction> = createEntityAdapter<Attraction>({
+	sortComparer: sortByName
+});
 
 export const initialAttractionsState: AttractionsState = attractionsAdapter.getInitialState({
 	error: '',
 	loading: false
 });
+
+function sortByName(attraction1: Attraction, attraction2: Attraction): number {
+	return attraction1.name.localeCompare(attraction2.name);
+}
 
 export function attractionsReducer(state = initialAttractionsState, action: AttractionsActions): AttractionsState {
 	switch (action.type) {
