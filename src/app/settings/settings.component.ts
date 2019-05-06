@@ -1,17 +1,16 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { FormBuilder, Validators } from '@angular/forms';
+import { select, Store } from '@ngrx/store';
+import { FormBuilder } from '@angular/forms';
 import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { DateTimeService } from '../common/date-time.service';
-import { GlobalObjectService } from '../common/global-object.service';
-import { SetDebug, ResetApp } from './state/settings.actions';
-import { LoadFastpasses, PruneFastpasses } from '../fastpasses/state/fastpass.actions';
 import { Fastpass } from '../fastpasses/fastpass.model';
+import { attractionFixtures } from '../attractions/attraction.fixtures';
+import * as fromFastpasses from '../fastpasses/state';
 import * as fromRoot from '../state';
-import * as settingsSelectors from './state/settings.selectors';
+import * as fromSettings from './state';
+import { DateTimeService, GlobalObjectService } from '../common';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,7 +34,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
 	public ngOnInit(): void {
 		this.store.pipe(
-			select(settingsSelectors.getEnableDebug),
+			select(fromSettings.getEnableDebug),
 			takeUntil(this.unsubscribe))
 			.subscribe((enableDebugValue) => {
 				this.settingsForm.controls.enableDebug.setValue(enableDebugValue);
@@ -49,18 +48,18 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
 	public pruneFastpasses(): void {
 		if (this.window.confirm(`Are you sure you want to remove old Fastpasses?`)) {
-			this.store.dispatch(new PruneFastpasses({ todayCutoff: this.dateTimeService.getTodayCutoff() }));
+			this.store.dispatch(new fromFastpasses.PruneFastpasses({ todayCutoff: this.dateTimeService.getTodayCutoff() }));
 		}
 	}
 
 	public resetApp(): void {
 		if (this.window.confirm('Are you sure you want to reset all app data?')) {
-			this.store.dispatch(new ResetApp());
+			this.store.dispatch(new fromSettings.ResetApp());
 		}
 	}
 
 	public setDebug(): void {
-		this.store.dispatch(new SetDebug({ enableDebug: this.settingsForm.value.enableDebug }));
+		this.store.dispatch(new fromSettings.SetDebug({ enableDebug: this.settingsForm.value.enableDebug }));
 	}
 
 	// Temporary function for development only.
@@ -68,24 +67,24 @@ export class SettingsComponent implements OnInit, OnDestroy {
 	public setFastpassFixtures(): void {
 		const fastpasses = [
 			new Fastpass(
-				'Star Tours',
+				attractionFixtures.park01Attraction01,
 				moment().hours(11).minutes(25).seconds(0).toDate(),
 				moment().hours(11).minutes(55).seconds(0).toDate(),
 				moment().hours(13).minutes(25).seconds(0).toDate()
 			),
 			new Fastpass(
-				'Big Thunder Mountain',
+				attractionFixtures.park01Attraction02,
 				moment().hours(20).minutes(20).seconds(0).toDate(),
 				moment().hours(20).minutes(50).seconds(0).toDate(),
 				moment().hours(15).minutes(30).seconds(0).toDate()
 			),
 			new Fastpass(
-				'Star Wars: Hyperspace Mountain',
+				attractionFixtures.park01Attraction03,
 				moment().hours(16).minutes(5).seconds(0).toDate(),
 				moment().hours(16).minutes(35).seconds(0).toDate(),
 				moment().hours(18).minutes(5).seconds(0).toDate()
 			)
 		];
-		this.store.dispatch(new LoadFastpasses({ fastpasses: fastpasses }));
+		this.store.dispatch(new fromFastpasses.LoadFastpasses({ fastpasses: fastpasses }));
 	}
 }

@@ -3,7 +3,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-import { fastpassFixtures } from '../fastpass.model.fixtures';
+import { fastpassFixtures } from '../fastpass.fixtures';
 import { ViewFastpassComponent } from './view-fastpass.component';
 
 describe('ViewFastpassComponent', () => {
@@ -40,7 +40,7 @@ describe('ViewFastpassComponent', () => {
 
 	it('should display the ride name', () => {
 		// Assert
-		expect(compiled.querySelector('.ride-name').textContent).toContain('Big Thunder Mountain');
+		expect(compiled.querySelector('.attraction-name').textContent).toContain('Attraction 01');
 	});
 
 	it('should display the start time in 24H format', () => {

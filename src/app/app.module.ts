@@ -12,13 +12,12 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AttractionsModule } from './attractions/attractions.module';
 import { FastpassesModule } from './fastpasses/fastpasses.module';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SettingsComponent } from './settings/settings.component';
-import { DateTimeService } from './common/date-time.service';
-import { GlobalObjectService } from './common/global-object.service';
-import { NgbTimeDateAdapter } from './common/ngb-time-date.adapter';
+import { DateTimeService, GlobalObjectService, NgbTimeDateAdapter } from './common';
 import { environment } from '../environments/environment';
 import { metaReducers, reducers } from './state';
 
@@ -30,8 +29,8 @@ import { metaReducers, reducers } from './state';
 		SettingsComponent
 	],
 	imports: [
+		AttractionsModule,
 		FastpassesModule,
-		AppRoutingModule,
 		BrowserModule,
 		EffectsModule.forRoot([]),
 		FontAwesomeModule,
@@ -41,7 +40,8 @@ import { metaReducers, reducers } from './state';
 		StoreModule.forRoot(reducers, { metaReducers }),
 		!environment.production ? StoreDevtoolsModule.instrument({
 			name: 'MagiGuide'
-		}) : []
+		}) : [],
+		AppRoutingModule
 	],
 	providers: [
 		DateTimeService,

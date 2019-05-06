@@ -96,5 +96,17 @@ describe('AppComponent', () => {
 			// Assert
 			expect(store.dispatch).toHaveBeenCalledWith(action);
 		});
+
+		it('should convert a string value into a number', () => {
+			// Arrange
+			const action = new settingsActions.SetActivePark({ activePark: Parks.WaltDisneyStudios });
+			component.activeParksForm.controls.activePark.setValue('' + Parks.WaltDisneyStudios);
+
+			// Act
+			component.setActivePark();
+
+			// Assert
+			expect(store.dispatch).toHaveBeenCalledWith(action);
+		});
 	});
 });

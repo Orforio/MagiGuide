@@ -63,4 +63,39 @@ describe('DateTimeService', () => {
 			expect(result).toEqual(expectedDate);
 		});
 	});
+
+	describe('isOlderThanHours()', () => {
+		beforeEach(() => {
+			jasmine.clock().install();
+			jasmine.clock().mockDate(new Date('1992-04-12T20:00:00Z'));
+		});
+
+		afterEach(() => {
+			jasmine.clock().uninstall();
+		});
+
+		it('should return true if date is older than current date minus supplied number of hours', () => {
+			// Arrange
+			const date = new Date('1992-04-12T10:00:00Z');
+			const hours = 8;
+
+			// Act
+			const result = service.isOlderThanHours(date, hours);
+
+			// Assert
+			expect(result).toBe(true);
+		});
+
+		it('should return false if date is newer than current date minus supplied number of hours', () => {
+			// Arrange
+			const date = new Date('1992-04-12T18:00:00Z');
+			const hours = 4;
+
+			// Act
+			const result = service.isOlderThanHours(date, hours);
+
+			// Assert
+			expect(result).toBe(false);
+		});
+	});
 });

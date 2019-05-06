@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { SetActivePark } from './settings/state/settings.actions';
 import * as fromRoot from './state';
-import * as settingsSelectors from './settings/state/settings.selectors';
+import * as fromSettings from './settings/state';
 import { Parks } from './common';
 
 @Component({
@@ -30,7 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 	public ngOnInit(): void {
 		this.store.pipe(
-			select(settingsSelectors.getActivePark),
+			select(fromSettings.getActivePark),
 			takeUntil(this.unsubscribe))
 			.subscribe(activePark => this.activeParksForm.controls.activePark.setValue(activePark));
 	}
@@ -41,6 +41,6 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	public setActivePark(): void {
-		this.store.dispatch(new SetActivePark({ activePark: this.activeParksForm.value.activePark }));
+		this.store.dispatch(new SetActivePark({ activePark: +this.activeParksForm.value.activePark }));
 	}
 }

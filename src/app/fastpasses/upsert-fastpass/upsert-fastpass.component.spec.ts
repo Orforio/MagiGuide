@@ -3,8 +3,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { UpsertFastpassComponent } from './upsert-fastpass.component';
-import { fastpassFixtures } from '../fastpass.model.fixtures';
-import { _createFeatureReducers } from '@ngrx/store';
+import { attractionFixtures } from '../../attractions/attraction.fixtures';
+import { fastpassFixtures } from '../fastpass.fixtures';
+import { DisableControlDirective } from '../../common';
 
 describe('UpsertFastpassComponent', () => {
 	let compiled: HTMLElement;
@@ -13,7 +14,10 @@ describe('UpsertFastpassComponent', () => {
 
 	beforeEach(async(() => {
 		TestBed.configureTestingModule({
-			declarations: [UpsertFastpassComponent],
+			declarations: [
+				DisableControlDirective,
+				UpsertFastpassComponent
+			],
 			imports: [
 				ReactiveFormsModule,
 				NgbModule
@@ -39,6 +43,37 @@ describe('UpsertFastpassComponent', () => {
 		expect(component).toBeTruthy();
 	});
 
+	it('should lock out the attractions select if Attractions are loading', () => {
+		// Arrange
+		component.attractionsLoading = true;
+
+		// Act
+		fixture.detectChanges();
+		const options = compiled.querySelectorAll<HTMLOptionElement>('select option');
+
+		// Assert
+		expect(component.upsertFastpassForm.controls.attraction.disabled).toBe(true);
+		expect(options.length).toEqual(1);
+		expect(options[0].textContent).toEqual('Loading...');
+	});
+
+	it('should set the attraction select options to the input Attractions', () => {
+		// Arrange
+		component.attractions = [
+			attractionFixtures.park01Attraction01,
+			attractionFixtures.park01Attraction02
+		];
+
+		// Act
+		fixture.detectChanges();
+		const result = compiled.querySelectorAll<HTMLOptionElement>('select option');
+
+		// Assert
+		expect(result.length).toEqual(2);
+		expect(result[0].textContent).toEqual(attractionFixtures.park01Attraction01.name);
+		expect(result[1].textContent).toEqual(attractionFixtures.park01Attraction02.name);
+	});
+
 	it('should set the form elements to the values of the Input Fastpass', () => {
 		// Arrange
 		component.fastpass = fastpassFixtures.standard1;
@@ -47,7 +82,7 @@ describe('UpsertFastpassComponent', () => {
 		fixture.detectChanges();
 
 		// Assert
-		expect(component.upsertFastpassForm.controls.ride.value).toEqual(fastpassFixtures.standard1.ride);
+		expect(component.upsertFastpassForm.controls.attraction.value).toEqual(fastpassFixtures.standard1.attraction.id);
 		expect(component.upsertFastpassForm.controls.startTime.value).toEqual(fastpassFixtures.standard1.startTime);
 		expect(component.upsertFastpassForm.controls.endTime.value).toEqual(fastpassFixtures.standard1.endTime);
 		expect(component.upsertFastpassForm.controls.nextAvailableTime.value).toEqual(fastpassFixtures.standard1.nextAvailableTime);
@@ -60,7 +95,7 @@ describe('UpsertFastpassComponent', () => {
 		fixture.detectChanges();
 
 		// Assert
-		expect(component.upsertFastpassForm.controls.ride.value).toEqual('');
+		expect(component.upsertFastpassForm.controls.attraction.value).toEqual('');
 		expect(component.upsertFastpassForm.controls.startTime.value).toEqual('');
 		expect(component.upsertFastpassForm.controls.endTime.value).toEqual('');
 		expect(component.upsertFastpassForm.controls.nextAvailableTime.value).toEqual('');
@@ -114,7 +149,7 @@ describe('UpsertFastpassComponent', () => {
 		// Arrange
 		fixture.detectChanges();
 		spyOn(component, 'upsertFastpass');
-		component.upsertFastpassForm.controls.ride.setValue('Big Thunder Mountain');
+		component.upsertFastpassForm.controls.attraction.setValue('ATTR-01');
 		component.upsertFastpassForm.controls.startTime.setValue(new Date('2018-05-27T12:00:00'));
 		component.upsertFastpassForm.controls.endTime.setValue(new Date('2018-05-27T12:30:00'));
 		component.upsertFastpassForm.controls.nextAvailableTime.setValue(new Date('2018-05-27T14:00:00'));
@@ -156,6 +191,11 @@ describe('UpsertFastpassComponent', () => {
 	describe('upsertFastpass()',  () => {
 		beforeEach(() => {
 			// Arrange
+			component.attractions = [
+				attractionFixtures.park01Attraction01,
+				attractionFixtures.park01Attraction02,
+				attractionFixtures.park01Attraction03
+			];
 			fixture.detectChanges();
 			spyOn(component.upsert, 'emit');
 		});
@@ -165,8 +205,8 @@ describe('UpsertFastpassComponent', () => {
 			jasmine.clock().install();
 			jasmine.clock().mockDate(new Date('2018-04-12'));
 
-			component.upsertFastpassForm.controls.ride.setValue(fastpassFixtures.standard1.ride);
-			component.upsertFastpassForm.controls.ride.markAsDirty();
+			component.upsertFastpassForm.controls.attraction.setValue(fastpassFixtures.standard1.attraction.id);
+			component.upsertFastpassForm.controls.attraction.markAsDirty();
 			component.upsertFastpassForm.controls.startTime.setValue(fastpassFixtures.standard1.startTime);
 			component.upsertFastpassForm.controls.startTime.markAsDirty();
 			component.upsertFastpassForm.controls.endTime.setValue(fastpassFixtures.standard1.endTime);
@@ -180,7 +220,7 @@ describe('UpsertFastpassComponent', () => {
 
 			// Assert
 			expect(component.upsert.emit).toHaveBeenCalledWith(jasmine.objectContaining({
-				ride: fastpassFixtures.standard1.ride,
+				attraction: fastpassFixtures.standard1.attraction,
 				startTime: fastpassFixtures.standard1.startTime,
 				endTime: fastpassFixtures.standard1.endTime,
 				nextAvailableTime: fastpassFixtures.standard1.nextAvailableTime
@@ -194,14 +234,14 @@ describe('UpsertFastpassComponent', () => {
 			jasmine.clock().install();
 			jasmine.clock().mockDate(new Date('2018-04-12'));
 
-			component.fastpass = fastpassFixtures.knownId;
-			component.upsertFastpassForm.controls.ride.setValue(fastpassFixtures.knownIdUpdated.ride);
-			component.upsertFastpassForm.controls.ride.markAsDirty();
-			component.upsertFastpassForm.controls.startTime.setValue(fastpassFixtures.knownIdUpdated.startTime);
+			component.fastpass = fastpassFixtures.knownId1;
+			component.upsertFastpassForm.controls.attraction.setValue(fastpassFixtures.knownId1Updated.attraction.id);
+			component.upsertFastpassForm.controls.attraction.markAsDirty();
+			component.upsertFastpassForm.controls.startTime.setValue(fastpassFixtures.knownId1Updated.startTime);
 			component.upsertFastpassForm.controls.startTime.markAsDirty();
-			component.upsertFastpassForm.controls.endTime.setValue(fastpassFixtures.knownIdUpdated.endTime);
+			component.upsertFastpassForm.controls.endTime.setValue(fastpassFixtures.knownId1Updated.endTime);
 			component.upsertFastpassForm.controls.endTime.markAsDirty();
-			component.upsertFastpassForm.controls.nextAvailableTime.setValue(fastpassFixtures.knownIdUpdated.nextAvailableTime);
+			component.upsertFastpassForm.controls.nextAvailableTime.setValue(fastpassFixtures.knownId1Updated.nextAvailableTime);
 			component.upsertFastpassForm.controls.nextAvailableTime.markAsDirty();
 			fixture.detectChanges();
 
@@ -210,11 +250,11 @@ describe('UpsertFastpassComponent', () => {
 
 			// Assert
 			expect(component.upsert.emit).toHaveBeenCalledWith(jasmine.objectContaining({
-				ride: fastpassFixtures.knownIdUpdated.ride,
-				startTime: fastpassFixtures.knownIdUpdated.startTime,
-				endTime: fastpassFixtures.knownIdUpdated.endTime,
-				nextAvailableTime: fastpassFixtures.knownIdUpdated.nextAvailableTime,
-				id: fastpassFixtures.knownId.id
+				attraction: fastpassFixtures.knownId1Updated.attraction,
+				startTime: fastpassFixtures.knownId1Updated.startTime,
+				endTime: fastpassFixtures.knownId1Updated.endTime,
+				nextAvailableTime: fastpassFixtures.knownId1Updated.nextAvailableTime,
+				id: fastpassFixtures.knownId1.id
 			}));
 
 			jasmine.clock().uninstall();

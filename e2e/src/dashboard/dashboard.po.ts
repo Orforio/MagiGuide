@@ -4,7 +4,7 @@ import { MagiGuidePage } from '../common.po';
 
 export class DashboardPage extends MagiGuidePage {
 	public navigateToDashboard(): promise.Promise<any> {
-		return browser.get('/dashboard');
+		return browser.get('/');
 	}
 
 	public getNextFastpass(): ElementFinder {
@@ -12,7 +12,7 @@ export class DashboardPage extends MagiGuidePage {
 	}
 
 	public getNextFastpassRide(): promise.Promise<string> {
-		return this.getNextFastpass().element(by.className('ride-name')).getText();
+		return this.getNextFastpass().element(by.className('attraction-name')).getText();
 	}
 
 	public getNextFastpassStartTime(): promise.Promise<string> {

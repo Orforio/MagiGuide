@@ -1,8 +1,8 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import * as fromFastpass from './fastpass.reducer';
+import * as fromFastpass from './fastpasses.reducer';
 
-const getFastpassFeatureState = createFeatureSelector<fromFastpass.FastpassState>('fastpasses');
+const getFastpassFeatureState = createFeatureSelector<fromFastpass.FastpassesState>('fastpasses');
 
 export const getEditFastpass = createSelector(
 	getFastpassFeatureState,

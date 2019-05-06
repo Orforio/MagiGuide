@@ -25,6 +25,6 @@ export class SetDebug implements Action {
 }
 
 export type SettingsActions =
-	ResetApp
-	| SetActivePark
-	| SetDebug;
+	ResetApp |
+	SetActivePark |
+	SetDebug;

@@ -1,0 +1,28 @@
+<div class="container-fluid">
+	<h1>Attractions</h1>
+	<p>Sample API call</p>
+	<table *ngIf="attractions | async as attractionsAsync" class="table table-sm">
+		<thead class="thead-dark">
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Name</th>
+				<th scope="col">Active</th>
+				<th scope="col">Status</th>
+				<th scope="col">Wait Time</th>
+				<th scope="col">Fastpass</th>
+				<th scope="col">Last Update</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let attraction of attractionsAsync">
+				<td scope="row">{{attraction.id}}</td>
+				<td>{{attraction.name}}</td>
+				<td>{{attraction.active}}</td>
+				<td>{{attraction.status}}</td>
+				<td>{{attraction.waitTime}}</td>
+				<td>{{attraction.fastPass}}</td>
+				<td>{{attraction.lastUpdate | date:'yyyy-MM-dd HH:mm:ss Z'}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
