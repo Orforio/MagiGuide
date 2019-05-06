@@ -1,6 +1,6 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
-import { AttractionsActions, AttractionsActionTypes } from './';
+import { AttractionsActions, AttractionsActionTypes } from './attractions.actions';
 import { SettingsActions, SettingsActionTypes } from '../../settings/state';
 import { Attraction } from '../attraction.model';
 
