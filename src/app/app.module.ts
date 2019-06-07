@@ -37,7 +37,7 @@ import { metaReducers, reducers } from './state';
 		NgbModule,
 		ReactiveFormsModule,
 		ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
-		StoreModule.forRoot(reducers, { metaReducers }),
+		StoreModule.forRoot(reducers, { metaReducers, runtimeChecks: { strictStateImmutability: true, strictActionImmutability: true } }),
 		!environment.production ? StoreDevtoolsModule.instrument({
 			name: 'MagiGuide'
 		}) : [],

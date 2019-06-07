@@ -1,10 +1,8 @@
 import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
-import { storeFreeze } from 'ngrx-store-freeze';
 import { localStorageSync } from 'ngrx-store-localstorage';
 
 import * as fromSettings from '../settings/state';
 import * as fromFastpasses from '../fastpasses/state';
-import { environment } from '../../environments/environment';
 
 export interface State {
 	fastpasses: fromFastpasses.FastpassesState;
@@ -33,6 +31,7 @@ export function resetAppReducer(reducer: ActionReducer<any>): ActionReducer<any>
 	};
 }
 
-export const metaReducers: MetaReducer<State>[] = !environment.production ?
-	[localStorageSyncReducer, resetAppReducer, storeFreeze] :
-	[localStorageSyncReducer, resetAppReducer];
+export const metaReducers: MetaReducer<State>[] = [
+	localStorageSyncReducer,
+	resetAppReducer
+];
