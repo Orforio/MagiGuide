@@ -28,7 +28,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@ng-bootstrap/ng-bootstrap": "^4.1.0",
     "@ngrx/effects": "^7.3.0",
-    "@ngrx/entity": "^7.3.0",
+    "@ngrx/entity": "^8.0.0",
     "@ngrx/store": "^7.3.0",
     "@ngrx/store-devtools": "^7.3.0",
     "bootstrap": ">=4.3.1",
