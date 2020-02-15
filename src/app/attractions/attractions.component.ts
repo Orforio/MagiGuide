@@ -1,20 +1,37 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
+import { combineLatest, Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
-import { AttractionsService } from './attractions.service';
+import { Attraction } from './attraction.model';
+import * as fromAttractions from './state';
+import * as fromRoot from '../state';
+import { DateTimeService } from '../common';
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [AttractionsService],
-	selector: 'mg-attractions',
 	styleUrls: ['./attractions.component.scss'],
 	templateUrl: './attractions.component.html'
 })
 export class AttractionsComponent implements OnInit {
-	public attractions;
+	public attractions: Observable<Attraction[]>;
 
-	constructor(private attractionsService: AttractionsService) {}
+	constructor(
+		private dateTimeService: DateTimeService,
+		private store: Store<fromRoot.State>,
+	) {}
 
 	public ngOnInit(): void {
-		// this.attractions = this.attractionsService.testApi();
+		this.attractions = combineLatest([
+			this.store.pipe(select(fromAttractions.getAttractionsForPark)),
+			this.store.pipe(select(fromAttractions.getAttractionsOldestUpdateForPark))
+		]).pipe(
+			tap(([attractions, oldestUpdate]) => {
+				if (attractions.length === 0 || (attractions.length > 0 && this.dateTimeService.isOlderThanHours(oldestUpdate, 12))) {
+					this.store.dispatch(new fromAttractions.LoadAttractions());
+				}
+			}),
+			map(([attractions]) => attractions)
+		);
 	}
 }
